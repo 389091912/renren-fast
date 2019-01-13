@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.ProductModelOutDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.ProductModelOutEntity" id="productModelOutMap">
+        <result property="id" column="id"/>
+        <result property="modelId" column="model_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="modelSuccessMo" column="model_success_mo"/>
+        <result property="modelPrimaryMo" column="model_primary_mo"/>
+        <result property="modelMouthMo" column="model_mouth_mo"/>
+        <result property="modelMenTou" column="model_men_tou"/>
+        <result property="modelFunnel" column="model_funnel"/>
+        <result property="modelCore" column="model_core"/>
+        <result property="modelAirTou" column="model_air_tou"/>
+        <result property="modelCooling" column="model_cooling"/>
+        <result property="modelClamp" column="model_clamp"/>
+        <result property="modelAllNumber" column="model_all_number"/>
+        <result property="modelHandlingPeople" column="model_handling_people"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="modelRemark" column="model_remark"/>
+        <result property="modelDeliveryTime" column="model_delivery_time"/>
+        <result property="modelReceiptTime" column="model_receipt_time"/>
+    </resultMap>
+
+
+</mapper>
