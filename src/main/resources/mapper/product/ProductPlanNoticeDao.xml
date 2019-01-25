@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.ProductPlanNoticeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.ProductPlanNoticeEntity" id="productPlanNoticeMap">
+        <result property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="modelId" column="model_id"/>
+        <result property="customerProductNo" column="customer_product_no"/>
+        <result property="materialWeight" column="material_weight"/>
+        <result property="volume" column="volume"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="repertoryNumber" column="repertory_number"/>
+        <result property="needNumber" column="need_number"/>
+        <result property="customerProductSytle" column="customer_product_sytle"/>
+        <result property="bottleCapSuit" column="bottle_cap_suit"/>
+        <result property="followUpProcess" column="follow_up_process"/>
+        <result property="packRequire" column="pack_require"/>
+        <result property="boxId" column="box_id"/>
+        <result property="customerRequire" column="customer_require"/>
+        <result property="bottleHight" column="bottle_hight"/>
+        <result property="bottleInDiameter" column="bottle_in_diameter"/>
+        <result property="headNeckHeight" column="head_neck_height"/>
+        <result property="bottleOutDiameter" column="bottle_out_diameter"/>
+        <result property="facadeRequire" column="facade_require"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+</mapper>

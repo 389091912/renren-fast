@@ -5,7 +5,7 @@
 
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.product.entity.ProductModelEntity" id="productModelMap">
-        <result property="modelId" column="model_id"/>
+        <result property="id" column="id"/>
         <result property="siteNo" column="site_no"/>
         <result property="modelNo" column="model_no"/>
         <result property="productName" column="product_name"/>
@@ -25,6 +25,11 @@
         <result property="customerName" column="customer_name"/>
         <result property="state" column="state"/>
         <result property="modelRemark" column="model_remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="status" column="status"/>
     </resultMap>
 
 

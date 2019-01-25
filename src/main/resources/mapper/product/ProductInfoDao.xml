@@ -12,9 +12,9 @@
         <result property="cartonId" column="carton_id"/>
         <result property="productNum" column="product_num"/>
         <result property="productWeight" column="product_weight"/>
-        <result property="productImage" column="product_image"/>
-        <result property="productDrawing" column="product_drawing"/>
         <result property="productVolume" column="product_volume"/>
+        <result property="productImageId" column="product_image_id"/>
+        <result property="productDrawingId" column="product_drawing_id"/>
         <result property="productBatch" column="product_batch"/>
         <result property="productQuestion" column="product_question"/>
         <result property="productAssort" column="product_assort"/>
@@ -22,6 +22,11 @@
         <result property="productRemark" column="product_remark"/>
         <result property="yield" column="yield"/>
         <result property="productCategory" column="product_category"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="status" column="status"/>
     </resultMap>
 
 
