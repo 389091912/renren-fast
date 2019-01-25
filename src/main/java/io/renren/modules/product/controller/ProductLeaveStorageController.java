@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.product.entity.ProductSellOutEntity;
-import io.renren.modules.product.service.ProductSellOutService;
+import io.renren.modules.product.entity.ProductLeaveStorageEntity;
+import io.renren.modules.product.service.ProductLeaveStorageService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -23,21 +23,21 @@ import io.renren.common.utils.R;
  *
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @RestController
-@RequestMapping("product/productsellout")
-public class ProductSellOutController {
+@RequestMapping("product/productleavestorage")
+public class ProductLeaveStorageController {
     @Autowired
-    private ProductSellOutService productSellOutService;
+    private ProductLeaveStorageService productLeaveStorageService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("product:productsellout:list")
+    @RequiresPermissions("product:productleavestorage:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = productSellOutService.queryPage(params);
+        PageUtils page = productLeaveStorageService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -47,20 +47,20 @@ public class ProductSellOutController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("product:productsellout:info")
+    @RequiresPermissions("product:productleavestorage:info")
     public R info(@PathVariable("id") Integer id){
-			ProductSellOutEntity productSellOut = productSellOutService.selectById(id);
+			ProductLeaveStorageEntity productLeaveStorage = productLeaveStorageService.selectById(id);
 
-        return R.ok().put("productSellOut", productSellOut);
+        return R.ok().put("productLeaveStorage", productLeaveStorage);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("product:productsellout:save")
-    public R save(@RequestBody ProductSellOutEntity productSellOut){
-			productSellOutService.insert(productSellOut);
+    @RequiresPermissions("product:productleavestorage:save")
+    public R save(@RequestBody ProductLeaveStorageEntity productLeaveStorage){
+			productLeaveStorageService.insert(productLeaveStorage);
 
         return R.ok();
     }
@@ -69,9 +69,9 @@ public class ProductSellOutController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("product:productsellout:update")
-    public R update(@RequestBody ProductSellOutEntity productSellOut){
-			productSellOutService.updateById(productSellOut);
+    @RequiresPermissions("product:productleavestorage:update")
+    public R update(@RequestBody ProductLeaveStorageEntity productLeaveStorage){
+			productLeaveStorageService.updateById(productLeaveStorage);
 
         return R.ok();
     }
@@ -80,9 +80,9 @@ public class ProductSellOutController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("product:productsellout:delete")
+    @RequiresPermissions("product:productleavestorage:delete")
     public R delete(@RequestBody Integer[] ids){
-			productSellOutService.deleteBatchIds(Arrays.asList(ids));
+			productLeaveStorageService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
     }

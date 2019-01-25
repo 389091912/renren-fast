@@ -23,7 +23,7 @@ import io.renren.common.utils.R;
  *
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @RestController
 @RequestMapping("product/productinfo")

@@ -13,8 +13,8 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@TableName("product_put_in_storage")
-public class ProductPutInStorageEntity implements Serializable {
+@TableName("product_box")
+public class ProductBoxEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -23,29 +23,33 @@ public class ProductPutInStorageEntity implements Serializable {
 	@TableId
 	private Integer id;
 	/**
-	 * 产品ID
+	 * 纸箱编号
 	 */
-	private Integer productId;
+	private String boxNo;
 	/**
-	 * 只数
+	 * 箱体
 	 */
-	private Integer zhiNumber;
+	private String body;
 	/**
-	 * 纸箱id
+	 * 格挡
 	 */
-	private Integer boxId;
+	private String parry;
 	/**
-	 * 箱数
+	 * 垫片
+	 */
+	private String spacer;
+	/**
+	 * 数量
 	 */
 	private Integer boxNumber;
 	/**
-	 * 入库数量
+	 * 客户
 	 */
-	private Integer productNumber;
+	private String costomer;
 	/**
-	 * 入库时间
+	 * 位置
 	 */
-	private Date putInTime;
+	private String location;
 	/**
 	 * 备注
 	 */
@@ -67,9 +71,13 @@ public class ProductPutInStorageEntity implements Serializable {
 	 */
 	private Integer updateUser;
 	/**
-	 * 0为启用,1为禁止
+	 * 0为开启，1为禁止
 	 */
 	private Integer status;
+	/**
+	 *  出库数量
+	 */
+	private Integer leaveNumber;
 
 	/**
 	 * 设置：ID
@@ -84,76 +92,88 @@ public class ProductPutInStorageEntity implements Serializable {
 		return id;
 	}
 	/**
-	 * 设置：产品ID
+	 * 设置：纸箱编号
 	 */
-	public void setProductId(Integer productId) {
-		this.productId = productId;
+	public void setBoxNo(String boxNo) {
+		this.boxNo = boxNo;
 	}
 	/**
-	 * 获取：产品ID
+	 * 获取：纸箱编号
 	 */
-	public Integer getProductId() {
-		return productId;
+	public String getBoxNo() {
+		return boxNo;
 	}
 	/**
-	 * 设置：只数
+	 * 设置：箱体
 	 */
-	public void setZhiNumber(Integer zhiNumber) {
-		this.zhiNumber = zhiNumber;
+	public void setBody(String body) {
+		this.body = body;
 	}
 	/**
-	 * 获取：只数
+	 * 获取：箱体
 	 */
-	public Integer getZhiNumber() {
-		return zhiNumber;
+	public String getBody() {
+		return body;
 	}
 	/**
-	 * 设置：纸箱id
+	 * 设置：格挡
 	 */
-	public void setBoxId(Integer boxId) {
-		this.boxId = boxId;
+	public void setParry(String parry) {
+		this.parry = parry;
 	}
 	/**
-	 * 获取：纸箱id
+	 * 获取：格挡
 	 */
-	public Integer getBoxId() {
-		return boxId;
+	public String getParry() {
+		return parry;
 	}
 	/**
-	 * 设置：箱数
+	 * 设置：垫片
+	 */
+	public void setSpacer(String spacer) {
+		this.spacer = spacer;
+	}
+	/**
+	 * 获取：垫片
+	 */
+	public String getSpacer() {
+		return spacer;
+	}
+	/**
+	 * 设置：数量
 	 */
 	public void setBoxNumber(Integer boxNumber) {
 		this.boxNumber = boxNumber;
 	}
 	/**
-	 * 获取：箱数
+	 * 获取：数量
 	 */
 	public Integer getBoxNumber() {
 		return boxNumber;
 	}
 	/**
-	 * 设置：入库数量
+	 * 设置：客户
 	 */
-	public void setProductNumber(Integer productNumber) {
-		this.productNumber = productNumber;
+	public void setCostomer(String costomer) {
+		this.costomer = costomer;
 	}
 	/**
-	 * 获取：入库数量
+	 * 获取：客户
 	 */
-	public Integer getProductNumber() {
-		return productNumber;
+	public String getCostomer() {
+		return costomer;
 	}
 	/**
-	 * 设置：入库时间
+	 * 设置：位置
 	 */
-	public void setPutInTime(Date putInTime) {
-		this.putInTime = putInTime;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	/**
-	 * 获取：入库时间
+	 * 获取：位置
 	 */
-	public Date getPutInTime() {
-		return putInTime;
+	public String getLocation() {
+		return location;
 	}
 	/**
 	 * 设置：备注
@@ -216,15 +236,27 @@ public class ProductPutInStorageEntity implements Serializable {
 		return updateUser;
 	}
 	/**
-	 * 设置：0为启用,1为禁止
+	 * 设置：0为开启，1为禁止
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	/**
-	 * 获取：0为启用,1为禁止
+	 * 获取：0为开启，1为禁止
 	 */
 	public Integer getStatus() {
 		return status;
+	}
+	/**
+	 * 设置： 出库数量
+	 */
+	public void setLeaveNumber(Integer leaveNumber) {
+		this.leaveNumber = leaveNumber;
+	}
+	/**
+	 * 获取： 出库数量
+	 */
+	public Integer getLeaveNumber() {
+		return leaveNumber;
 	}
 }

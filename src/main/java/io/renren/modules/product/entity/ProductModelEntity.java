@@ -11,7 +11,7 @@ import java.util.Date;
  * 
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @TableName("product_model")
 public class ProductModelEntity implements Serializable {
@@ -21,7 +21,7 @@ public class ProductModelEntity implements Serializable {
 	 * 模具ID
 	 */
 	@TableId
-	private Integer modelId;
+	private Integer id;
 	/**
 	 * 架号
 	 */
@@ -37,43 +37,43 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 成模
 	 */
-	private String modelSuccessMo;
+	private Integer modelSuccessMo;
 	/**
 	 * 初模
 	 */
-	private String modelPrimaryMo;
+	private Integer modelPrimaryMo;
 	/**
 	 * 口模
 	 */
-	private String modelMouthMo;
+	private Integer modelMouthMo;
 	/**
 	 * 闷头
 	 */
-	private String modelMenTou;
+	private Integer modelMenTou;
 	/**
 	 * 漏斗
 	 */
-	private String modelFunnel;
+	private Integer modelFunnel;
 	/**
 	 * 芯子
 	 */
-	private String modelCore;
+	private Integer modelCore;
 	/**
 	 * 气头
 	 */
-	private String modelAirTou;
+	private Integer modelAirTou;
 	/**
 	 * 冷却
 	 */
-	private String modelCooling;
+	private Integer modelCooling;
 	/**
 	 * 钳片
 	 */
-	private String modelClamp;
+	private Integer modelClamp;
 	/**
 	 * 容量
 	 */
-	private String modelVolume;
+	private Integer modelVolume;
 	/**
 	 * 经手人
 	 */
@@ -98,18 +98,38 @@ public class ProductModelEntity implements Serializable {
 	 * 备注
 	 */
 	private String modelRemark;
+	/**
+	 * 
+	 */
+	private Date createTime;
+	/**
+	 * 
+	 */
+	private Integer createUser;
+	/**
+	 * 
+	 */
+	private Date updateTime;
+	/**
+	 * 
+	 */
+	private Integer updateUser;
+	/**
+	 * 0为启用，1为禁止
+	 */
+	private Integer status;
 
 	/**
 	 * 设置：模具ID
 	 */
-	public void setModelId(Integer modelId) {
-		this.modelId = modelId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	/**
 	 * 获取：模具ID
 	 */
-	public Integer getModelId() {
-		return modelId;
+	public Integer getId() {
+		return id;
 	}
 	/**
 	 * 设置：架号
@@ -150,121 +170,121 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 设置：成模
 	 */
-	public void setModelSuccessMo(String modelSuccessMo) {
+	public void setModelSuccessMo(Integer modelSuccessMo) {
 		this.modelSuccessMo = modelSuccessMo;
 	}
 	/**
 	 * 获取：成模
 	 */
-	public String getModelSuccessMo() {
+	public Integer getModelSuccessMo() {
 		return modelSuccessMo;
 	}
 	/**
 	 * 设置：初模
 	 */
-	public void setModelPrimaryMo(String modelPrimaryMo) {
+	public void setModelPrimaryMo(Integer modelPrimaryMo) {
 		this.modelPrimaryMo = modelPrimaryMo;
 	}
 	/**
 	 * 获取：初模
 	 */
-	public String getModelPrimaryMo() {
+	public Integer getModelPrimaryMo() {
 		return modelPrimaryMo;
 	}
 	/**
 	 * 设置：口模
 	 */
-	public void setModelMouthMo(String modelMouthMo) {
+	public void setModelMouthMo(Integer modelMouthMo) {
 		this.modelMouthMo = modelMouthMo;
 	}
 	/**
 	 * 获取：口模
 	 */
-	public String getModelMouthMo() {
+	public Integer getModelMouthMo() {
 		return modelMouthMo;
 	}
 	/**
 	 * 设置：闷头
 	 */
-	public void setModelMenTou(String modelMenTou) {
+	public void setModelMenTou(Integer modelMenTou) {
 		this.modelMenTou = modelMenTou;
 	}
 	/**
 	 * 获取：闷头
 	 */
-	public String getModelMenTou() {
+	public Integer getModelMenTou() {
 		return modelMenTou;
 	}
 	/**
 	 * 设置：漏斗
 	 */
-	public void setModelFunnel(String modelFunnel) {
+	public void setModelFunnel(Integer modelFunnel) {
 		this.modelFunnel = modelFunnel;
 	}
 	/**
 	 * 获取：漏斗
 	 */
-	public String getModelFunnel() {
+	public Integer getModelFunnel() {
 		return modelFunnel;
 	}
 	/**
 	 * 设置：芯子
 	 */
-	public void setModelCore(String modelCore) {
+	public void setModelCore(Integer modelCore) {
 		this.modelCore = modelCore;
 	}
 	/**
 	 * 获取：芯子
 	 */
-	public String getModelCore() {
+	public Integer getModelCore() {
 		return modelCore;
 	}
 	/**
 	 * 设置：气头
 	 */
-	public void setModelAirTou(String modelAirTou) {
+	public void setModelAirTou(Integer modelAirTou) {
 		this.modelAirTou = modelAirTou;
 	}
 	/**
 	 * 获取：气头
 	 */
-	public String getModelAirTou() {
+	public Integer getModelAirTou() {
 		return modelAirTou;
 	}
 	/**
 	 * 设置：冷却
 	 */
-	public void setModelCooling(String modelCooling) {
+	public void setModelCooling(Integer modelCooling) {
 		this.modelCooling = modelCooling;
 	}
 	/**
 	 * 获取：冷却
 	 */
-	public String getModelCooling() {
+	public Integer getModelCooling() {
 		return modelCooling;
 	}
 	/**
 	 * 设置：钳片
 	 */
-	public void setModelClamp(String modelClamp) {
+	public void setModelClamp(Integer modelClamp) {
 		this.modelClamp = modelClamp;
 	}
 	/**
 	 * 获取：钳片
 	 */
-	public String getModelClamp() {
+	public Integer getModelClamp() {
 		return modelClamp;
 	}
 	/**
 	 * 设置：容量
 	 */
-	public void setModelVolume(String modelVolume) {
+	public void setModelVolume(Integer modelVolume) {
 		this.modelVolume = modelVolume;
 	}
 	/**
 	 * 获取：容量
 	 */
-	public String getModelVolume() {
+	public Integer getModelVolume() {
 		return modelVolume;
 	}
 	/**
@@ -338,5 +358,65 @@ public class ProductModelEntity implements Serializable {
 	 */
 	public String getModelRemark() {
 		return modelRemark;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	/**
+	 * 获取：
+	 */
+	public Date getCreateTime() {
+		return createTime;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setCreateUser(Integer createUser) {
+		this.createUser = createUser;
+	}
+	/**
+	 * 获取：
+	 */
+	public Integer getCreateUser() {
+		return createUser;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	/**
+	 * 获取：
+	 */
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	/**
+	 * 设置：
+	 */
+	public void setUpdateUser(Integer updateUser) {
+		this.updateUser = updateUser;
+	}
+	/**
+	 * 获取：
+	 */
+	public Integer getUpdateUser() {
+		return updateUser;
+	}
+	/**
+	 * 设置：0为启用，1为禁止
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：0为启用，1为禁止
+	 */
+	public Integer getStatus() {
+		return status;
 	}
 }

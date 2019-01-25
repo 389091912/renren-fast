@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.product.entity.ProductModelEntity;
-import io.renren.modules.product.service.ProductModelService;
+import io.renren.modules.product.entity.ProductDeviceEntity;
+import io.renren.modules.product.service.ProductDeviceService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -26,18 +26,18 @@ import io.renren.common.utils.R;
  * @date 2019-01-25 23:35:04
  */
 @RestController
-@RequestMapping("product/productmodel")
-public class ProductModelController {
+@RequestMapping("product/productdevice")
+public class ProductDeviceController {
     @Autowired
-    private ProductModelService productModelService;
+    private ProductDeviceService productDeviceService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("product:productmodel:list")
+    @RequiresPermissions("product:productdevice:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = productModelService.queryPage(params);
+        PageUtils page = productDeviceService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -47,20 +47,20 @@ public class ProductModelController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("product:productmodel:info")
+    @RequiresPermissions("product:productdevice:info")
     public R info(@PathVariable("id") Integer id){
-			ProductModelEntity productModel = productModelService.selectById(id);
+			ProductDeviceEntity productDevice = productDeviceService.selectById(id);
 
-        return R.ok().put("productModel", productModel);
+        return R.ok().put("productDevice", productDevice);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("product:productmodel:save")
-    public R save(@RequestBody ProductModelEntity productModel){
-			productModelService.insert(productModel);
+    @RequiresPermissions("product:productdevice:save")
+    public R save(@RequestBody ProductDeviceEntity productDevice){
+			productDeviceService.insert(productDevice);
 
         return R.ok();
     }
@@ -69,9 +69,9 @@ public class ProductModelController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("product:productmodel:update")
-    public R update(@RequestBody ProductModelEntity productModel){
-			productModelService.updateById(productModel);
+    @RequiresPermissions("product:productdevice:update")
+    public R update(@RequestBody ProductDeviceEntity productDevice){
+			productDeviceService.updateById(productDevice);
 
         return R.ok();
     }
@@ -80,9 +80,9 @@ public class ProductModelController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("product:productmodel:delete")
+    @RequiresPermissions("product:productdevice:delete")
     public R delete(@RequestBody Integer[] ids){
-			productModelService.deleteBatchIds(Arrays.asList(ids));
+			productDeviceService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
     }

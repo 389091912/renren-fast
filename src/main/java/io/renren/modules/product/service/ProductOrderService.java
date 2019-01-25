@@ -2,7 +2,7 @@ package io.renren.modules.product.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import io.renren.common.utils.PageUtils;
-import io.renren.modules.product.entity.ProductModelOutEntity;
+import io.renren.modules.product.entity.ProductOrderEntity;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-public interface ProductModelOutService extends IService<ProductModelOutEntity> {
+public interface ProductOrderService extends IService<ProductOrderEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 }

@@ -1,6 +1,6 @@
 package io.renren.modules.product.dao;
 
-import io.renren.modules.product.entity.ProductSellOutEntity;
+import io.renren.modules.product.entity.ProductPlanNoticeEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,9 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
  * 
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @Mapper
-public interface ProductSellOutDao extends BaseMapper<ProductSellOutEntity> {
+public interface ProductPlanNoticeDao extends BaseMapper<ProductPlanNoticeEntity> {
 	
 }

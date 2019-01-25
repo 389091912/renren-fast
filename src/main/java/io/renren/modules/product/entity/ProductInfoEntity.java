@@ -12,7 +12,7 @@ import java.util.Date;
  * 
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @TableName("product_info")
 public class ProductInfoEntity implements Serializable {
@@ -48,17 +48,17 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	private Integer productWeight;
 	/**
-	 * 产品图片
-	 */
-	private String productImage;
-	/**
-	 * 产品图纸
-	 */
-	private String productDrawing;
-	/**
 	 * 产品容量
 	 */
 	private Integer productVolume;
+	/**
+	 * 产品图片
+	 */
+	private Integer productImageId;
+	/**
+	 * 产品图纸
+	 */
+	private Integer productDrawingId;
 	/**
 	 * 产品批次
 	 */
@@ -87,6 +87,26 @@ public class ProductInfoEntity implements Serializable {
 	 * 产品分类
 	 */
 	private Integer productCategory;
+	/**
+	 * 创建日期
+	 */
+	private Date createTime;
+	/**
+	 * 创建时间
+	 */
+	private Integer createUser;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTime;
+	/**
+	 * 更新人员
+	 */
+	private Integer updateUser;
+	/**
+	 * 0为启用，1为禁止
+	 */
+	private Integer status;
 
 	/**
 	 * 设置：ID
@@ -173,30 +193,6 @@ public class ProductInfoEntity implements Serializable {
 		return productWeight;
 	}
 	/**
-	 * 设置：产品图片
-	 */
-	public void setProductImage(String productImage) {
-		this.productImage = productImage;
-	}
-	/**
-	 * 获取：产品图片
-	 */
-	public String getProductImage() {
-		return productImage;
-	}
-	/**
-	 * 设置：产品图纸
-	 */
-	public void setProductDrawing(String productDrawing) {
-		this.productDrawing = productDrawing;
-	}
-	/**
-	 * 获取：产品图纸
-	 */
-	public String getProductDrawing() {
-		return productDrawing;
-	}
-	/**
 	 * 设置：产品容量
 	 */
 	public void setProductVolume(Integer productVolume) {
@@ -207,6 +203,30 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	public Integer getProductVolume() {
 		return productVolume;
+	}
+	/**
+	 * 设置：产品图片
+	 */
+	public void setProductImageId(Integer productImageId) {
+		this.productImageId = productImageId;
+	}
+	/**
+	 * 获取：产品图片
+	 */
+	public Integer getProductImageId() {
+		return productImageId;
+	}
+	/**
+	 * 设置：产品图纸
+	 */
+	public void setProductDrawingId(Integer productDrawingId) {
+		this.productDrawingId = productDrawingId;
+	}
+	/**
+	 * 获取：产品图纸
+	 */
+	public Integer getProductDrawingId() {
+		return productDrawingId;
 	}
 	/**
 	 * 设置：产品批次
@@ -291,5 +311,65 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	public Integer getProductCategory() {
 		return productCategory;
+	}
+	/**
+	 * 设置：创建日期
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	/**
+	 * 获取：创建日期
+	 */
+	public Date getCreateTime() {
+		return createTime;
+	}
+	/**
+	 * 设置：创建时间
+	 */
+	public void setCreateUser(Integer createUser) {
+		this.createUser = createUser;
+	}
+	/**
+	 * 获取：创建时间
+	 */
+	public Integer getCreateUser() {
+		return createUser;
+	}
+	/**
+	 * 设置：更新时间
+	 */
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	/**
+	 * 获取：更新时间
+	 */
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	/**
+	 * 设置：更新人员
+	 */
+	public void setUpdateUser(Integer updateUser) {
+		this.updateUser = updateUser;
+	}
+	/**
+	 * 获取：更新人员
+	 */
+	public Integer getUpdateUser() {
+		return updateUser;
+	}
+	/**
+	 * 设置：0为启用，1为禁止
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：0为启用，1为禁止
+	 */
+	public Integer getStatus() {
+		return status;
 	}
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  * 
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
 @TableName("product_model_out")
 public class ProductModelOutEntity implements Serializable {
@@ -25,7 +25,7 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 模具编号
 	 */
-	private Integer modelId;
+	private Integer modelNo;
 	/**
 	 * 产品名称
 	 */
@@ -90,6 +90,26 @@ public class ProductModelOutEntity implements Serializable {
 	 * 收货日期
 	 */
 	private Date modelReceiptTime;
+	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+	/**
+	 * 创建人员
+	 */
+	private Integer createUser;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTime;
+	/**
+	 * 更新人员
+	 */
+	private Integer updateUser;
+	/**
+	 * 0为启用，1为禁止
+	 */
+	private Integer status;
 
 	/**
 	 * 设置：模具ID
@@ -106,14 +126,14 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 设置：模具编号
 	 */
-	public void setModelId(Integer modelId) {
-		this.modelId = modelId;
+	public void setModelNo(Integer modelNo) {
+		this.modelNo = modelNo;
 	}
 	/**
 	 * 获取：模具编号
 	 */
-	public Integer getModelId() {
-		return modelId;
+	public Integer getModelNo() {
+		return modelNo;
 	}
 	/**
 	 * 设置：产品名称
@@ -306,5 +326,65 @@ public class ProductModelOutEntity implements Serializable {
 	 */
 	public Date getModelReceiptTime() {
 		return modelReceiptTime;
+	}
+	/**
+	 * 设置：创建时间
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	/**
+	 * 获取：创建时间
+	 */
+	public Date getCreateTime() {
+		return createTime;
+	}
+	/**
+	 * 设置：创建人员
+	 */
+	public void setCreateUser(Integer createUser) {
+		this.createUser = createUser;
+	}
+	/**
+	 * 获取：创建人员
+	 */
+	public Integer getCreateUser() {
+		return createUser;
+	}
+	/**
+	 * 设置：更新时间
+	 */
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	/**
+	 * 获取：更新时间
+	 */
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	/**
+	 * 设置：更新人员
+	 */
+	public void setUpdateUser(Integer updateUser) {
+		this.updateUser = updateUser;
+	}
+	/**
+	 * 获取：更新人员
+	 */
+	public Integer getUpdateUser() {
+		return updateUser;
+	}
+	/**
+	 * 设置：0为启用，1为禁止
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：0为启用，1为禁止
+	 */
+	public Integer getStatus() {
+		return status;
 	}
 }

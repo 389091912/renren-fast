@@ -11,10 +11,10 @@ import java.util.Date;
  * 
  * @author wsy
  * @email 389091912@qq.com
- * @date 2019-01-14 00:02:12
+ * @date 2019-01-25 23:35:04
  */
-@TableName("product_sell_out")
-public class ProductSellOutEntity implements Serializable {
+@TableName("product_order_detail")
+public class ProductOrderDetailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -23,21 +23,17 @@ public class ProductSellOutEntity implements Serializable {
 	@TableId
 	private Integer id;
 	/**
+	 * 订单id
+	 */
+	private Integer orderId;
+	/**
 	 * 产品ID
 	 */
 	private Integer productId;
 	/**
-	 * 只数
+	 * 订单数量
 	 */
-	private Integer zhiNumber;
-	/**
-	 * 箱数
-	 */
-	private Integer boxNumber;
-	/**
-	 * 出库数量
-	 */
-	private Integer outNumber;
+	private Integer productNumber;
 	/**
 	 * 备注
 	 */
@@ -58,6 +54,10 @@ public class ProductSellOutEntity implements Serializable {
 	 * 更新人员id
 	 */
 	private Integer updateUser;
+	/**
+	 * 0为等待生产，1为取消生产，2为生产中，3为生产完成。
+	 */
+	private Integer status;
 
 	/**
 	 * 设置：ID
@@ -72,6 +72,18 @@ public class ProductSellOutEntity implements Serializable {
 		return id;
 	}
 	/**
+	 * 设置：订单id
+	 */
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+	/**
+	 * 获取：订单id
+	 */
+	public Integer getOrderId() {
+		return orderId;
+	}
+	/**
 	 * 设置：产品ID
 	 */
 	public void setProductId(Integer productId) {
@@ -84,40 +96,16 @@ public class ProductSellOutEntity implements Serializable {
 		return productId;
 	}
 	/**
-	 * 设置：只数
+	 * 设置：订单数量
 	 */
-	public void setZhiNumber(Integer zhiNumber) {
-		this.zhiNumber = zhiNumber;
+	public void setProductNumber(Integer productNumber) {
+		this.productNumber = productNumber;
 	}
 	/**
-	 * 获取：只数
+	 * 获取：订单数量
 	 */
-	public Integer getZhiNumber() {
-		return zhiNumber;
-	}
-	/**
-	 * 设置：箱数
-	 */
-	public void setBoxNumber(Integer boxNumber) {
-		this.boxNumber = boxNumber;
-	}
-	/**
-	 * 获取：箱数
-	 */
-	public Integer getBoxNumber() {
-		return boxNumber;
-	}
-	/**
-	 * 设置：出库数量
-	 */
-	public void setOutNumber(Integer outNumber) {
-		this.outNumber = outNumber;
-	}
-	/**
-	 * 获取：出库数量
-	 */
-	public Integer getOutNumber() {
-		return outNumber;
+	public Integer getProductNumber() {
+		return productNumber;
 	}
 	/**
 	 * 设置：备注
@@ -178,5 +166,17 @@ public class ProductSellOutEntity implements Serializable {
 	 */
 	public Integer getUpdateUser() {
 		return updateUser;
+	}
+	/**
+	 * 设置：0为等待生产，1为取消生产，2为生产中，3为生产完成。
+	 */
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：0为等待生产，1为取消生产，2为生产中，3为生产完成。
+	 */
+	public Integer getStatus() {
+		return status;
 	}
 }

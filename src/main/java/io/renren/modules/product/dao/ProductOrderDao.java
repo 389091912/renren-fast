@@ -1,6 +1,6 @@
 package io.renren.modules.product.dao;
 
-import io.renren.modules.product.entity.ProductModelOutEntity;
+import io.renren.modules.product.entity.ProductOrderEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019-01-25 23:35:04
  */
 @Mapper
-public interface ProductModelOutDao extends BaseMapper<ProductModelOutEntity> {
+public interface ProductOrderDao extends BaseMapper<ProductOrderEntity> {
 	
 }

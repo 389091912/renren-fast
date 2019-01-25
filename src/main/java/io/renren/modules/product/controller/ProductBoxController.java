@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.product.entity.ProductModelEntity;
-import io.renren.modules.product.service.ProductModelService;
+import io.renren.modules.product.entity.ProductBoxEntity;
+import io.renren.modules.product.service.ProductBoxService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -26,18 +26,18 @@ import io.renren.common.utils.R;
  * @date 2019-01-25 23:35:04
  */
 @RestController
-@RequestMapping("product/productmodel")
-public class ProductModelController {
+@RequestMapping("product/productbox")
+public class ProductBoxController {
     @Autowired
-    private ProductModelService productModelService;
+    private ProductBoxService productBoxService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("product:productmodel:list")
+    @RequiresPermissions("product:productbox:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = productModelService.queryPage(params);
+        PageUtils page = productBoxService.queryPage(params);
 
         return R.ok().put("page", page);
     }
@@ -47,20 +47,20 @@ public class ProductModelController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("product:productmodel:info")
+    @RequiresPermissions("product:productbox:info")
     public R info(@PathVariable("id") Integer id){
-			ProductModelEntity productModel = productModelService.selectById(id);
+			ProductBoxEntity productBox = productBoxService.selectById(id);
 
-        return R.ok().put("productModel", productModel);
+        return R.ok().put("productBox", productBox);
     }
 
     /**
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("product:productmodel:save")
-    public R save(@RequestBody ProductModelEntity productModel){
-			productModelService.insert(productModel);
+    @RequiresPermissions("product:productbox:save")
+    public R save(@RequestBody ProductBoxEntity productBox){
+			productBoxService.insert(productBox);
 
         return R.ok();
     }
@@ -69,9 +69,9 @@ public class ProductModelController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("product:productmodel:update")
-    public R update(@RequestBody ProductModelEntity productModel){
-			productModelService.updateById(productModel);
+    @RequiresPermissions("product:productbox:update")
+    public R update(@RequestBody ProductBoxEntity productBox){
+			productBoxService.updateById(productBox);
 
         return R.ok();
     }
@@ -80,9 +80,9 @@ public class ProductModelController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("product:productmodel:delete")
+    @RequiresPermissions("product:productbox:delete")
     public R delete(@RequestBody Integer[] ids){
-			productModelService.deleteBatchIds(Arrays.asList(ids));
+			productBoxService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
     }
