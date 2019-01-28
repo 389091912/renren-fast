@@ -2,6 +2,8 @@ package io.renren.modules.product.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
+@ToString
 @TableName("product_box")
 public class ProductBoxEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

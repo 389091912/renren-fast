@@ -2,6 +2,7 @@ package io.renren.modules.product.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
+@ToString
 @TableName("product_info")
 public class ProductInfoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
