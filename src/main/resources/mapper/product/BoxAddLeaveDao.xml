@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.BoxAddLeaveDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.BoxAddLeaveEntity" id="boxAddLeaveMap">
+        <result property="id" column="id"/>
+        <result property="boxNo" column="box_no"/>
+        <result property="bodyNumber" column="body_number"/>
+        <result property="parryNumber" column="parry_number"/>
+        <result property="spacerNumber" column="spacer_number"/>
+        <result property="addBoxNumber" column="add_box_number"/>
+        <result property="outBoxNumber" column="out_box_number"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+</mapper>
