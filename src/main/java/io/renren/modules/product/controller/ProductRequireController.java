@@ -3,6 +3,7 @@ package io.renren.modules.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import io.renren.common.utils.R;
  */
 @RestController
 @RequestMapping("product/productrequire")
-public class ProductRequireController {
+public class ProductRequireController extends AbstractController {
     @Autowired
     private ProductRequireService productRequireService;
 
@@ -51,7 +52,7 @@ public class ProductRequireController {
     @RequiresPermissions("product:productrequire:info")
     public R info(@PathVariable("id") Integer id){
 			ProductRequireEntity productRequire = productRequireService.selectById(id);
-
+        System.out.println( productRequire.toString() );
         return R.ok().put("productRequire", productRequire);
     }
 

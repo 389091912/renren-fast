@@ -18,10 +18,7 @@ package io.renren.modules.oss.controller;
 
 import com.google.gson.Gson;
 import io.renren.common.exception.RRException;
-import io.renren.common.utils.ConfigConstant;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
+import io.renren.common.utils.*;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AliyunGroup;
 import io.renren.common.validator.group.QcloudGroup;
@@ -33,12 +30,16 @@ import io.renren.modules.oss.service.SysOssService;
 import io.renren.modules.sys.service.SysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 文件上传
@@ -56,7 +57,11 @@ public class SysOssController {
     private SysConfigService sysConfigService;
 
     private final static String KEY = ConfigConstant.CLOUD_STORAGE_CONFIG_KEY;
-	
+
+	@Value("${files.path}")
+	private String filesPath;
+
+
 	/**
 	 * 列表
 	 */
@@ -116,7 +121,6 @@ public class SysOssController {
 		if (file.isEmpty()) {
 			throw new RRException("上传文件不能为空");
 		}
-
 		//上传文件
 		String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		String url = OSSFactory.build().uploadSuffix(file.getBytes(), suffix);
@@ -128,6 +132,78 @@ public class SysOssController {
 		sysOssService.insert(ossEntity);
 
 		return R.ok().put("url", url);
+	}
+
+
+	@RequestMapping("/uploadImage")
+	public R uploadImage(MultipartFile file) {
+		if (file.isEmpty()) {
+			return R.error("上传文件不能为空");
+		}
+		String fileOrigName = file.getOriginalFilename();
+		if (!fileOrigName.contains( "." )) {
+			return R.error( "缺少后缀名" );
+		}
+
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
+
+		String imagePathName = filesPath +"/images"+ FileUtil.getPath() + uuid + fileOrigName;
+
+		String imageUrl = "/images"+FileUtil.getPath() + uuid + fileOrigName;
+		FileUtil.saveFile( file, imagePathName );
+
+		SysOssEntity ossEntity = new SysOssEntity();
+		ossEntity.setCreateDate( new Date() );
+		ossEntity.setUrl( imageUrl );
+		ossEntity.setOriginalName( file.getOriginalFilename() );
+		sysOssService.insert(ossEntity);
+		System.out.println( ossEntity.toString() );
+
+		return R.ok().put( "imageUrl", imageUrl );
+	}
+
+	@RequestMapping("/uploadDesignFile")
+	public R uploadDesignFile(MultipartFile file, HttpServletResponse response) {
+
+		if (file.isEmpty()) {
+			return R.error("上传文件不能为空");
+		}
+		String fileOrigName = file.getOriginalFilename();
+
+		if (!fileOrigName.contains( "." )) {
+			return R.error( "缺少后缀名" );
+		}
+
+
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
+
+		String designPathName = filesPath + "/design" + FileUtil.getPath() + uuid + fileOrigName;
+
+		String designFileUrl = "/design" + FileUtil.getPath() + uuid + fileOrigName;
+
+		if (file.isEmpty()) {
+			String contentType = "text/plain;charset=UTF-8";
+			response.setContentType( contentType );
+			try {
+				response.getWriter().println( "请刷新浏览器重新尝试该操作！！！" );
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		FileUtil.saveFile( file, designPathName );
+
+		SysOssEntity ossEntity = new SysOssEntity();
+		ossEntity.setCreateDate( new Date() );
+		ossEntity.setUrl( designFileUrl );
+		ossEntity.setOriginalName( file.getOriginalFilename() );
+		sysOssService.insert(ossEntity);
+		return R.ok().put( "designFileUrl", designFileUrl );
 	}
 
 

@@ -38,6 +38,11 @@ public class SysOssEntity implements Serializable {
 	private Long id;
 	//URL地址
 	private String url;
+
+	//原始名称
+	private String originalName;
+
+
 	//创建时间
 	private Date createDate;
 
@@ -76,5 +81,23 @@ public class SysOssEntity implements Serializable {
 	 */
 	public Date getCreateDate() {
 		return createDate;
+	}
+
+	public String getOriginalName() {
+		return originalName;
+	}
+
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
+	}
+
+	@Override
+	public String toString() {
+		return "SysOssEntity{" +
+				"id=" + id +
+				", url='" + url + '\'' +
+				", originalName='" + originalName + '\'' +
+				", createDate=" + createDate +
+				'}';
 	}
 }
