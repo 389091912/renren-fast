@@ -1,6 +1,7 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import io.renren.modules.sys.controller.AbstractController;
@@ -61,7 +62,10 @@ public class ProductInfoController extends AbstractController {
     @RequestMapping("/save")
     @RequiresPermissions("product:productinfo:save")
     public R save(@RequestBody ProductInfoEntity productInfo){
-			productInfoService.insert(productInfo);
+        productInfo.setCreateUser( getUserId().intValue() );
+        productInfo.setCreateTime( new Date() );
+        productInfo.setStatus( ProductInfoEntity.STATUS_ON );
+        productInfoService.insert(productInfo);
 
         return R.ok();
     }
@@ -72,7 +76,11 @@ public class ProductInfoController extends AbstractController {
     @RequestMapping("/update")
     @RequiresPermissions("product:productinfo:update")
     public R update(@RequestBody ProductInfoEntity productInfo){
-			productInfoService.updateById(productInfo);
+
+        productInfo.setUpdateUser( getUserId().intValue() );
+        productInfo.setUpdateTime( new Date() );
+
+        productInfoService.updateById(productInfo);
 
         return R.ok();
     }

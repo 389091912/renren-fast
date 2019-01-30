@@ -2,6 +2,7 @@ package io.renren.modules.product.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -83,10 +84,12 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 发货日期
 	 */
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date modelDeliveryTime;
 	/**
 	 * 收货日期
 	 */
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date modelReceiptTime;
 	/**
 	 * 客户名称

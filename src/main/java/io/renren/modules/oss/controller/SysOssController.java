@@ -161,7 +161,7 @@ public class SysOssController {
 		sysOssService.insert(ossEntity);
 		System.out.println( ossEntity.toString() );
 
-		return R.ok().put( "imageUrl", imageUrl );
+		return R.ok().put( "imageId", ossEntity.getId() );
 	}
 
 	@RequestMapping("/uploadDesignFile")

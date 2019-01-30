@@ -21,10 +21,24 @@ public class ProductInfoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 状态 禁止
+	 */
+	public static final Integer STATUS_OFF = 1;
+
+	/**
+	 * 状态 开启
+	 */
+	public static final Integer STATUS_ON = 0;
+
+	/**
 	 * ID
 	 */
 	@TableId
 	private Integer id;
+	/**
+	 * 产品序号
+	 */
+	private String productNo;
 	/**
 	 * 产品名称
 	 */
@@ -373,5 +387,13 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getProductNo() {
+		return productNo;
+	}
+
+	public void setProductNo(String productNo) {
+		this.productNo = productNo;
 	}
 }
