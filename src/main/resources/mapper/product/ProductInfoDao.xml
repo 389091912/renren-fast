@@ -6,6 +6,7 @@
 	<!-- 可根据自己的需求，是否要使用 -->
     <resultMap type="io.renren.modules.product.entity.ProductInfoEntity" id="productInfoMap">
         <result property="id" column="id"/>
+        <result property="productNo" column="product_no"/>
         <result property="productName" column="product_name"/>
         <result property="modelNo" column="model_no"/>
         <result property="customerProductNo" column="customer_product_no"/>
