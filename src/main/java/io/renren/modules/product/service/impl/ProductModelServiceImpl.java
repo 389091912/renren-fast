@@ -11,8 +11,13 @@ import io.renren.common.utils.Query;
 import io.renren.modules.product.dao.ProductModelDao;
 import io.renren.modules.product.entity.ProductModelEntity;
 import io.renren.modules.product.service.ProductModelService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author wsy
+ */
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("productModelService")
 public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, ProductModelEntity> implements ProductModelService {
 

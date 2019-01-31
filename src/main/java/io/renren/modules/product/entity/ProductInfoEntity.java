@@ -1,8 +1,10 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.ToString;
+import net.bytebuddy.implementation.bind.annotation.FieldValue;
 
 import java.math.BigDecimal;
 import java.io.Serializable;
@@ -68,13 +70,27 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	private Integer productVolume;
 	/**
-	 * 产品图片
+	 * 产品图片ID
 	 */
 	private Integer productImageId;
+
 	/**
-	 * 产品图纸
+	 * 产品图片地址
+	 */
+	@TableField(exist = false)
+	private String productImageUrl;
+
+	/**
+	 * 产品图纸ID
 	 */
 	private Integer productDrawingId;
+
+	/**
+	 * 产品图纸url
+	 */
+	@TableField(exist = false)
+	private String productDrawingUrl;
+
 	/**
 	 * 产品批次
 	 */
@@ -395,5 +411,21 @@ public class ProductInfoEntity implements Serializable {
 
 	public void setProductNo(String productNo) {
 		this.productNo = productNo;
+	}
+
+	public String getProductImageUrl() {
+		return productImageUrl;
+	}
+
+	public void setProductImageUrl(String productImageUrl) {
+		this.productImageUrl = productImageUrl;
+	}
+
+	public String getProductDrawingUrl() {
+		return productDrawingUrl;
+	}
+
+	public void setProductDrawingUrl(String productDrawingUrl) {
+		this.productDrawingUrl = productDrawingUrl;
 	}
 }

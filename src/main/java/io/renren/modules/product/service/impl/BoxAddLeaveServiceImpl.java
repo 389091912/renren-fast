@@ -11,19 +11,24 @@ import io.renren.common.utils.Query;
 import io.renren.modules.product.dao.BoxAddLeaveDao;
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
 import io.renren.modules.product.service.BoxAddLeaveService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author wsy
+ */
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("boxAddLeaveService")
 public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLeaveEntity> implements BoxAddLeaveService {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<BoxAddLeaveEntity> page = this.selectPage(
-                new Query<BoxAddLeaveEntity>(params).getPage(),
+                new Query<BoxAddLeaveEntity>( params ).getPage(),
                 new EntityWrapper<BoxAddLeaveEntity>()
         );
 
-        return new PageUtils(page);
+        return new PageUtils( page );
     }
 
 }

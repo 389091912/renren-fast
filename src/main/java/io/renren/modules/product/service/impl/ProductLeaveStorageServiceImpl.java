@@ -11,8 +11,13 @@ import io.renren.common.utils.Query;
 import io.renren.modules.product.dao.ProductLeaveStorageDao;
 import io.renren.modules.product.entity.ProductLeaveStorageEntity;
 import io.renren.modules.product.service.ProductLeaveStorageService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author wsy
+ */
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("productLeaveStorageService")
 public class ProductLeaveStorageServiceImpl extends ServiceImpl<ProductLeaveStorageDao, ProductLeaveStorageEntity> implements ProductLeaveStorageService {
 

@@ -11,8 +11,13 @@ import io.renren.common.utils.Query;
 import io.renren.modules.product.dao.ProductBoxDao;
 import io.renren.modules.product.entity.ProductBoxEntity;
 import io.renren.modules.product.service.ProductBoxService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author wsy
+ */
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("productBoxService")
 public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBoxEntity> implements ProductBoxService {
 

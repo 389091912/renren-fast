@@ -11,8 +11,13 @@ import io.renren.common.utils.Query;
 import io.renren.modules.product.dao.ProductPutInStorageDao;
 import io.renren.modules.product.entity.ProductPutInStorageEntity;
 import io.renren.modules.product.service.ProductPutInStorageService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author wsy
+ */
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("productPutInStorageService")
 public class ProductPutInStorageServiceImpl extends ServiceImpl<ProductPutInStorageDao, ProductPutInStorageEntity> implements ProductPutInStorageService {
 
