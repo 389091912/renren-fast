@@ -167,34 +167,29 @@ public class SysOssController {
 	@RequestMapping("/uploadDesignFile")
 	public R uploadDesignFile(MultipartFile file, HttpServletResponse response) {
 
-		if (file.isEmpty()) {
-			return R.error("上传文件不能为空");
-		}
+//		if (file.isEmpty()) {
+//			return R.error("上传文件不能为空");
+//		}
 		String fileOrigName = file.getOriginalFilename();
 
 		if (!fileOrigName.contains( "." )) {
 			return R.error( "缺少后缀名" );
 		}
 
+		String designPathName = filesPath + "/design" + FileUtil.getPath() + fileOrigName;
 
-		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+		String designFileUrl = "/design" + FileUtil.getPath()  + fileOrigName;
 
-		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
-
-		String designPathName = filesPath + "/design" + FileUtil.getPath() + uuid + fileOrigName;
-
-		String designFileUrl = "/design" + FileUtil.getPath() + uuid + fileOrigName;
-
-		if (file.isEmpty()) {
-			String contentType = "text/plain;charset=UTF-8";
-			response.setContentType( contentType );
-			try {
-				response.getWriter().println( "请刷新浏览器重新尝试该操作！！！" );
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+//		if (file.isEmpty()) {
+//			String contentType = "text/plain;charset=UTF-8";
+//			response.setContentType( contentType );
+//			try {
+//				response.getWriter().println( "请刷新浏览器重新尝试该操作！！！" );
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			return null;
+//		}
 
 		FileUtil.saveFile( file, designPathName );
 
@@ -203,7 +198,8 @@ public class SysOssController {
 		ossEntity.setUrl( designFileUrl );
 		ossEntity.setOriginalName( file.getOriginalFilename() );
 		sysOssService.insert(ossEntity);
-		return R.ok().put( "designFileUrl", designFileUrl );
+		System.out.println(ossEntity.toString());
+		return R.ok().put( "drawingId", ossEntity.getId() );
 	}
 
 

@@ -1,7 +1,10 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -14,7 +17,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_put_in_storage")
 public class ProductPutInStorageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +39,7 @@ public class ProductPutInStorageEntity implements Serializable {
 	 * 纸箱id
 	 */
 	private Integer boxId;
+
 	/**
 	 * 箱数
 	 */
@@ -47,6 +51,7 @@ public class ProductPutInStorageEntity implements Serializable {
 	/**
 	 * 入库时间
 	 */
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date putInTime;
 	/**
 	 * 备注

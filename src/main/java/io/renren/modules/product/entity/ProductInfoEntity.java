@@ -3,6 +3,7 @@ package io.renren.modules.product.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 import lombok.ToString;
 import net.bytebuddy.implementation.bind.annotation.FieldValue;
 
@@ -17,7 +18,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_info")
 public class ProductInfoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -58,6 +59,11 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	private Integer cartonId;
 	/**
+	 * 纸箱编号
+	 */
+	@TableField(exist =  false)
+	private String boxNo;
+	/**
 	 * 库存数量
 	 */
 	private Integer productNum;
@@ -91,6 +97,11 @@ public class ProductInfoEntity implements Serializable {
 	@TableField(exist = false)
 	private String productDrawingUrl;
 
+	/**
+	 * 图纸名称
+	 */
+	@TableField(exist =  false)
+	private String productDrawingFileName;
 	/**
 	 * 产品批次
 	 */
@@ -427,5 +438,13 @@ public class ProductInfoEntity implements Serializable {
 
 	public void setProductDrawingUrl(String productDrawingUrl) {
 		this.productDrawingUrl = productDrawingUrl;
+	}
+
+	public String getProductDrawingFileName() {
+		return productDrawingFileName;
+	}
+
+	public void setProductDrawingFileName(String productDrawingFileName) {
+		this.productDrawingFileName = productDrawingFileName;
 	}
 }

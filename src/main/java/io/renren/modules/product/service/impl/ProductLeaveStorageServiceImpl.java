@@ -25,7 +25,7 @@ public class ProductLeaveStorageServiceImpl extends ServiceImpl<ProductLeaveStor
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductLeaveStorageEntity> page = this.selectPage(
                 new Query<ProductLeaveStorageEntity>(params).getPage(),
-                new EntityWrapper<ProductLeaveStorageEntity>()
+                new EntityWrapper<ProductLeaveStorageEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils(page);

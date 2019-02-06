@@ -1,5 +1,10 @@
 package io.renren.modules.product.service.impl;
 
+import io.renren.modules.product.dao.ProductInfoDao;
+import io.renren.modules.product.dao.ProductOrderDetailDao;
+import io.renren.modules.product.entity.ProductOrderDetailEntity;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -13,6 +18,7 @@ import io.renren.modules.product.entity.ProductRequireEntity;
 import io.renren.modules.product.service.ProductRequireService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wsy
@@ -21,13 +27,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("productRequireService")
 public class ProductRequireServiceImpl extends ServiceImpl<ProductRequireDao, ProductRequireEntity> implements ProductRequireService {
 
+    @Autowired
+    private ProductInfoDao productInfoDao;
+
+    @Autowired
+    private ProductOrderDetailDao productOrderDetailDao;
+
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductRequireEntity> page = this.selectPage(
                 new Query<ProductRequireEntity>(params).getPage(),
-                new EntityWrapper<ProductRequireEntity>()
+                new EntityWrapper<ProductRequireEntity>().orderBy( "create_time", false )
         );
+        if (CollectionUtils.isNotEmpty( page.getRecords() )) {
+            for (ProductRequireEntity productRequire : page.getRecords()) {
+                    productRequire.setProductName(
+                            (!StringUtils.isEmpty(productInfoDao.selectById( productRequire.getProductId() ).getProductName() ))?
+                                    productInfoDao.selectById( productRequire.getProductId() ).getProductName():
+                                    null);
+                /**
+                 * 统计订单份数
+                 */
+                Integer productOrderCount = productOrderDetailDao.selectCount( new EntityWrapper<ProductOrderDetailEntity>().eq( "product_id", productRequire.getProductId() ) );
 
+                productRequire.setOrderCount( productOrderCount );
+
+            }
+        }
         return new PageUtils(page);
     }
 

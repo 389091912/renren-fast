@@ -16,6 +16,7 @@
 
 package io.renren.modules.oss.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
@@ -35,6 +36,7 @@ public class SysOssServiceImpl extends ServiceImpl<SysOssDao, SysOssEntity> impl
 	public PageUtils queryPage(Map<String, Object> params) {
 		Page<SysOssEntity> page = this.selectPage(
 				new Query<SysOssEntity>(params).getPage()
+				,new EntityWrapper<SysOssEntity>(  ).orderBy( "create_date",false )
 		);
 
 		return new PageUtils(page);

@@ -25,7 +25,7 @@ public class ProductPutInStorageServiceImpl extends ServiceImpl<ProductPutInStor
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductPutInStorageEntity> page = this.selectPage(
                 new Query<ProductPutInStorageEntity>(params).getPage(),
-                new EntityWrapper<ProductPutInStorageEntity>()
+                new EntityWrapper<ProductPutInStorageEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils(page);

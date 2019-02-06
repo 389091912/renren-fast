@@ -1,8 +1,11 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,9 +18,9 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-30 02:41:40
  */
-@ToString
+@Data
 @TableName("product_require")
-public class ProductRequireEntity implements Serializable {
+public class 	ProductRequireEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,18 +32,38 @@ public class ProductRequireEntity implements Serializable {
 	 * 产品id
 	 */
 	private Integer productId;
+
+	/**
+	 * 产品名称
+	 */
+	@TableField(exist = false)
+	private String productName;
+
 	/**
 	 * 订单id
 
 	 */
 	private Integer orderId;
+
+	/**
+	 * 订单份数
+	 */
+	@TableField(exist = false)
+	private Integer orderCount;
+
+	/**
+	 * 订单编号
+	 */
+	@TableField(exist = false)
+	private String orderNo;
+
+
 	/**
 	 * 产品实际需求数量
 	 */
 	private Integer productRequireNumber;
 	/**
 	 * 纸箱id
-
 	 */
 	private Integer boxId;
 	/**

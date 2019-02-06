@@ -25,7 +25,7 @@ public class ProductModelOutServiceImpl extends ServiceImpl<ProductModelOutDao, 
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductModelOutEntity> page = this.selectPage(
                 new Query<ProductModelOutEntity>(params).getPage(),
-                new EntityWrapper<ProductModelOutEntity>()
+                new EntityWrapper<ProductModelOutEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils(page);

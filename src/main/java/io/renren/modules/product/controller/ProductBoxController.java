@@ -1,8 +1,10 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,17 @@ public class ProductBoxController extends AbstractController {
 			productBoxService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * 获取所有纸箱信息
+     */
+    @RequestMapping("/getAllProductBoxList")
+   //s @RequiresPermissions("product:productbox:delete")
+    public R getAllProductBoxList(){
+        List<Dict> allProductBoxList = productBoxService.getAllProductBoxList();
+
+        return R.ok().put( "productBoxList", allProductBoxList );
     }
 
 }

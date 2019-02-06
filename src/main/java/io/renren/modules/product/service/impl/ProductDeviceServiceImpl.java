@@ -25,7 +25,7 @@ public class ProductDeviceServiceImpl extends ServiceImpl<ProductDeviceDao, Prod
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductDeviceEntity> page = this.selectPage(
                 new Query<ProductDeviceEntity>(params).getPage(),
-                new EntityWrapper<ProductDeviceEntity>()
+                new EntityWrapper<ProductDeviceEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils(page);

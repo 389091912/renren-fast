@@ -25,7 +25,7 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
     public PageUtils queryPage(Map<String, Object> params) {
         Page<BoxAddLeaveEntity> page = this.selectPage(
                 new Query<BoxAddLeaveEntity>( params ).getPage(),
-                new EntityWrapper<BoxAddLeaveEntity>()
+                new EntityWrapper<BoxAddLeaveEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils( page );

@@ -3,6 +3,7 @@ package io.renren.modules.product.entity;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_model")
 public class ProductModelEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,9 +27,19 @@ public class ProductModelEntity implements Serializable {
 	@TableId
 	private Integer id;
 	/**
+	 * 仓库号
+	 */
+	private Integer depotId;
+	/**
 	 * 架号
 	 */
-	private String siteNo;
+	private Integer siteNo;
+
+	/**
+	 * 客户编号
+	 */
+	private String customerModelNo;
+
 	/**
 	 * 模具编号
 	 */
@@ -125,6 +136,19 @@ public class ProductModelEntity implements Serializable {
 	private Integer status;
 
 	/**
+	 * 0为入库，1为出库，2为新品打样，3为返厂维修记录，4为外来加工
+	 */
+	private Integer modelType;
+	/**
+	 * 瓶重
+	 */
+	private String bottleWeight;
+	/**
+	 * 退货原因
+	 */
+	private String reasonReturn;
+
+	/**
 	 * 设置：模具ID
 	 */
 	public void setId(Integer id) {
@@ -139,13 +163,13 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 设置：架号
 	 */
-	public void setSiteNo(String siteNo) {
+	public void setSiteNo(Integer siteNo) {
 		this.siteNo = siteNo;
 	}
 	/**
 	 * 获取：架号
 	 */
-	public String getSiteNo() {
+	public Integer getSiteNo() {
 		return siteNo;
 	}
 	/**
@@ -423,5 +447,29 @@ public class ProductModelEntity implements Serializable {
 	 */
 	public Integer getStatus() {
 		return status;
+	}
+
+	public Integer getModelType() {
+		return modelType;
+	}
+
+	public void setModelType(Integer modelType) {
+		this.modelType = modelType;
+	}
+
+	public String getBottleWeight() {
+		return bottleWeight;
+	}
+
+	public void setBottleWeight(String bottleWeight) {
+		this.bottleWeight = bottleWeight;
+	}
+
+	public String getReasonReturn() {
+		return reasonReturn;
+	}
+
+	public void setReasonReturn(String reasonReturn) {
+		this.reasonReturn = reasonReturn;
 	}
 }

@@ -25,7 +25,7 @@ public class ProductPlanNoticeServiceImpl extends ServiceImpl<ProductPlanNoticeD
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductPlanNoticeEntity> page = this.selectPage(
                 new Query<ProductPlanNoticeEntity>(params).getPage(),
-                new EntityWrapper<ProductPlanNoticeEntity>()
+                new EntityWrapper<ProductPlanNoticeEntity>().orderBy( "create_time", false )
         );
 
         return new PageUtils(page);

@@ -1,8 +1,10 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -15,7 +17,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_model_out")
 public class ProductModelOutEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -30,9 +32,21 @@ public class ProductModelOutEntity implements Serializable {
 	 */
 	private Integer modelNo;
 	/**
+	 * 仓库号
+	 */
+	@TableField(exist = false)
+	private Integer depotId;
+	/**
+	 * 客户编号
+	 */
+	@TableField(exist = false)
+	private String customerModelNo;
+
+	/**
 	 * 产品名称
 	 */
 	private String productName;
+
 	/**
 	 * 成模
 	 */
@@ -72,6 +86,7 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 出库数量
 	 */
+	@TableField(exist = false)
 	private Integer modelAllNumber;
 	/**
 	 * 模具经手人
@@ -115,6 +130,19 @@ public class ProductModelOutEntity implements Serializable {
 	 * 0为启用，1为禁止
 	 */
 	private Integer status;
+
+	/**
+	 * 0为入库，1为出库，2为新品打样，3为返厂维修记录，4为外来加工
+	 */
+	private Integer modelType;
+	/**
+	 * 瓶重
+	 */
+	private String bottleWeight;
+	/**
+	 * 退货原因
+	 */
+	private String reasonReturn;
 
 	/**
 	 * 设置：模具ID
@@ -269,6 +297,7 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 获取：出库数量
 	 */
+
 	public Integer getModelAllNumber() {
 		return modelAllNumber;
 	}
@@ -391,5 +420,42 @@ public class ProductModelOutEntity implements Serializable {
 	 */
 	public Integer getStatus() {
 		return status;
+	}
+
+	/**
+	 * 设置：0为入库，1为出库，2为新品打样，3为返厂维修记录，4为外来加工
+	 */
+	public void setModelType(Integer modelType) {
+		this.modelType = modelType;
+	}
+	/**
+	 * 获取：0为入库，1为出库，2为新品打样，3为返厂维修记录，4为外来加工
+	 */
+	public Integer getModelType() {
+		return modelType;
+	}
+	/**
+	 * 设置：瓶重
+	 */
+	public void setBottleWeight(String bottleWeight) {
+		this.bottleWeight = bottleWeight;
+	}
+	/**
+	 * 获取：瓶重
+	 */
+	public String getBottleWeight() {
+		return bottleWeight;
+	}
+	/**
+	 * 设置：退货原因
+	 */
+	public void setReasonReturn(String reasonReturn) {
+		this.reasonReturn = reasonReturn;
+	}
+	/**
+	 * 获取：退货原因
+	 */
+	public String getReasonReturn() {
+		return reasonReturn;
 	}
 }

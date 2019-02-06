@@ -1,8 +1,11 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
+import io.renren.modules.product.service.ProductModelService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class ProductModelOutController extends AbstractController {
     @Autowired
     private ProductModelOutService productModelOutService;
 
+    @Autowired
+    private ProductModelService productModelService;
+
     /**
      * 列表
      */
@@ -39,8 +45,9 @@ public class ProductModelOutController extends AbstractController {
     @RequiresPermissions("product:productmodelout:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = productModelOutService.queryPage(params);
+        List<Dict> modelVoList = productModelService.getModelVoList();
 
-        return R.ok().put("page", page);
+        return R.ok().put( "page", page ).put( "modelVoList", modelVoList );
     }
 
 
@@ -50,7 +57,9 @@ public class ProductModelOutController extends AbstractController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("product:productmodelout:info")
     public R info(@PathVariable("id") Integer id){
-			ProductModelOutEntity productModelOut = productModelOutService.selectById(id);
+		ProductModelOutEntity productModelOut = productModelOutService.selectById(id);
+
+
 
         return R.ok().put("productModelOut", productModelOut);
     }

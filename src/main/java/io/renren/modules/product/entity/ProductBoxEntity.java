@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_box")
 public class ProductBoxEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -45,6 +46,17 @@ public class ProductBoxEntity implements Serializable {
 	 * 数量
 	 */
 	private Integer boxNumber;
+
+	/**
+	 * 纸箱价格
+	 */
+	private BigDecimal boxPrice;
+
+	/**
+	 * 每箱只数
+	 */
+	private Integer zhiShu;
+
 	/**
 	 * 客户
 	 */

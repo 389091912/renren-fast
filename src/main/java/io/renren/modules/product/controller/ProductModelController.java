@@ -1,11 +1,14 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +89,35 @@ public class ProductModelController extends AbstractController {
 			productModelService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * 获取磨具列表
+     * @return
+     */
+    @RequestMapping("/getModelVoList")
+    @RequiresPermissions("product:productmodel:info")
+    public R getModelVoList(){
+        List<Dict> modelVoList = productModelService.getModelVoList();
+        return R.ok().put("modelVoList", modelVoList);
+    }
+
+    /**
+     * 获取磨具列表
+     * @return
+     */
+    @RequestMapping("/getCustomerModelNo/{modelId}")
+    @RequiresPermissions("product:productmodel:info")
+    public R getCustomerModelNo(@PathVariable("modelId") Integer modelId){
+
+        if (StringUtils.isEmpty( modelId )) {
+
+            return R.error("模具编号不能为空");
+        }
+
+        ProductModelEntity productModel = productModelService.selectById( modelId );
+
+        return R.ok().put("customerModelNo", productModel.getCustomerModelNo());
     }
 
 }

@@ -1,7 +1,9 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -14,7 +16,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_order_detail")
 public class ProductOrderDetailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -28,10 +30,34 @@ public class ProductOrderDetailEntity implements Serializable {
 	 * 订单id
 	 */
 	private Integer orderId;
+
+	/**
+	 * 订单编号
+	 */
+
+	@TableField(exist = false)
+	private String orderNo;
 	/**
 	 * 产品ID
 	 */
 	private Integer productId;
+
+	/**
+	 * 产品名称
+	 */
+	@TableField(exist = false)
+	private String productName;
+
+	/**
+	 * 产品克数
+	 */
+	private String productWeight;
+
+	/**
+	 * 纸箱供货方式
+	 */
+	private Integer boxSupplyWay;
+
 	/**
 	 * 订单数量
 	 */
