@@ -1,5 +1,6 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
@@ -34,14 +35,20 @@ public class ProductBoxEntity implements Serializable {
 	 * 箱体
 	 */
 	private String body;
+	@TableField(exist = false)
+	private Integer bodyNumber;
 	/**
 	 * 格挡
 	 */
 	private String parry;
+	@TableField(exist = false)
+	private Integer parryNumber;
 	/**
 	 * 垫片
 	 */
 	private String spacer;
+	@TableField(exist = false)
+	private Integer spacerNumber;
 	/**
 	 * 数量
 	 */

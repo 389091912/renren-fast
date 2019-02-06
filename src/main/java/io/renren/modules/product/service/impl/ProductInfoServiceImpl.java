@@ -37,8 +37,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
         String key = (String) params.get( "key" );
         String rangeBefore = (String) params.get( "rangeBefore" );
         String rangeAfter = (String) params.get( "rangeAfter" );
-        System.out.println(rangeAfter);
-        System.out.println(rangeBefore);
         Page<ProductInfoEntity> page = new Page<>();
             if(StringUtils.isEmpty( rangeBefore )){
                 if (StringUtils.isEmpty( key )) {

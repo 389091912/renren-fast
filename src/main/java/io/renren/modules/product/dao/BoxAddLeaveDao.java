@@ -3,6 +3,7 @@ package io.renren.modules.product.dao;
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -13,5 +14,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface BoxAddLeaveDao extends BaseMapper<BoxAddLeaveEntity> {
-	
+
+    BoxAddLeaveEntity  addBoxNumberCount(@Param( "boxNo" ) String boxNo);
+
+    BoxAddLeaveEntity leaveBoxNumberCount(@Param( "boxNo" ) String boxNo);
 }

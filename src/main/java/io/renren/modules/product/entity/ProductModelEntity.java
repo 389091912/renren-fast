@@ -33,7 +33,7 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 架号
 	 */
-	private Integer siteNo;
+	private String siteNo;
 
 	/**
 	 * 客户编号
@@ -110,6 +110,11 @@ public class ProductModelEntity implements Serializable {
 	 * 是否在库
 	 */
 	private Integer state;
+
+	/**
+	 * 厂商
+	 */
+	private String factory;
 	/**
 	 * 备注
 	 */
@@ -163,13 +168,13 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 设置：架号
 	 */
-	public void setSiteNo(Integer siteNo) {
+	public void setSiteNo(String siteNo) {
 		this.siteNo = siteNo;
 	}
 	/**
 	 * 获取：架号
 	 */
-	public Integer getSiteNo() {
+	public String getSiteNo() {
 		return siteNo;
 	}
 	/**

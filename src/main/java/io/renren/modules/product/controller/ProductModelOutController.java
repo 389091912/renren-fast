@@ -60,7 +60,7 @@ public class ProductModelOutController extends AbstractController {
 		ProductModelOutEntity productModelOut = productModelOutService.selectById(id);
 
 
-
+        System.out.println(productModelOut.toString());
         return R.ok().put("productModelOut", productModelOut);
     }
 

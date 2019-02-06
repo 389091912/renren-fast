@@ -1,7 +1,9 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -14,7 +16,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-30 02:41:40
  */
-@ToString
+@Data
 @TableName("box_add_leave")
 public class BoxAddLeaveEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -28,26 +30,65 @@ public class BoxAddLeaveEntity implements Serializable {
 	 * 纸箱编号
 	 */
 	private String boxNo;
+
+	@TableField(exist = false)
+	private String boxNoName;
+
 	/**
 	 * 箱体数量
 	 */
 	private Integer bodyNumber;
 	/**
+	 * 箱体数量总数
+	 */
+	@TableField(exist = false)
+	private Integer bodyNumberCount;
+	/**
 	 * 格挡数量
 	 */
 	private Integer parryNumber;
 	/**
+	 * 格挡数量总数
+	 */
+	@TableField(exist = false)
+	private Integer parryNumberCount;
+	/**
 	 * 垫片数量
 	 */
 	private Integer spacerNumber;
+
+	/**
+	 * 垫片数量总数
+	 */
+	@TableField(exist = false)
+	private Integer spacerNumberCount;
 	/**
 	 * 成品入库数量
 	 */
 	private Integer addBoxNumber;
 	/**
+	 * 成品入库数量总数
+	 */
+	@TableField(exist = false)
+	private Integer addBoxNumberCount;
+
+	/**
 	 * 成品出库数量
 	 */
 	private Integer outBoxNumber;
+
+	/**
+	 * 成品出库数量总数
+	 */
+	@TableField(exist = false)
+	private Integer outBoxNumberCount;
+
+	private Integer type;
+
+	private Date addBoxTime;
+
+	private Date outBoxTime;
+
 	/**
 	 * 创建者
 

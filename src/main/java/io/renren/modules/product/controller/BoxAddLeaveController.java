@@ -1,8 +1,10 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,4 +91,15 @@ public class BoxAddLeaveController  extends AbstractController {
         return R.ok();
     }
 
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/getAllBoxAddLeave")
+  //  @RequiresPermissions("product:boxaddleave:info")
+    public R getAllBoxAddLeave(){
+        List<Dict> allBoxAddLeave = boxAddLeaveService.getAllBoxAddLeave();
+
+        return R.ok().put("boxAddLeaveList", allBoxAddLeave);
+    }
 }

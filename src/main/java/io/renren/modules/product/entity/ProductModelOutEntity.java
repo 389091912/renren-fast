@@ -34,7 +34,7 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 仓库号
 	 */
-	@TableField(exist = false)
+//	@TableField(exist = false)
 	private Integer depotId;
 	/**
 	 * 客户编号
@@ -143,6 +143,16 @@ public class ProductModelOutEntity implements Serializable {
 	 * 退货原因
 	 */
 	private String reasonReturn;
+
+	/**
+	 * 厂商
+	 */
+	private String factory;
+
+	/**
+	 * 架号
+	 */
+	private String siteNo;
 
 	/**
 	 * 设置：模具ID
