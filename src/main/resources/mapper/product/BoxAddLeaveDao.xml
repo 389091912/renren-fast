@@ -19,5 +19,34 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <resultMap type="io.renren.modules.product.entity.BoxAddLeaveEntity" id="boxAddLeaveMap1">
+        <id property="id" column="id"/>
+        <result property="addBoxNumberCount" column="addBoxNumberCount"/>
+        <result property="bodyNumberCount" column="bodyNumberCount"/>
+        <result property="parryNumberCount" column="parryNumberCount"/>
+        <result property="spacerNumberCount" column="spacerNumberCount"/>
+        <result property="outBoxNumberCount" column="outBoxNumberCount"/>
+    </resultMap>
+
+    <select id="addBoxNumberCount" parameterType="string" resultMap="boxAddLeaveMap1">
+        SELECT
+        SUM(add_box_number) addBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        WHERE box_no=#{boxNo} and type=1
+    </select>
+
+    <select id="leaveBoxNumberCount" parameterType="string" resultMap="boxAddLeaveMap1">
+        SELECT
+        sum(out_box_number) outBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        WHERE box_no=#{boxNo} and type=0
+    </select>
+
 
 </mapper>
