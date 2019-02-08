@@ -33,4 +33,41 @@
     </resultMap>
 
 
+
+    <select id="selectModelAddCount" parameterType="integer" resultType="io.renren.modules.product.entity.ProductModelOutEntity">
+
+        SELECT
+        SUM(model_success_mo) 'modelSuccessMoCount',
+        SUM(model_primary_mo) 'modelPrimaryMoCount',
+        SUM(model_mouth_mo) 'modelMouthMoCount',
+        SUM(model_men_tou) 'modelMenTouCount',
+        SUM(model_funnel) 'modelFunnelCount',
+        SUM(model_core) 'modelCoreCount',
+        SUM(model_air_tou) 'modelAirTouCount',
+        SUM(model_cooling) 'modelCoolingCount',
+        SUM(model_clamp) 'modelClampCount'
+        FROM product_model_out
+        WHERE model_no=#{modelNo} AND model_type=1
+
+    </select>
+
+
+    <select id="selectModelOutCount" parameterType="integer" resultType="io.renren.modules.product.entity.ProductModelOutEntity">
+        SELECT
+        SUM(model_success_mo) 'modelSuccessMoCount',
+        SUM(model_primary_mo) 'modelPrimaryMoCount',
+        SUM(model_mouth_mo) 'modelMouthMoCount',
+        SUM(model_men_tou) 'modelMenTouCount',
+        SUM(model_funnel) 'modelFunnelCount',
+        SUM(model_core) 'modelCoreCount',
+        SUM(model_air_tou) 'modelAirTouCount',
+        SUM(model_cooling) 'modelCoolingCount',
+        SUM(model_clamp) 'modelClampCount'
+        FROM product_model_out
+        WHERE model_no=#{modelNo} AND model_type=0
+
+
+    </select>
+
+
 </mapper>
