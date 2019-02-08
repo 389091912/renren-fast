@@ -23,6 +23,33 @@ public class ProductModelOutEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 出库
+	 */
+	public static final int OUT_MODEL_TYPE = 0;
+
+	/**
+	 * 入库
+	 */
+	public static final int ADD_MODEL_TYPE = 1;
+
+	/**
+	 * 新品
+	 */
+	public static final int NEW_MODEL_TYPE = 2;
+	//2为新品打样，3为返厂维修记录，4为外来加工
+
+	/**
+	 * 返厂
+	 */
+	public static final int RETURN_MODEL_TYPE = 3;
+
+	/**
+	 * 外来
+	 */
+	public static final int EXTRA_MODEL_TYPE = 4;
+
+
+	/**
 	 * 模具ID
 	 */
 	@TableId
@@ -51,38 +78,66 @@ public class ProductModelOutEntity implements Serializable {
 	 * 成模
 	 */
 	private Integer modelSuccessMo;
+
+	@TableField(exist = false)
+	private Integer modelSuccessMoCount;
+
 	/**
 	 * 初模
 	 */
 	private Integer modelPrimaryMo;
+
+	@TableField(exist = false)
+	private Integer modelPrimaryMoCount;
 	/**
 	 * 口模
 	 */
 	private Integer modelMouthMo;
+
+	@TableField(exist = false)
+	private Integer modelMouthMoCount;
 	/**
 	 * 闷头
 	 */
 	private Integer modelMenTou;
+
+	@TableField(exist = false)
+	private Integer modelMenTouCount;
 	/**
 	 * 漏斗
 	 */
 	private Integer modelFunnel;
+
+	@TableField(exist = false)
+	private Integer modelFunnelCount;
 	/**
 	 * 芯子
 	 */
 	private Integer modelCore;
+
+	@TableField(exist = false)
+	private Integer modelCoreCount;
 	/**
 	 * 气头
 	 */
 	private Integer modelAirTou;
+
+	@TableField(exist = false)
+	private Integer modelAirTouCount;
 	/**
 	 * 冷却
 	 */
 	private Integer modelCooling;
+
+	@TableField(exist = false)
+	private Integer modelCoolingCount;
 	/**
 	 * 钳片
 	 */
 	private Integer modelClamp;
+
+	@TableField(exist = false)
+	private Integer modelClampCount;
 	/**
 	 * 出库数量
 	 */
@@ -132,7 +187,7 @@ public class ProductModelOutEntity implements Serializable {
 	private Integer status;
 
 	/**
-	 * 0为入库，1为出库，2为新品打样，3为返厂维修记录，4为外来加工
+	 * 0为出库， 1为入库，2为新品打样，3为返厂维修记录，4为外来加工
 	 */
 	private Integer modelType;
 	/**

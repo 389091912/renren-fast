@@ -1,8 +1,11 @@
 package io.renren.modules.product.service.impl;
 
 import io.renren.common.utils.Dict;
+import io.renren.modules.product.dao.ProductModelOutDao;
+import io.renren.modules.product.entity.ProductModelOutEntity;
 import io.renren.modules.product.entity.ProductOrderEntity;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import io.renren.modules.product.entity.ProductModelEntity;
 import io.renren.modules.product.service.ProductModelService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wsy
@@ -27,13 +31,77 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("productModelService")
 public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, ProductModelEntity> implements ProductModelService {
 
+    @Autowired
+    private ProductModelOutDao productModelOutDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductModelEntity> page = this.selectPage(
                 new Query<ProductModelEntity>(params).getPage(),
                 new EntityWrapper<ProductModelEntity>().orderBy( "create_time", false )
         );
+        if (CollectionUtils.isNotEmpty( page.getRecords() )) {
+            for (ProductModelEntity productModelEntity : page.getRecords()) {
+                ProductModelOutEntity resultProductModelAdd = productModelOutDao.selectModelAddCount( productModelEntity.getId() );
+                ProductModelOutEntity resultProductModelOut = productModelOutDao.selectModelOutCount( productModelEntity.getId() );
 
+                //成模
+                Integer modelSuccessMo = productModelEntity.getModelSuccessMo();
+                //初模
+                Integer modelPrimaryMo = productModelEntity.getModelPrimaryMo();
+                //口模
+                Integer modelMouthMo = productModelEntity.getModelMouthMo();
+                //闷头
+                Integer modelMenTou = productModelEntity.getModelMenTou();
+                //漏斗
+                Integer modelFunnel = productModelEntity.getModelFunnel();
+                //芯子
+                Integer modelCore = productModelEntity.getModelCore();
+                //气头
+                Integer modelAirTou = productModelEntity.getModelAirTou();
+                //冷却
+                Integer modelCooling = productModelEntity.getModelCooling();
+                //钳片
+                Integer modelClamp = productModelEntity.getModelClamp();
+
+                if (!StringUtils.isEmpty( resultProductModelAdd )) {
+                    productModelEntity.setModelSuccessMo( modelSuccessMo + resultProductModelAdd.getModelSuccessMoCount()  );
+                    productModelEntity.setModelPrimaryMo( modelPrimaryMo + resultProductModelAdd.getModelPrimaryMoCount() );
+                    productModelEntity.setModelMouthMo( modelMouthMo + resultProductModelAdd.getModelMouthMoCount() );
+                    productModelEntity.setModelMenTou( modelMenTou + resultProductModelAdd.getModelMenTouCount() );
+                    productModelEntity.setModelFunnel( modelFunnel + resultProductModelAdd.getModelFunnelCount()  );
+                    productModelEntity.setModelCore( modelCore + resultProductModelAdd.getModelCoreCount()  );
+                    productModelEntity.setModelAirTou( modelAirTou + resultProductModelAdd.getModelAirTouCount() );
+                    productModelEntity.setModelCooling( modelCooling + resultProductModelAdd.getModelCoolingCount() );
+                    productModelEntity.setModelClamp( modelClamp + resultProductModelAdd.getModelClampCount()  );
+                }
+                if (!StringUtils.isEmpty( resultProductModelOut )) {
+                    productModelEntity.setModelSuccessMo( modelSuccessMo  - resultProductModelOut.getModelSuccessMoCount() );
+                    productModelEntity.setModelPrimaryMo( modelPrimaryMo  - resultProductModelOut.getModelPrimaryMoCount() );
+                    productModelEntity.setModelMouthMo( modelMouthMo - resultProductModelOut.getModelMouthMoCount() );
+                    productModelEntity.setModelMenTou( modelMenTou  - resultProductModelOut.getModelMenTouCount() );
+                    productModelEntity.setModelFunnel( modelFunnel  - resultProductModelOut.getModelFunnelCount() );
+                    productModelEntity.setModelCore( modelCore  - resultProductModelOut.getModelCoreCount() );
+                    productModelEntity.setModelAirTou( modelAirTou - resultProductModelOut.getModelAirTouCount() );
+                    productModelEntity.setModelCooling( modelCooling  - resultProductModelOut.getModelCoolingCount() );
+                    productModelEntity.setModelClamp( modelClamp - resultProductModelOut.getModelClampCount() );
+                }
+                if ((!StringUtils.isEmpty( resultProductModelAdd )) && (!StringUtils.isEmpty( resultProductModelOut ))) {
+
+                    productModelEntity.setModelSuccessMo( modelSuccessMo + resultProductModelAdd.getModelSuccessMoCount() - resultProductModelOut.getModelSuccessMoCount() );
+                    productModelEntity.setModelPrimaryMo( modelPrimaryMo + resultProductModelAdd.getModelPrimaryMoCount() - resultProductModelOut.getModelPrimaryMoCount() );
+                    productModelEntity.setModelMouthMo( modelMouthMo + resultProductModelAdd.getModelMouthMoCount() - resultProductModelOut.getModelMouthMoCount() );
+                    productModelEntity.setModelMenTou( modelMenTou + resultProductModelAdd.getModelMenTouCount() - resultProductModelOut.getModelMenTouCount() );
+                    productModelEntity.setModelFunnel( modelFunnel + resultProductModelAdd.getModelFunnelCount() - resultProductModelOut.getModelFunnelCount() );
+                    productModelEntity.setModelCore( modelCore + resultProductModelAdd.getModelCoreCount() - resultProductModelOut.getModelCoreCount() );
+                    productModelEntity.setModelAirTou( modelAirTou + resultProductModelAdd.getModelAirTouCount() - resultProductModelOut.getModelAirTouCount() );
+                    productModelEntity.setModelCooling( modelCooling + resultProductModelAdd.getModelCoolingCount() - resultProductModelOut.getModelCoolingCount() );
+                    productModelEntity.setModelClamp( modelClamp + resultProductModelAdd.getModelClampCount() - resultProductModelOut.getModelClampCount() );
+                }
+
+
+            }
+        }
         return new PageUtils(page);
     }
 
