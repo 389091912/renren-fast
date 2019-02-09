@@ -1,13 +1,18 @@
 package io.renren.modules.product.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import io.renren.common.utils.Dict;
+import io.renren.modules.product.entity.ProductBoxEntity;
+import io.renren.modules.product.service.ProductBoxService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +38,9 @@ import io.renren.common.utils.R;
 public class BoxAddLeaveController  extends AbstractController {
     @Autowired
     private BoxAddLeaveService boxAddLeaveService;
+
+    @Autowired
+    private ProductBoxService productBoxService;
 
 
     /**
@@ -64,6 +72,35 @@ public class BoxAddLeaveController  extends AbstractController {
     @RequestMapping("/save")
     @RequiresPermissions("product:boxaddleave:save")
     public R save(@RequestBody BoxAddLeaveEntity boxAddLeave){
+
+        if (boxAddLeave.getType() == 1) {
+            Date addBoxTime = boxAddLeave.getAddBoxTime();
+            String batch = new SimpleDateFormat( "yyyy-MM-dd" ).format( addBoxTime );
+            String boxNo = boxAddLeave.getBoxNo();
+            ProductBoxEntity productBoxEntity = productBoxService.selectById( Integer.parseInt( boxNo ) );
+            String boxAddBatch = productBoxEntity.getBoxAddBatch();
+            StringBuilder sbBatch = new StringBuilder();
+            if (!StringUtils.isEmpty( boxAddBatch )) {
+                String boxAddBatchStr =sbBatch.append( boxAddBatch ).append( "," ).append( batch ).toString();
+                productBoxEntity.setBoxAddBatch( boxAddBatchStr );
+            }else {
+                String boxAddBatchStr =sbBatch.append( batch ).toString();
+                productBoxEntity.setBoxAddBatch( boxAddBatchStr );
+            }
+            String boxAddPrice = productBoxEntity.getBoxAddPrice();
+            StringBuilder sbPrice = new StringBuilder();
+            if (!StringUtils.isEmpty( boxAddPrice )) {
+                String boxAddPriceStr = sbPrice.append( boxAddPrice ).append( "," ).append( boxAddLeave.getBoxPrice() ).toString();
+                productBoxEntity.setBoxAddPrice( boxAddPriceStr );
+            }else {
+                String boxAddPriceStr = sbPrice.append( boxAddLeave.getBoxPrice() ).toString();
+                productBoxEntity.setBoxAddPrice( boxAddPriceStr );
+            }
+            productBoxService.updateById( productBoxEntity );
+            
+            System.out.println( batch );
+        }
+
 			boxAddLeaveService.insert(boxAddLeave);
 
         return R.ok();
@@ -96,7 +133,6 @@ public class BoxAddLeaveController  extends AbstractController {
      * 信息
      */
     @RequestMapping("/getAllBoxAddLeave")
-  //  @RequiresPermissions("product:boxaddleave:info")
     public R getAllBoxAddLeave(){
         List<Dict> allBoxAddLeave = boxAddLeaveService.getAllBoxAddLeave();
 

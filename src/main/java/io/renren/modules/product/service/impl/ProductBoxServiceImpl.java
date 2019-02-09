@@ -68,6 +68,9 @@ public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBox
                 productBox.setSpacerNumber( (StringUtils.isEmpty( addBoxNumberCount )?0:addBoxNumberCount.getSpacerNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getSpacerNumberCount()) );
 
                 productBox.setLeaveNumber(  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getOutBoxNumberCount()));
+
+
+
                 baseMapper.updateById( productBox );
             }
         }

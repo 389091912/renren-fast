@@ -1,15 +1,13 @@
 package io.renren.modules.product.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.renren.common.utils.IntegerUtil;
 import io.renren.modules.product.entity.*;
 import io.renren.modules.product.entity.vo.ProductDetailVo;
+import io.renren.modules.product.entity.vo.ProductOrderVo;
 import io.renren.modules.product.service.*;
 import io.renren.modules.sys.controller.AbstractController;
 
@@ -195,4 +193,28 @@ public class ProductOrderController extends AbstractController {
         return R.ok();
     }
 
+    /**
+     *
+     */
+    @RequestMapping("/getProductOrder")
+    @RequiresPermissions("product:productorder:delete")
+    public R getProductOrder(Integer productId){
+
+        List<ProductOrderDetailEntity> productOrderDetailList = productOrderDetailService.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "product_id", productId ) );
+
+        List<ProductOrderVo> productOrderVoList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty( productOrderDetailList )) {
+            for (ProductOrderDetailEntity productOrderDetail : productOrderDetailList) {
+                ProductOrderVo productOrderVo = new ProductOrderVo();
+                Integer boxSupplyWay = productOrderDetail.getBoxSupplyWay();
+                ProductOrderEntity productOrderEntity = productOrderService.selectById( productOrderDetail.getOrderId() );
+                productOrderVo.setBoxSupplyWay( boxSupplyWay );
+                productOrderVo.setOrderId( productOrderEntity.getId() );
+                productOrderVo.setOrderNo( productOrderEntity.getOrderNo() );
+                productOrderVoList.add( productOrderVo );
+            }
+        }
+
+        return R.ok().put( "productOrderList", productOrderVoList );
+    }
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -88,6 +89,8 @@ public class BoxAddLeaveEntity implements Serializable {
 	private Date addBoxTime;
 
 	private Date outBoxTime;
+
+	private BigDecimal boxPrice;
 
 	/**
 	 * 创建者

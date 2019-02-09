@@ -102,6 +102,16 @@ public class ProductBoxEntity implements Serializable {
 	private Integer leaveNumber;
 
 	/**
+	 * 纸箱入库批次
+	 */
+	private String boxAddBatch;
+
+	/**
+	 * 纸箱入库价格
+	 */
+	private String boxAddPrice;
+
+	/**
 	 * 设置：ID
 	 */
 	public void setId(Integer id) {
