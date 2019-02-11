@@ -38,6 +38,29 @@
         WHERE box_no=#{boxNo} and type=1
     </select>
 
+    <select id="addBoxNumberCount1" parameterType="map" resultMap="boxAddLeaveMap1">
+        SELECT
+        SUM(add_box_number) addBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        <where>
+            <if test="params.key!=null and params.key != ''">
+                and box_no=#{params.key}
+            </if>
+            <if test="params.rangeBefore!=null and params.rangeBefore!=''">
+                and add_box_time &gt;= #{params.rangeBefore}
+            </if>
+            <if test="params.rangeAfter!=null and params.rangeAfter!=''">
+                and add_box_time &lt;=#{params.rangeAfter}
+            </if>
+            and type=1
+        </where>
+
+
+    </select>
+
     <select id="leaveBoxNumberCount" parameterType="string" resultMap="boxAddLeaveMap1">
         SELECT
         sum(out_box_number) outBoxNumberCount,
@@ -48,5 +71,25 @@
         WHERE box_no=#{boxNo} and type=0
     </select>
 
+    <select id="leaveBoxNumberCount1" parameterType="string" resultMap="boxAddLeaveMap1">
+        SELECT
+        sum(out_box_number) outBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        <where>
+            <if test="params.key!=null and params.key != ''">
+                and box_no=#{params.key}
+            </if>
+            <if test="params.rangeBefore!=null and params.rangeBefore!=''">
+                and out_box_time &gt;= #{params.rangeBefore}
+            </if>
+            <if test="params.rangeAfter!=null and params.rangeAfter!=''">
+                and out_box_time &lt;=#{params.rangeAfter}
+            </if>
+            and type=0
+        </where>
+    </select>
 
 </mapper>
