@@ -1,8 +1,11 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
+import io.renren.modules.product.service.ProductOrderService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ import io.renren.common.utils.R;
 public class ProductLeaveStorageController extends AbstractController {
     @Autowired
     private ProductLeaveStorageService productLeaveStorageService;
+
+    @Autowired
+    private ProductOrderService productOrderService;
 
     /**
      * 列表
@@ -88,4 +94,17 @@ public class ProductLeaveStorageController extends AbstractController {
         return R.ok();
     }
 
+    /**
+     *
+     */
+    @RequestMapping("/selectOrderIdByProductId/{productId}")
+    public R selectOrderIdByProductId(@PathVariable("productId") Integer productId){
+        if(productId==0){
+            return R.ok().put( "orderList",null );
+        }else {
+            List<Dict> dictList = productOrderService.selectOrderIdByProductId( productId );
+            return R.ok().put( "orderList",dictList );
+        }
+
+    }
 }

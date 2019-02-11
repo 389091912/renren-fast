@@ -1,8 +1,14 @@
 package io.renren.modules.product.service.impl;
 
+import io.renren.common.utils.Dict;
 import io.renren.modules.product.dao.*;
+import io.renren.modules.product.entity.ProductOrderDetailEntity;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -56,6 +62,23 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
     @Override
     public void addOrderDetailAndRequire(ProductOrderEntity productOrderEntity) {
 
+    }
+
+    @Override
+    public List<Dict> selectOrderIdByProductId(Integer productId) {
+        List<ProductOrderDetailEntity> productOrderDetailList = productOrderDetailDao.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "product_id", productId ) );
+        List<Dict> dictList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty( productOrderDetailList )) {
+            for (ProductOrderDetailEntity productOrderDetail : productOrderDetailList) {
+                Dict dict = new Dict();
+                ProductOrderEntity productOrderEntity = productOrderDao.selectById( productOrderDetail.getOrderId() );
+                dict.setId( productOrderEntity.getId() );
+                dict.setName( productOrderEntity.getOrderNo() );
+//                Integer boxSupplyWay = productOrderDetail.getBoxSupplyWay();
+                dictList.add( dict );
+            }
+        }
+        return dictList;
     }
 
 }

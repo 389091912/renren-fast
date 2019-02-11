@@ -31,6 +31,8 @@ public class ProductPutInStorageEntity implements Serializable {
 	 * 产品ID
 	 */
 	private Integer productId;
+	@TableField(exist = false)
+	private String productName;
 	/**
 	 * 只数
 	 */
@@ -39,7 +41,8 @@ public class ProductPutInStorageEntity implements Serializable {
 	 * 纸箱id
 	 */
 	private Integer boxId;
-
+	@TableField(exist = false)
+	private String boxNo;
 	/**
 	 * 箱数
 	 */
