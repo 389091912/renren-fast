@@ -44,8 +44,10 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductOrderEntity> page = this.selectPage(
-                new Query<ProductOrderEntity>(params).getPage(),
-                new EntityWrapper<ProductOrderEntity>().orderBy( "update_time", false )
+                new Query<ProductOrderEntity>( params ).getPage(),
+                new EntityWrapper<ProductOrderEntity>()
+                        .orderBy( "status", true )
+                        .orderBy( "update_time", false )
         );
 
         return new PageUtils(page);

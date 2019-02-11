@@ -22,6 +22,26 @@ public class ProductOrderDetailEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 等待生产
+	 */
+	public static final int WAITER_PRODUCT = 0;
+
+	/**
+	 * 生产中
+	 */
+	public static final int PROCESS_PRODUCT = 1;
+
+	/**
+	 * 生产完成
+	 */
+	public static final int SUCCESS_PRODUCT = 2;
+
+	/**
+	 * 取消生产
+	 */
+	public static final int CANCEL_PRODUCT = 3;
+
+	/**
 	 * ID
 	 */
 	@TableId
@@ -87,6 +107,11 @@ public class ProductOrderDetailEntity implements Serializable {
 	 */
 	private Integer status;
 
+	/**
+	 * 订单状态
+	 */
+	@TableField(exist = false)
+	private Integer orderStatus;
 	/**
 	 * 设置：ID
 	 */

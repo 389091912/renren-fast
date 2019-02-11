@@ -39,31 +39,34 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
         String key = (String) params.get( "key" );
         String rangeBefore = (String) params.get( "rangeBefore" );
         String rangeAfter = (String) params.get( "rangeAfter" );
+        String type = (String) params.get( "type" );
+        System.out.println(type);
         Page<BoxAddLeaveEntity> page = new Page<>();
-        if(StringUtils.isEmpty( rangeBefore )){
-            if (StringUtils.isEmpty( key )) {
-                page = this.selectPage(
-                        new Query<BoxAddLeaveEntity>( params ).getPage(),
-                        new EntityWrapper<BoxAddLeaveEntity>().orderBy( "create_time", false )
-                );
-            }else {
-                page = this.selectPage(
-                        new Query<BoxAddLeaveEntity>( params ).getPage(),
-                        new EntityWrapper<BoxAddLeaveEntity>()
-                                .or().like( "box_no",key )
-                                .orderBy( "create_time", false )
-                );
-            }
-        }else {
-            page = this.selectPage(
-                    new Query<BoxAddLeaveEntity>( params ).getPage(),
-                    new EntityWrapper<BoxAddLeaveEntity>()
-                            .or().like( "box_no",key ).or()
-                            .between( "add_box_time",rangeBefore,rangeAfter ).or()
-                            .between( "out_box_time",rangeBefore,rangeAfter )
-                            .orderBy( "create_time", false )
-            );
+        EntityWrapper<BoxAddLeaveEntity> boxAddLeaveEntityWrapper = new EntityWrapper<>();
+        if(!StringUtils.isEmpty( key )){
+            boxAddLeaveEntityWrapper.eq( "box_no", key );
         }
+        if (!StringUtils.isEmpty( type )) {
+            if (BoxAddLeaveEntity.ADD.equals( type )&&!StringUtils.isEmpty( rangeBefore )) {
+                boxAddLeaveEntityWrapper.between( "add_box_time", rangeBefore, rangeAfter );
+
+            }
+            if (BoxAddLeaveEntity.LEAVE.equals( type )&&!StringUtils.isEmpty( rangeBefore )) {
+                boxAddLeaveEntityWrapper.between( "out_box_time", rangeBefore, rangeAfter );
+            }
+            boxAddLeaveEntityWrapper.eq( "type", type );
+        }else {
+            if(!StringUtils.isEmpty( rangeBefore )){
+                boxAddLeaveEntityWrapper.between( "create_time", rangeBefore, rangeAfter );
+            }
+        }
+
+
+        page = this.selectPage(
+                new Query<BoxAddLeaveEntity>( params ).getPage(),
+                boxAddLeaveEntityWrapper.orderBy( "box_no",true ).orderBy( "create_time", false )
+        );
+
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (BoxAddLeaveEntity boxAddLeaveEntity : page.getRecords()) {
 
@@ -71,6 +74,7 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
                         (!StringUtils.isEmpty( boxAddLeaveEntity.getBoxNo() ))?
                         productBoxDao.selectById( boxAddLeaveEntity.getBoxNo()).getBoxNo():
                         null);
+
             }
         }
 

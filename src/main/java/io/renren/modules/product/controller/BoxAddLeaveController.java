@@ -75,6 +75,8 @@ public class BoxAddLeaveController  extends AbstractController {
 
         if (boxAddLeave.getType() == 1) {
             Date addBoxTime = boxAddLeave.getAddBoxTime();
+            boxAddLeave.setCreateTime( addBoxTime );
+
             String batch = new SimpleDateFormat( "yyyy-MM-dd" ).format( addBoxTime );
             String boxNo = boxAddLeave.getBoxNo();
             ProductBoxEntity productBoxEntity = productBoxService.selectById( Integer.parseInt( boxNo ) );
@@ -96,9 +98,24 @@ public class BoxAddLeaveController  extends AbstractController {
                 String boxAddPriceStr = sbPrice.append( boxAddLeave.getBoxPrice() ).toString();
                 productBoxEntity.setBoxAddPrice( boxAddPriceStr );
             }
+            String boxAddFactoryId = productBoxEntity.getBoxAddFactoryId();
+            StringBuilder sbFactory = new StringBuilder();
+            if (!StringUtils.isEmpty( boxAddFactoryId )) {
+                String boxAddFactoryIdStr = sbFactory.append( boxAddFactoryId ).append( "," ).append( boxAddLeave.getFactoryId() ).toString();
+                productBoxEntity.setBoxAddFactoryId( boxAddFactoryIdStr );
+            }else {
+                String boxAddFactoryIdStr = sbFactory.append( boxAddLeave.getFactoryId() ).toString();
+                productBoxEntity.setBoxAddFactoryId( boxAddFactoryIdStr );
+            }
+
+
             productBoxService.updateById( productBoxEntity );
             
             System.out.println( batch );
+        } else {
+            Date outBoxTime = boxAddLeave.getOutBoxTime();
+            boxAddLeave.setCreateTime( outBoxTime );
+
         }
 
 			boxAddLeaveService.insert(boxAddLeave);

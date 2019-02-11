@@ -91,13 +91,13 @@ public class BoxFactoryController extends AbstractController {
     }
 
     /**
-     * 获取所有纸箱信息
+     * 获取所有纸箱厂信息
      */
-    @RequestMapping("/getAllProductBoxList")
+    @RequestMapping("/getAllBoxFactoryList")
     //s @RequiresPermissions("product:productbox:delete")
     public R getAllProductBoxList(){
-        List<Dict> allProductBoxList = boxFactoryService.getAllBoxFactoryList();
+        List<Dict> productBoxFactoryList = boxFactoryService.getAllBoxFactoryList();
 
-        return R.ok().put( "productBoxList", allProductBoxList );
+        return R.ok().put( "productBoxFactoryList", productBoxFactoryList );
     }
 }

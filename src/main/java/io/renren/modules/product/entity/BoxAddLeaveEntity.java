@@ -23,6 +23,16 @@ public class BoxAddLeaveEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 入库
+	 */
+	public static final String ADD = "1";
+
+	/**
+	 * 出库
+	 */
+	public static final String LEAVE = "0";
+
+	/**
 	 * 
 	 */
 	@TableId
@@ -91,6 +101,8 @@ public class BoxAddLeaveEntity implements Serializable {
 	private Date outBoxTime;
 
 	private BigDecimal boxPrice;
+
+	private Integer factoryId;
 
 	/**
 	 * 创建者

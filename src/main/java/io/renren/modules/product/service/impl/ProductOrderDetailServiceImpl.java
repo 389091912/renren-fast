@@ -2,6 +2,7 @@ package io.renren.modules.product.service.impl;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import io.renren.modules.product.dao.*;
+import io.renren.modules.product.entity.ProductOrderEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                             .eq("product_weight",productWeight).or()
                             .between( "product_weight",(Integer.parseInt(productWeight )-5),(Integer.parseInt(productWeight  )+5) )
                             .orderBy( "create_time", false )
+
             );
 
         }else {
@@ -59,9 +61,12 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                         productInfoDao.selectById( productOrderDetail.getProductId() ).getProductName():
                         null  );
 
-                productOrderDetail.setOrderNo( (!StringUtils.isEmpty(  productOrderDao.selectById( productOrderDetail.getOrderId() ) ))?
-                        productOrderDao.selectById( productOrderDetail.getOrderId() ).getOrderNo():
-                        null );
+                ProductOrderEntity productOrderEntity = productOrderDao.selectById( productOrderDetail.getOrderId() );
+                if(!StringUtils.isEmpty(productOrderEntity)){
+                    productOrderDetail.setOrderNo( productOrderEntity.getOrderNo() );
+                    productOrderDetail.setOrderStatus( productOrderEntity.getStatus() );
+                }
+
             }
         }
         return new PageUtils(page);

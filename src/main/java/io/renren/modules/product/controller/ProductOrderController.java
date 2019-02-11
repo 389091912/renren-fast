@@ -102,6 +102,7 @@ public class ProductOrderController extends AbstractController {
                     productOrderDetail.setCreateUser( getUserId().intValue() );
                     productOrderDetail.setUpdateTime( date );
                     productOrderDetail.setUpdateUser( getUserId().intValue() );
+                    productOrderDetail.setStatus( ProductOrderDetailEntity.WAITER_PRODUCT);
                     //  ProductOrderDetailEntity productOrderDetail = new ProductOrderDetailEntity();
                     productOrderDetailService.insertOrUpdate( productOrderDetail );
 

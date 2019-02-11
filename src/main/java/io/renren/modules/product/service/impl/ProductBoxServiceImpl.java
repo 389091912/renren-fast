@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 /**
  * @author wsy
  */
@@ -36,6 +38,8 @@ public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBox
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String key = (String) params.get( "key" );
+        String rangeBefore = (String) params.get( "rangeBefore" );
+        String rangeAfter = (String) params.get( "rangeAfter" );
         Page<ProductBoxEntity> page = new Page<>();
         if(!StringUtils.isEmpty( key )){
             page = this.selectPage(
@@ -56,18 +60,25 @@ public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBox
             for (ProductBoxEntity productBox : page.getRecords()) {
 
                 BoxAddLeaveEntity addBoxNumberCount = boxAddLeaveDao.addBoxNumberCount( productBox.getId().toString() );
+                params.replace( "key", productBox.getId().toString() );
+                BoxAddLeaveEntity addBoxNumberCount1 = boxAddLeaveDao.addBoxNumberCount1( params);
+                System.out.println( "---------" );
+                System.out.println(addBoxNumberCount);
+                System.out.println( addBoxNumberCount1 );
 
                 BoxAddLeaveEntity leaveBoxNumberCount = boxAddLeaveDao.leaveBoxNumberCount( productBox.getId().toString() );
+                BoxAddLeaveEntity leaveBoxNumberCount1 = boxAddLeaveDao.leaveBoxNumberCount1( params );
 
-                productBox.setBoxNumber( (StringUtils.isEmpty( addBoxNumberCount)?0:addBoxNumberCount.getAddBoxNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getOutBoxNumberCount()) );
+                System.out.println(leaveBoxNumberCount1);
+                productBox.setBoxNumber( (StringUtils.isEmpty( addBoxNumberCount1)?0:addBoxNumberCount1.getAddBoxNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getOutBoxNumberCount()) );
 
-                productBox.setBodyNumber( (StringUtils.isEmpty( addBoxNumberCount )?0:addBoxNumberCount.getBodyNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getBodyNumberCount()) );
+                productBox.setBodyNumber( (StringUtils.isEmpty( addBoxNumberCount1 )?0:addBoxNumberCount1.getBodyNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getBodyNumberCount()) );
 
-                productBox.setParryNumber( (StringUtils.isEmpty( addBoxNumberCount )?0:addBoxNumberCount.getParryNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getParryNumberCount()) );
+                productBox.setParryNumber( (StringUtils.isEmpty( addBoxNumberCount1 )?0:addBoxNumberCount1.getParryNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getParryNumberCount()) );
 
-                productBox.setSpacerNumber( (StringUtils.isEmpty( addBoxNumberCount )?0:addBoxNumberCount.getSpacerNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getSpacerNumberCount()) );
+                productBox.setSpacerNumber( (StringUtils.isEmpty( addBoxNumberCount1 )?0:addBoxNumberCount1.getSpacerNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getSpacerNumberCount()) );
 
-                productBox.setLeaveNumber(  (StringUtils.isEmpty(leaveBoxNumberCount)?0:leaveBoxNumberCount.getOutBoxNumberCount()));
+                productBox.setLeaveNumber(  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getOutBoxNumberCount()));
 
 
 

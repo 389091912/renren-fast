@@ -3,12 +3,14 @@ package io.renren.modules.product.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import io.renren.modules.product.entity.vo.BoxFactoryVo;
 import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -64,6 +66,14 @@ public class ProductBoxEntity implements Serializable {
 	 */
 	private Integer zhiShu;
 
+	private String boxAddFactoryId;
+
+
+	@TableField(exist = false)
+	private List<BoxFactoryVo> boxFactoryVoList;
+
+	@TableField(exist = false)
+	private String boxFactoryVoStr;
 	/**
 	 * 客户
 	 */
