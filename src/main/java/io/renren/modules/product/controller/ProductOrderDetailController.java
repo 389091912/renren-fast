@@ -88,4 +88,20 @@ public class ProductOrderDetailController extends AbstractController {
         return R.ok();
     }
 
+    /**
+     * updateOrderDetailStatus
+     */
+    @RequestMapping("/updateOrderDetailStatus")
+    public R updateOrderDetailStatus(@RequestBody ProductOrderDetailEntity productOrderDetail){
+
+        System.out.println(productOrderDetail.toString());
+        ProductOrderDetailEntity productOrderDetailEntity = productOrderDetailService.selectById( productOrderDetail.getId() );
+        productOrderDetailEntity.setStatus( productOrderDetail.getStatus() );
+
+        productOrderDetailService.updateById( productOrderDetailEntity );
+
+        return R.ok();
+    }
+
+
 }

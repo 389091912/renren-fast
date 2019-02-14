@@ -113,7 +113,7 @@ public class ProductInfoEntity implements Serializable {
 	/**
 	 * 产品组合套
 	 */
-	private String productAssort;
+	private Integer productAssort;
 	/**
 	 * 产品后续加工
 	 */
@@ -298,13 +298,13 @@ public class ProductInfoEntity implements Serializable {
 	/**
 	 * 设置：产品组合套
 	 */
-	public void setProductAssort(String productAssort) {
+	public void setProductAssort(Integer productAssort) {
 		this.productAssort = productAssort;
 	}
 	/**
 	 * 获取：产品组合套
 	 */
-	public String getProductAssort() {
+	public Integer getProductAssort() {
 		return productAssort;
 	}
 	/**

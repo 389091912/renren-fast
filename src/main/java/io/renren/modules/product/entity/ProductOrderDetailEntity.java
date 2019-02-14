@@ -81,7 +81,7 @@ public class ProductOrderDetailEntity implements Serializable {
 	/**
 	 * 订单数量
 	 */
-	private Integer productNumber;
+	private Double productNumber;
 	/**
 	 * 备注
 	 */
@@ -151,13 +151,13 @@ public class ProductOrderDetailEntity implements Serializable {
 	/**
 	 * 设置：订单数量
 	 */
-	public void setProductNumber(Integer productNumber) {
+	public void setProductNumber(Double productNumber) {
 		this.productNumber = productNumber;
 	}
 	/**
 	 * 获取：订单数量
 	 */
-	public Integer getProductNumber() {
+	public Double getProductNumber() {
 		return productNumber;
 	}
 	/**

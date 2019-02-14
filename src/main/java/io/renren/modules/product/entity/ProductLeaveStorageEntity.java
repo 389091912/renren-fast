@@ -1,8 +1,10 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -15,7 +17,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-01-25 23:35:04
  */
-@ToString
+@Data
 @TableName("product_leave_storage")
 public class ProductLeaveStorageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +31,13 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 * 产品id
 	 */
 	private Integer productId;
+
+	/**
+	 * 产品重量
+	 */
+	@TableField(exist = false)
+	private Integer productWeight;
+
 	/**
 	 * 出库数量
 	 */
@@ -80,6 +89,10 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 */
 	private Integer status;
 
+	/**
+	 * 产品总克数
+	 */
+	private Integer weightCount;
 	/**
 	 * 设置：
 	 */

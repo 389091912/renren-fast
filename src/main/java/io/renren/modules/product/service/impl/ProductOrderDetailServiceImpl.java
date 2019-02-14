@@ -3,10 +3,17 @@ package io.renren.modules.product.service.impl;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import io.renren.modules.product.dao.*;
 import io.renren.modules.product.entity.ProductOrderEntity;
+import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -34,24 +41,67 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        SysUserEntity sysUserEntity = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+
         String  productWeight = (String) params.get( "key" );
         Page<ProductOrderDetailEntity> page = new Page<>();
-        if (!StringUtils.isEmpty( productWeight.trim() )) {
-            page = this.selectPage(
-                    new Query<ProductOrderDetailEntity>(params).getPage(),
-                    new EntityWrapper<ProductOrderDetailEntity>()
-                            .eq("product_weight",productWeight).or()
-                            .between( "product_weight",(Integer.parseInt(productWeight )-5),(Integer.parseInt(productWeight  )+5) )
-                            .orderBy( "create_time", false )
+        List<Integer> orderIdList = new ArrayList<>();
+        if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+            List<ProductOrderEntity> orderEntityList = productOrderDao.selectList( new EntityWrapper<ProductOrderEntity>().eq( "employee_id", sysUserEntity.getUserId() ) );
+            orderIdList = orderEntityList.stream().map( ProductOrderEntity::getId ).collect( Collectors.toList() );
 
-            );
+        }
+
+
+        if (!StringUtils.isEmpty( productWeight.trim() )) {
+            if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+                page = this.selectPage(
+                        new Query<ProductOrderDetailEntity>(params).getPage(),
+                        new EntityWrapper<ProductOrderDetailEntity>()
+                                .in( "order_id",orderIdList )
+
+                                .between( "product_weight",(Integer.parseInt(productWeight )-5),(Integer.parseInt(productWeight  )+5) )
+                                .orderBy( "status",true )
+                                .orderBy( "create_time", false )
+
+
+                );
+            }
+            if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())){
+                page = this.selectPage(
+                        new Query<ProductOrderDetailEntity>(params).getPage(),
+                        new EntityWrapper<ProductOrderDetailEntity>()
+                                .between( "product_weight",(Integer.parseInt(productWeight )-5),(Integer.parseInt(productWeight  )+5) )
+                                .orderBy( "status",true )
+                                .orderBy( "create_time", false )
+
+
+                );
+            }
 
         }else {
-            page = this.selectPage(
-                    new Query<ProductOrderDetailEntity>(params).getPage(),
-                    new EntityWrapper<ProductOrderDetailEntity>()
-                            .orderBy( "create_time", false )
-            );
+            if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+                page = this.selectPage(
+                        new Query<ProductOrderDetailEntity>(params).getPage(),
+                        new EntityWrapper<ProductOrderDetailEntity>()
+                                .in( "order_id",orderIdList )
+                                .orderBy( "status",true )
+                                .orderBy( "create_time", false )
+
+
+                );
+            }
+
+            if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())) {
+                page = this.selectPage(
+                        new Query<ProductOrderDetailEntity>(params).getPage(),
+                        new EntityWrapper<ProductOrderDetailEntity>()
+                                .orderBy( "status",true )
+                                .orderBy( "create_time", false )
+
+                );
+            }
+
         }
 
 

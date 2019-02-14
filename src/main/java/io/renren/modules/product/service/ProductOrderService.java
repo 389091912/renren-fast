@@ -22,5 +22,7 @@ public interface ProductOrderService extends IService<ProductOrderEntity> {
     void addOrderDetailAndRequire(ProductOrderEntity productOrderEntity);
 
     List<Dict> selectOrderIdByProductId(Integer productId);
+
+    List<Dict> getProductOrderList();
 }
 

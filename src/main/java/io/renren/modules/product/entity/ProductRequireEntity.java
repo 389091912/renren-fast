@@ -61,7 +61,7 @@ public class 	ProductRequireEntity implements Serializable {
 	/**
 	 * 产品实际需求数量
 	 */
-	private Integer productRequireNumber;
+	private Double productRequireNumber;
 	/**
 	 * 纸箱id
 	 */
@@ -152,13 +152,13 @@ public class 	ProductRequireEntity implements Serializable {
 	/**
 	 * 设置：产品实际需求数量
 	 */
-	public void setProductRequireNumber(Integer productRequireNumber) {
+	public void setProductRequireNumber(Double productRequireNumber) {
 		this.productRequireNumber = productRequireNumber;
 	}
 	/**
 	 * 获取：产品实际需求数量
 	 */
-	public Integer getProductRequireNumber() {
+	public Double getProductRequireNumber() {
 		return productRequireNumber;
 	}
 	/**

@@ -112,8 +112,8 @@ public class ProductOrderController extends AbstractController {
                         /**
                          * 计算实际需求的产品数量
                          */
-                        Integer count = productRequire.getProductRequireNumber();
-                        int productRequireNumber = count + productOrderDetail.getProductNumber();
+                        Double count = productRequire.getProductRequireNumber();
+                        Double productRequireNumber = count + productOrderDetail.getProductNumber();
                         productRequire.setProductRequireNumber(productRequireNumber );
 
                         /**
@@ -123,7 +123,7 @@ public class ProductOrderController extends AbstractController {
                         if (!StringUtils.isEmpty( productBox)) {
                             productRequire.setBoxId( productBox.getId());
                             if (productBox.getZhiShu() != 0) {
-                                Integer boxNumber = IntegerUtil.integerNumber( productRequireNumber, productBox.getZhiShu() );
+                                Integer boxNumber = IntegerUtil.integerNumber( productRequireNumber.intValue(), productBox.getZhiShu() );
                                 productRequire.setBoxRequireNumber( boxNumber );
                             }
                         }
@@ -153,8 +153,8 @@ public class ProductOrderController extends AbstractController {
                             if ("0".equals( productBox.getZhiShu() )) {
                                 System.out.println( "ProductOrderController.save" );
                             }
-                            Integer boxNumber = IntegerUtil.integerNumber( productOrderDetail.getProductNumber(), productBox.getZhiShu() );
-                            productRequire.setBoxRequireNumber( boxNumber );
+                         /*   Integer boxNumber = IntegerUtil.integerNumber( productOrderDetail.getProductNumber(), productBox.getZhiShu() );
+                            productRequire.setBoxRequireNumber( boxNumber );*/
                         }
                         //productRequire.setModelId( productInfo.get );
                         productRequireService.insert( productRequire );
@@ -178,6 +178,12 @@ public class ProductOrderController extends AbstractController {
     @RequestMapping("/update")
     @RequiresPermissions("product:productorder:update")
     public R update(@RequestBody ProductOrderEntity productOrder){
+
+        if (!StringUtils.isEmpty( productOrder.getProductList() )) {
+
+            List<ProductOrderDetailEntity> productDetailVos = JSONArray.parseArray( productOrder.getProductList(), ProductOrderDetailEntity.class );
+
+        }
 			productOrderService.updateById(productOrder);
 
         return R.ok();
@@ -198,7 +204,6 @@ public class ProductOrderController extends AbstractController {
      *
      */
     @RequestMapping("/getProductOrder")
-    @RequiresPermissions("product:productorder:delete")
     public R getProductOrder(Integer productId){
 
         List<ProductOrderDetailEntity> productOrderDetailList = productOrderDetailService.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "product_id", productId ) );
@@ -218,4 +223,11 @@ public class ProductOrderController extends AbstractController {
 
         return R.ok().put( "productOrderList", productOrderVoList );
     }
+
+    public R getProductOrderList() {
+        //new ArrayList<>();
+        return R.ok();
+    }
+
+
 }

@@ -40,6 +40,13 @@ public class ProductOrderEntity implements Serializable {
 	 * 员工id
 	 */
 	private Integer employeeId;
+
+	/**
+	 * 员工姓名
+	 */
+	@TableField(exist = false)
+	private String employeeName;
+
 	/**
 	 * 客户
 	 */

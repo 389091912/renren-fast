@@ -108,11 +108,11 @@ public class ProductModelController extends AbstractController {
      */
     @RequestMapping("/getCustomerModelNo/{modelId}")
     @RequiresPermissions("product:productmodel:info")
-    public R getCustomerModelNo(@PathVariable("modelId") Integer modelId){
+    public R getCustomerModelNo(@PathVariable(value = "modelId",required = false) Integer modelId){
 
-        if (StringUtils.isEmpty( modelId )) {
+        if (modelId == 0) {
 
-            return R.error("模具编号不能为空");
+            return R.ok().put( "customerModelNo","" );
         }
 
         ProductModelEntity productModel = productModelService.selectById( modelId );

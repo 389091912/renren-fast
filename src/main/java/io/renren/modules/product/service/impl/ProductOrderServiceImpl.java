@@ -3,13 +3,16 @@ package io.renren.modules.product.service.impl;
 import io.renren.common.utils.Dict;
 import io.renren.modules.product.dao.*;
 import io.renren.modules.product.entity.ProductOrderDetailEntity;
+import io.renren.modules.sys.dao.SysUserDao;
+import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -20,6 +23,7 @@ import io.renren.modules.product.entity.ProductOrderEntity;
 import io.renren.modules.product.service.ProductOrderService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wsy
@@ -42,6 +46,9 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
 
 
     @Autowired
+    private SysUserDao sysUserDao;
+
+    @Autowired
     private ProductRequireDao productRequireDao;
 
 
@@ -49,12 +56,59 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<ProductOrderEntity> page = this.selectPage(
-                new Query<ProductOrderEntity>( params ).getPage(),
-                new EntityWrapper<ProductOrderEntity>()
-                        .orderBy( "status", true )
-                        .orderBy( "update_time", false )
-        );
+
+        SysUserEntity sysUserEntity = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+        System.out.println(sysUserEntity.getType());
+        System.out.println(sysUserEntity.getUserId());
+        EntityWrapper<ProductOrderEntity> productOrderWrapper = new EntityWrapper<>();
+        Page<ProductOrderEntity> page = new Page<>();
+        if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+            page= this.selectPage(
+                    new Query<ProductOrderEntity>( params ).getPage(),
+                    productOrderWrapper
+                            .eq( "employee_id", sysUserEntity.getUserId() )
+                            .orderBy( "status", true )
+                            .orderBy( "update_time", false )
+            );
+
+        }
+        if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())){
+             page = this.selectPage(
+                    new Query<ProductOrderEntity>( params ).getPage(),
+                    new EntityWrapper<ProductOrderEntity>()
+                            .orderBy( "status", true )
+                            .orderBy( "update_time", false )
+            );
+
+        }
+
+
+        if (CollectionUtils.isNotEmpty( page.getRecords() )) {
+            for (ProductOrderEntity productOrderEntity : page.getRecords()) {
+
+                productOrderEntity.setEmployeeName( StringUtils.isEmpty(  sysUserDao.selectById( productOrderEntity.getEmployeeId() ) ) ?null:sysUserDao.selectById( productOrderEntity.getEmployeeId() ).getRealName() );
+
+                List<ProductOrderDetailEntity> productOrderDetailEntityList = productOrderDetailDao.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id", productOrderEntity.getId() ) );
+                if (CollectionUtils.isNotEmpty( productOrderDetailEntityList )) {
+                    Set<Integer> orderStatus = new HashSet<>();
+                    orderStatus =productOrderDetailEntityList.stream().map( ProductOrderDetailEntity::getStatus ).collect( Collectors.toSet() );
+
+                    System.out.println(orderStatus.size());
+                    if (orderStatus.size() == 1) {
+                        for (Integer i : orderStatus) {
+                            if (i == 2) {
+                                productOrderEntity.setStatus( 4 );
+                                productOrderDao.updateById( productOrderEntity );
+                            }
+                        }
+                    }
+
+
+                }
+
+
+            }
+        }
 
         return new PageUtils(page);
     }
@@ -77,6 +131,23 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
 //                Integer boxSupplyWay = productOrderDetail.getBoxSupplyWay();
                 dictList.add( dict );
             }
+        }
+        return dictList;
+    }
+
+    @Override
+    public List<Dict> getProductOrderList() {
+        List<ProductOrderEntity> productOrderEntities = productOrderDao.selectList( new EntityWrapper<ProductOrderEntity>() );
+        List<Dict> dictList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty( productOrderEntities )) {
+            for (ProductOrderEntity productOrderEntity : productOrderEntities) {
+                Dict dict = new Dict();
+                dict.setId( productOrderEntity.getId() );
+                dict.setName( productOrderEntity.getOrderNo() );
+                dictList.add( dict );
+            }
+
+
         }
         return dictList;
     }
