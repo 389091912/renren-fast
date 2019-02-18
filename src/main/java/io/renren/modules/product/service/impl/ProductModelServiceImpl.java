@@ -36,10 +36,24 @@ public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, Produc
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String  key = (String) params.get( "key" );
+        EntityWrapper<ProductModelEntity> objectEntityWrapper = new EntityWrapper<>();
+        if (!StringUtils.isEmpty( key )) {
+            objectEntityWrapper
+                    .or().like( "model_no", key )
+                    .or().like( "customer_name",key)
+                    .or().like( "customer_model_no", key )
+                    .or().like( "product_name", key )
+                    .orderBy( "create_time", false )
+            ;
+        }else {
+            objectEntityWrapper.orderBy( "create_time", false );
+        }
         Page<ProductModelEntity> page = this.selectPage(
                 new Query<ProductModelEntity>(params).getPage(),
-                new EntityWrapper<ProductModelEntity>().orderBy( "create_time", false )
+                objectEntityWrapper
         );
+
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductModelEntity productModelEntity : page.getRecords()) {
                 ProductModelOutEntity resultProductModelAdd = productModelOutDao.selectModelAddCount( productModelEntity.getId() );

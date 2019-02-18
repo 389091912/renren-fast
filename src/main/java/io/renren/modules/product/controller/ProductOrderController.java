@@ -195,7 +195,11 @@ public class ProductOrderController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("product:productorder:delete")
     public R delete(@RequestBody Integer[] ids){
-			productOrderService.deleteBatchIds(Arrays.asList(ids));
+
+        for (Integer orderId : ids) {
+            productOrderDetailService.delete( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id", orderId ) );
+        }
+        productOrderService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
     }

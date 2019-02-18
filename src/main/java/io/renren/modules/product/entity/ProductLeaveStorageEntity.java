@@ -50,6 +50,21 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 * 箱子数
 	 */
 	private Integer boxNumber;
+
+	/**
+	 *  产品名称
+	 */
+	@TableField(exist = false)
+	private String productName;
+
+	/**
+	 * 订单编号
+	 */
+	@TableField(exist = false)
+	private String orderNo;
+
+	@TableField(exist = false)
+	private String boxNo;
 	/**
 	 * 订单编号
 	 */

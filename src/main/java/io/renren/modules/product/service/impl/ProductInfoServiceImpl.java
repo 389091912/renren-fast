@@ -2,6 +2,8 @@ package io.renren.modules.product.service.impl;
 
 import io.renren.common.utils.Dict;
 import io.renren.modules.oss.dao.SysOssDao;
+import io.renren.modules.product.dao.ProductLeaveStorageDao;
+import io.renren.modules.product.dao.ProductPutInStorageDao;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,14 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
 
     @Autowired
     private SysOssDao sysOssDao;
+
+    @Autowired
+    private ProductPutInStorageDao productPutInStorageDao;
+
+    @Autowired
+    private ProductLeaveStorageDao productLeaveStorageDao;
+
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -80,6 +90,22 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
                        (!StringUtils.isEmpty( productInfo.getProductDrawingId() )) ?
                              sysOssDao.selectById( productInfo.getProductDrawingId() ).getUrl() :
                              null );
+
+
+                params.replace( "key", productInfo.getId() );
+                Integer productNumberCount = productPutInStorageDao.productNumberCount( params );
+                if (!StringUtils.isEmpty( productNumberCount )) {
+                    Integer leaveNumberCount = productLeaveStorageDao.productLeaveNumberCount( params );
+                    if (!StringUtils.isEmpty( leaveNumberCount )) {
+                        productInfo.setProductNum( productNumberCount -leaveNumberCount);
+                    }else {
+                        productInfo.setProductNum( productNumberCount );
+                    }
+
+
+                }
+
+
             }
         }
         return new PageUtils(page);
