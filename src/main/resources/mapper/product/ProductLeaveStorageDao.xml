@@ -21,5 +21,21 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <select id="productLeaveNumberCount" parameterType="map" resultType="integer">
+        SELECT
+        SUM(product_out_number)
+        FROM product_leave_storage
+        <where>
+            <if test="params.key!=null and params.key != ''">
+                and product_id=#{params.key}
+            </if>
+            <if test="params.rangeBefore!=null and params.rangeBefore!=''">
+                and out_time &gt;= #{params.rangeBefore}
+            </if>
+            <if test="params.rangeAfter!=null and params.rangeAfter!=''">
+                and out_time &lt;=#{params.rangeAfter}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -20,5 +20,20 @@
         <result property="status" column="status"/>
     </resultMap>
 
-
+    <select id="productNumberCount" parameterType="map" resultType="integer">
+    SELECT
+    SUM(product_number)
+    FROM product_put_in_storage
+    <where>
+        <if test="params.key!=null and params.key != ''">
+            and product_id=#{params.key}
+        </if>
+        <if test="params.rangeBefore!=null and params.rangeBefore!=''">
+            and put_in_time &gt;= #{params.rangeBefore}
+        </if>
+        <if test="params.rangeAfter!=null and params.rangeAfter!=''">
+            and put_in_time &lt;=#{params.rangeAfter}
+        </if>
+    </where>
+    </select>
 </mapper>
