@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.ModelWarehouseDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.ModelWarehouseEntity" id="modelWarehouseMap">
+        <result property="id" column="id"/>
+        <result property="warehouseNo" column="warehouse_no"/>
+        <result property="warehouseName" column="warehouse_name"/>
+    </resultMap>
+
+
+</mapper>
