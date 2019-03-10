@@ -58,8 +58,7 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
     public PageUtils queryPage(Map<String, Object> params) {
 
         SysUserEntity sysUserEntity = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
-        System.out.println(sysUserEntity.getType());
-        System.out.println(sysUserEntity.getUserId());
+        String key = (String) params.get( "key" );
         EntityWrapper<ProductOrderEntity> productOrderWrapper = new EntityWrapper<>();
         Page<ProductOrderEntity> page = new Page<>();
         if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
@@ -67,6 +66,8 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
                     new Query<ProductOrderEntity>( params ).getPage(),
                     productOrderWrapper
                             .eq( "employee_id", sysUserEntity.getUserId() )
+                            .or().like( "order_no",key )
+                            .or().like( "customer",key )
                             .orderBy( "status", true )
                             .orderBy( "update_time", false )
             );
@@ -76,6 +77,8 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
              page = this.selectPage(
                     new Query<ProductOrderEntity>( params ).getPage(),
                     new EntityWrapper<ProductOrderEntity>()
+                            .or().like( "order_no",key )
+                            .or().like( "customer",key )
                             .orderBy( "status", true )
                             .orderBy( "update_time", false )
             );
@@ -96,10 +99,13 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
                     System.out.println(orderStatus.size());
                     if (orderStatus.size() == 1) {
                         for (Integer i : orderStatus) {
-                            if (i == 2) {
-                                productOrderEntity.setStatus( 4 );
-                                productOrderDao.updateById( productOrderEntity );
+                            if (!StringUtils.isEmpty( i )) {
+                                if (i == 2) {
+                                    productOrderEntity.setStatus( 4 );
+                                    productOrderDao.updateById( productOrderEntity );
+                                }
                             }
+
                         }
                     }
 

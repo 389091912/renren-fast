@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 public class ProductDetailVo implements Serializable {
-
+    private Integer id;
     private Integer productId;
     private String zhiNumber;
     private String remark;

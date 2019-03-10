@@ -51,7 +51,8 @@ public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBox
        }else {
             page = this.selectPage(
                     new Query<ProductBoxEntity>(params).getPage(),
-                    new EntityWrapper<ProductBoxEntity>().orderBy( "create_time", false )
+                    new EntityWrapper<ProductBoxEntity>()
+                            .orderBy( "create_time", false )
             );
         }
 
@@ -59,17 +60,12 @@ public class ProductBoxServiceImpl extends ServiceImpl<ProductBoxDao, ProductBox
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductBoxEntity productBox : page.getRecords()) {
 
-                BoxAddLeaveEntity addBoxNumberCount = boxAddLeaveDao.addBoxNumberCount( productBox.getId().toString() );
+           //     BoxAddLeaveEntity addBoxNumberCount = boxAddLeaveDao.addBoxNumberCount( productBox.getId().toString() );
                 params.replace( "key", productBox.getId().toString() );
                 BoxAddLeaveEntity addBoxNumberCount1 = boxAddLeaveDao.addBoxNumberCount1( params);
                 System.out.println( "---------" );
-                System.out.println(addBoxNumberCount);
-                System.out.println( addBoxNumberCount1 );
-
-                BoxAddLeaveEntity leaveBoxNumberCount = boxAddLeaveDao.leaveBoxNumberCount( productBox.getId().toString() );
+             //   BoxAddLeaveEntity leaveBoxNumberCount = boxAddLeaveDao.leaveBoxNumberCount( productBox.getId().toString() );
                 BoxAddLeaveEntity leaveBoxNumberCount1 = boxAddLeaveDao.leaveBoxNumberCount1( params );
-
-                System.out.println(leaveBoxNumberCount1);
                 productBox.setBoxNumber( (StringUtils.isEmpty( addBoxNumberCount1)?0:addBoxNumberCount1.getAddBoxNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getOutBoxNumberCount()) );
 
                 productBox.setBodyNumber( (StringUtils.isEmpty( addBoxNumberCount1 )?0:addBoxNumberCount1.getBodyNumberCount()) -  (StringUtils.isEmpty(leaveBoxNumberCount1)?0:leaveBoxNumberCount1.getBodyNumberCount()) );

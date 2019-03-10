@@ -108,6 +108,9 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 * 产品总克数
 	 */
 	private Integer weightCount;
+
+	private String orderImage;
+
 	/**
 	 * 设置：
 	 */

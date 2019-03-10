@@ -182,7 +182,14 @@ public class ProductOrderController extends AbstractController {
         if (!StringUtils.isEmpty( productOrder.getProductList() )) {
 
             List<ProductOrderDetailEntity> productDetailVos = JSONArray.parseArray( productOrder.getProductList(), ProductOrderDetailEntity.class );
-
+            for (ProductOrderDetailEntity productDetail : productDetailVos) {
+                System.out.println(productDetail.toString());
+                productDetail.setOrderId( productOrder.getId() );
+                if (StringUtils.isEmpty( productDetail.getId() )) {
+                    productOrder.setStatus( ProductOrderDetailEntity.WAITER_PRODUCT );
+                }
+                productOrderDetailService.insertOrUpdate( productDetail );
+            }
         }
 			productOrderService.updateById(productOrder);
 

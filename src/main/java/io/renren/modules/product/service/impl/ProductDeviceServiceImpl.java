@@ -1,6 +1,11 @@
 package io.renren.modules.product.service.impl;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import io.renren.common.utils.Dict;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -29,6 +34,22 @@ public class ProductDeviceServiceImpl extends ServiceImpl<ProductDeviceDao, Prod
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public List<Dict> selectDriverList() {
+
+        List<ProductDeviceEntity> productDeviceEntityList = baseMapper.selectList( new EntityWrapper<ProductDeviceEntity>() );
+        List<Dict> dictArrayList = new ArrayList<>();
+
+        for(ProductDeviceEntity productDeviceEntity:productDeviceEntityList) {
+            Dict dict = new Dict();
+
+            dict.setId( productDeviceEntity.getId() );
+            dict.setName( productDeviceEntity.getDeciveName() );
+            dictArrayList.add( dict );
+        }
+        return dictArrayList;
     }
 
 }

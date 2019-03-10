@@ -175,10 +175,11 @@ public class SysOssController {
 		if (!fileOrigName.contains( "." )) {
 			return R.error( "缺少后缀名" );
 		}
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
 
-		String designPathName = filesPath + "/design" + FileUtil.getPath() + fileOrigName;
-
-		String designFileUrl = "/design" + FileUtil.getPath()  + fileOrigName;
+		String designPathName = filesPath + "/design" + FileUtil.getPath() +uuid+ fileOrigName;
+		String designFileUrl = "/design" + FileUtil.getPath()+uuid  + fileOrigName;
 
 //		if (file.isEmpty()) {
 //			String contentType = "text/plain;charset=UTF-8";
@@ -198,10 +199,55 @@ public class SysOssController {
 		ossEntity.setUrl( designFileUrl );
 		ossEntity.setOriginalName( file.getOriginalFilename() );
 		sysOssService.insert(ossEntity);
-		System.out.println(ossEntity.toString());
+
 		return R.ok().put( "drawingId", ossEntity.getId() );
 	}
 
+	@RequestMapping("/uploadBoxImage")
+	public R uploadOtherImage(MultipartFile file) {
+		if (file.isEmpty()) {
+			return R.error("上传文件不能为空");
+		}
+		String fileOrigName = file.getOriginalFilename();
+		if (!fileOrigName.contains( "." )) {
+			return R.error( "缺少后缀名" );
+		}
+
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
+
+		String imagePathName = filesPath +"/images/box"+ FileUtil.getPath() + uuid + fileOrigName;
+
+		String imageUrl = "/images/box"+FileUtil.getPath() + uuid + fileOrigName;
+
+		FileUtil.saveFile( file, imagePathName );
+
+		return R.ok().put( "imageUrl", imageUrl );
+	}
+
+	@RequestMapping("/uploadProductLeaveImage")
+	public R uploadProductLeaveImage(MultipartFile file) {
+		if (file.isEmpty()) {
+			return R.error("上传文件不能为空");
+		}
+		String fileOrigName = file.getOriginalFilename();
+		if (!fileOrigName.contains( "." )) {
+			return R.error( "缺少后缀名" );
+		}
+
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
+
+		String imagePathName = filesPath +"/images/productLeave"+ FileUtil.getPath() + uuid + fileOrigName;
+
+		String imageUrl = "/images/productLeave"+FileUtil.getPath() + uuid + fileOrigName;
+
+		FileUtil.saveFile( file, imagePathName );
+
+		return R.ok().put( "imageUrl", imageUrl );
+	}
 
 	/**
 	 * 删除

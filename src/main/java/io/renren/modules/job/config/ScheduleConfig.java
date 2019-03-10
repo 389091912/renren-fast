@@ -29,7 +29,6 @@ import java.util.Properties;
  * @author Mark sunlightcs@gmail.com
  * @since 2.0.0 2017-04-20
  */
-@Configuration
 public class ScheduleConfig {
 
     @Bean

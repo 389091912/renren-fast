@@ -68,6 +68,7 @@ public class ProductBoxEntity implements Serializable {
 
 	private String boxAddFactoryId;
 
+	private Integer productId;
 
 	@TableField(exist = false)
 	private List<BoxFactoryVo> boxFactoryVoList;

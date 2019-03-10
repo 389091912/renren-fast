@@ -3,9 +3,15 @@ package io.renren.modules.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.product.dao.ProductInfoDao;
+import io.renren.modules.product.entity.ProductInfoEntity;
+import io.renren.modules.product.entity.ProductOrderEntity;
+import io.renren.modules.product.service.ProductInfoService;
+import io.renren.modules.product.service.ProductOrderService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +38,12 @@ public class ProductOrderDetailController extends AbstractController {
     @Autowired
     private ProductOrderDetailService productOrderDetailService;
 
+    @Autowired
+    private ProductOrderService productOrderService;
+
+    @Autowired
+    private ProductInfoService productInfoService;
+
     /**
      * 列表
      */
@@ -51,6 +63,19 @@ public class ProductOrderDetailController extends AbstractController {
     @RequiresPermissions("product:productorderdetail:info")
     public R info(@PathVariable("id") Integer id){
 			ProductOrderDetailEntity productOrderDetail = productOrderDetailService.selectById(id);
+			if(!StringUtils.isEmpty( productOrderDetail.getOrderId() )){
+                ProductOrderEntity productOrderEntity = productOrderService.selectById( productOrderDetail.getOrderId() );
+                if (!StringUtils.isEmpty( productOrderDetail )) {
+                    productOrderDetail.setOrderNo( productOrderEntity.getOrderNo() );
+                }
+            }
+        if (!StringUtils.isEmpty( productOrderDetail.getProductId() )) {
+            ProductInfoEntity productInfoEntity = productInfoService.selectById( productOrderDetail.getProductId() );
+            if (!StringUtils.isEmpty( productInfoEntity )) {
+                productOrderDetail.setProductName( productInfoEntity.getProductName() );
+            }
+
+        }
 
         return R.ok().put("productOrderDetail", productOrderDetail);
     }

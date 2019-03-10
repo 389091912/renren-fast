@@ -64,15 +64,17 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
 
         page = this.selectPage(
                 new Query<BoxAddLeaveEntity>( params ).getPage(),
-                boxAddLeaveEntityWrapper.orderBy( "box_no",true ).orderBy( "create_time", false )
+                boxAddLeaveEntityWrapper
+                        .orderBy( "box_no",true )
+                        .orderBy( "create_time", false )
         );
 
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (BoxAddLeaveEntity boxAddLeaveEntity : page.getRecords()) {
 
                 boxAddLeaveEntity.setBoxNoName(
-                        (!StringUtils.isEmpty( boxAddLeaveEntity.getBoxNo() ))?
-                        productBoxDao.selectById( boxAddLeaveEntity.getBoxNo()).getBoxNo():
+                        (!StringUtils.isEmpty( productBoxDao.selectById( boxAddLeaveEntity.getBoxNo()) ))?
+                                productBoxDao.selectById( boxAddLeaveEntity.getBoxNo()).getBoxNo():
                         null);
 
             }

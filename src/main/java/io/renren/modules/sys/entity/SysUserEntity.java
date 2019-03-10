@@ -22,6 +22,13 @@ import java.util.List;
 @TableName("sys_user")
 public class SysUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static final int SYSTEM_USER = 0;
+	public static final int MANAGER = 1;
+	public static final int SALESMAN = 2;
+	public static final int OTHER_MAN = 3;
+
+
 	
 	/**
 	 * 用户ID
@@ -34,6 +41,11 @@ public class SysUserEntity implements Serializable {
 	 */
 	@NotBlank(message="用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String username;
+
+	/**
+	 * 真实姓名
+	 */
+	private String realName;
 
 	/**
 	 * 密码
@@ -78,6 +90,8 @@ public class SysUserEntity implements Serializable {
 	 * 创建时间
 	 */
 	private Date createTime;
+
+	private Integer type;
 
 	/**
 	 * 设置：
@@ -213,5 +227,21 @@ public class SysUserEntity implements Serializable {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 }

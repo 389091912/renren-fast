@@ -1,8 +1,10 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.Dict;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,4 +90,16 @@ public class ProductDeviceController extends AbstractController {
         return R.ok();
     }
 
+
+
+    /**
+     * selectDriverList
+     */
+    @RequestMapping("/getDriverList")
+
+    public R selectDriverList(){
+        List<Dict> deviceList = productDeviceService.selectDriverList();
+
+        return R.ok().put( "deviceList",deviceList );
+    }
 }
