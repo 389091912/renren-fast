@@ -145,6 +145,9 @@ public class ProductPlanNoticeEntity implements Serializable {
 	 */
 	private Integer status;
 
+	private Integer groupNumber;
+
+	private Integer isPriority;
 	/**
 	 * 设置：ID
 	 */

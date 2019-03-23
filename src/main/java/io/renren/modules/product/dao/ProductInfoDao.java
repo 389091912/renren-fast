@@ -3,6 +3,7 @@ package io.renren.modules.product.dao;
 import io.renren.modules.product.entity.ProductInfoEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -13,5 +14,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProductInfoDao extends BaseMapper<ProductInfoEntity> {
-	
+    void updateProductInfoIsNullByDesignId(@Param("designId") Integer designId);
 }

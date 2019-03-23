@@ -31,5 +31,10 @@ public interface ProductInfoService extends IService<ProductInfoEntity> {
      */
     List<Dict> getAllProductVoList();
 
+    /**
+     * updateProductInfoIsNullByDesignId
+     * @param designId
+     */
+    void updateProductInfoIsNullByDesignId(Integer designId);
 }
 

@@ -1,6 +1,5 @@
 package io.renren.modules.product.service.impl;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.renren.common.utils.Dict;
 import org.springframework.stereotype.Service;
 

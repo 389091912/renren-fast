@@ -107,6 +107,19 @@ public class ProductOrderDetailEntity implements Serializable {
 	 */
 	private Integer status;
 
+
+	/**
+	 * 生产计划
+	 *
+	 */
+	private Integer planId;
+
+	/**
+	 * 纸箱入库数量
+	 *
+	 */
+	private Integer boxNumber;
+
 	/**
 	 * 订单状态
 	 */

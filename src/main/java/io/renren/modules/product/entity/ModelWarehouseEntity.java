@@ -1,5 +1,6 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
@@ -25,6 +26,7 @@ public class ModelWarehouseEntity implements Serializable {
 	/**
 	 * 仓库号
 	 */
+	@TableField(exist = false)
 	private Integer warehouseNo;
 	/**
 	 * 仓库名称

@@ -164,6 +164,11 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                         productInfoDao.selectById( productOrderDetail.getProductId() ).getProductName():
                         null  );
 
+                if (productOrderDetail.getStatus() .equals( ProductOrderDetailEntity.WAITER_PRODUCT ) ) {
+                    if (!StringUtils.isEmpty( productOrderDetail.getPlanId() )) {
+                        productOrderDetail.setStatus( ProductOrderDetailEntity.PROCESS_PRODUCT );
+                    }
+                }
                 ProductOrderEntity productOrderEntity = productOrderDao.selectById( productOrderDetail.getOrderId() );
                 if(!StringUtils.isEmpty(productOrderEntity)){
                     productOrderDetail.setOrderNo( productOrderEntity.getOrderNo() );

@@ -3,6 +3,8 @@ package io.renren.modules.product.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.renren.modules.product.entity.ProductOrderDetailEntity;
+import io.renren.modules.product.service.ProductOrderDetailService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class ProductPlanNoticeController extends AbstractController {
     @Autowired
     private ProductPlanNoticeService productPlanNoticeService;
 
+    @Autowired
+    private ProductOrderDetailService productOrderDetailService;
+
     /**
      * 列表
      */
@@ -51,7 +56,7 @@ public class ProductPlanNoticeController extends AbstractController {
     @RequiresPermissions("product:productplannotice:info")
     public R info(@PathVariable("id") Integer id){
 			ProductPlanNoticeEntity productPlanNotice = productPlanNoticeService.selectById(id);
-
+        System.out.println( "ProductPlanNoticeController.info" );
         return R.ok().put("productPlanNotice", productPlanNotice);
     }
 
@@ -61,8 +66,13 @@ public class ProductPlanNoticeController extends AbstractController {
     @RequestMapping("/save")
     @RequiresPermissions("product:productplannotice:save")
     public R save(@RequestBody ProductPlanNoticeEntity productPlanNotice){
-			productPlanNoticeService.insert(productPlanNotice);
 
+        Integer orderDetailId = productPlanNotice.getOrderId();
+        ProductOrderDetailEntity productOrderDetailEntity = productOrderDetailService.selectById( orderDetailId );
+        productPlanNoticeService.insert(productPlanNotice);
+        productOrderDetailEntity.setStatus(ProductOrderDetailEntity.PROCESS_PRODUCT  );
+        productOrderDetailEntity.setPlanId( productPlanNotice.getId() );
+        productOrderDetailService.updateById( productOrderDetailEntity );
         return R.ok();
     }
 

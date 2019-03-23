@@ -140,7 +140,14 @@ public class ProductInfoController extends AbstractController {
 
         return R.ok();
     }
+    @RequestMapping("/deleteDesignId/{designId}")
+    @RequiresPermissions("product:productinfo:delete")
+    public R deleteDesignId(@PathVariable("designId") Integer designId){
 
+        productInfoService.updateProductInfoIsNullByDesignId( designId );
+
+        return R.ok();
+    }
     /**
      * 根据Model ID 查询产品名称
      */

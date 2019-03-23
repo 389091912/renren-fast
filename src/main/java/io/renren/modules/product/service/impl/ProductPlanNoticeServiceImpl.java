@@ -37,8 +37,10 @@ public class ProductPlanNoticeServiceImpl extends ServiceImpl<ProductPlanNoticeD
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductPlanNoticeEntity> page = this.selectPage(
-                new Query<ProductPlanNoticeEntity>(params).getPage(),
-                new EntityWrapper<ProductPlanNoticeEntity>().orderBy( "create_time", false )
+                new Query<ProductPlanNoticeEntity>( params ).getPage(),
+                new EntityWrapper<ProductPlanNoticeEntity>()
+                        .orderBy( "is_priority", true )
+                        .orderBy( "create_time", false )
         );
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductPlanNoticeEntity planNoticeEntity : page.getRecords()) {

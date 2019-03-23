@@ -127,4 +127,9 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
         return allProductList;
     }
 
+    @Override
+    public void updateProductInfoIsNullByDesignId(Integer designId) {
+        baseMapper.updateProductInfoIsNullByDesignId( designId );
+
+    }
 }

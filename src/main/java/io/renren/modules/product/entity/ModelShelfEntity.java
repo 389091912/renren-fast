@@ -2,6 +2,7 @@ package io.renren.modules.product.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-03-02 11:00:17
  */
+@Data
 @TableName("model_shelf")
 public class ModelShelfEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
