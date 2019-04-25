@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.IngredientDetailDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.IngredientDetailEntity" id="ingredientDetailMap">
+        <result property="id" column="id"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="ingredientId" column="ingredient_id"/>
+        <result property="weight" column="weight"/>
+        <result property="price" column="price"/>
+        <result property="tickerNumber" column="ticker_number"/>
+        <result property="type" column="type"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updataTime" column="updata_time"/>
+    </resultMap>
+
+
+</mapper>

@@ -35,9 +35,17 @@
         SUM(parry_number) parryNumberCount,
         SUM(spacer_number) spacerNumberCount
         FROM box_add_leave
-        WHERE box_no=#{boxNo} and type=1
+        WHERE box_no=#{boxNo} AND type=1
     </select>
-
+    <select id="addBoxNumberCount2" resultMap="boxAddLeaveMap1">
+        SELECT
+        SUM(add_box_number) addBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        WHERE box_no=#{boxNo} AND factory_id=#{factoryId} AND type=1
+    </select>
     <select id="addBoxNumberCount1" parameterType="map" resultMap="boxAddLeaveMap1">
         SELECT
         SUM(add_box_number) addBoxNumberCount,
@@ -68,9 +76,18 @@
         SUM(parry_number) parryNumberCount,
         SUM(spacer_number) spacerNumberCount
         FROM box_add_leave
-        WHERE box_no=#{boxNo} and type=0
+        WHERE box_no=#{boxNo} AND type=0
     </select>
 
+    <select id="leaveBoxNumberCount2"  resultMap="boxAddLeaveMap1">
+        SELECT
+        sum(out_box_number) outBoxNumberCount,
+        SUM(body_number) bodyNumberCount,
+        SUM(parry_number) parryNumberCount,
+        SUM(spacer_number) spacerNumberCount
+        FROM box_add_leave
+        WHERE box_no=#{boxNo} AND factory_id=#{factoryId} AND type=0
+    </select>
     <select id="leaveBoxNumberCount1" parameterType="string" resultMap="boxAddLeaveMap1">
         SELECT
         sum(out_box_number) outBoxNumberCount,

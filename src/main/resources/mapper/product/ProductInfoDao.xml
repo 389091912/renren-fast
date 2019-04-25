@@ -30,5 +30,10 @@
         <result property="status" column="status"/>
     </resultMap>
 
+    <update id="updateProductInfoIsNullByDesignId" parameterType="integer">
+        UPDATE product_info
+        SET product_drawing_id=NULL
+        WHERE product_drawing_id=#{designId}
+    </update>
 
 </mapper>

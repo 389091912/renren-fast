@@ -4,11 +4,10 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8080
+  port: 8888
   connection-timeout: 5000ms
   servlet:
-    context-path: /renren-fast
-
+    context-path: /hxbl-pro
 
 spring:
   # 环境 dev|test|prod
@@ -20,15 +19,15 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
+      max-file-size: 200MB
+      max-request-size: 200MB
       enabled: true
   redis:
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
-    host: 111.230.7.251
+    host: 47.96.1.162
     port: 6379
-    password: xiaoya6012    # 密码（默认为空）
+    password: hxBl@5779    # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:
@@ -84,4 +83,6 @@ renren:
     # token有效时长，7天，单位秒
     expire: 604800
     header: token
-
+files:
+   path: ${file-path:i:/hxbl}
+   #path: ${file-path:/my/hxbl}
