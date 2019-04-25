@@ -1,19 +1,23 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.toolkit.CollectionUtils;
 import io.renren.common.utils.Dict;
+import io.renren.modules.product.entity.ModelShelfEntity;
+import io.renren.modules.product.entity.ProductModelOutEntity;
+import io.renren.modules.product.service.ModelShelfService;
+import io.renren.modules.product.service.ProductModelOutService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.product.entity.ProductModelEntity;
 import io.renren.modules.product.service.ProductModelService;
@@ -34,6 +38,12 @@ import io.renren.common.utils.R;
 public class ProductModelController extends AbstractController {
     @Autowired
     private ProductModelService productModelService;
+
+    @Autowired
+    private ProductModelOutService productModelOutService;
+
+    @Autowired
+    private ModelShelfService modelShelfService;
 
     /**
      * 列表
@@ -58,14 +68,49 @@ public class ProductModelController extends AbstractController {
         return R.ok().put("productModel", productModel);
     }
 
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/infoByModelNo/{modelNo}")
+    @RequiresPermissions("product:productmodel:info")
+    public R infoByModelNo(@PathVariable("modelNo") String modelNo) {
+        System.out.println( modelNo );
+        List<ProductModelEntity> productModelEntities = productModelService.selectList( new EntityWrapper<ProductModelEntity>().eq( "model_no", modelNo ) );
+        System.out.println( productModelEntities.size() );
+        if(CollectionUtils.isNotEmpty(  productModelEntities)){
+            return R.ok().put( "productModel", productModelEntities.get( 0 ) );
+        }else {
+            return R.ok().put( "productModel", new ProductModelEntity() );
+        }
+
+    }
+
     /**
      * 保存
      */
     @RequestMapping("/save")
     @RequiresPermissions("product:productmodel:save")
     public R save(@RequestBody ProductModelEntity productModel){
-			productModelService.insert(productModel);
 
+        ModelShelfEntity modelShelfEntity = modelShelfService.selectById( productModel.getModelShelfId() );
+        if (ModelShelfEntity.IS_NOT_EMPTY.equals( modelShelfEntity.getIsEmpty() )) {
+            return R.error( "改货架已经有货物了" );
+        }
+
+
+        productModelService.insert(productModel);
+        ProductModelOutEntity productModelOutEntity = new ProductModelOutEntity();
+        productModelOutEntity.setModelNo( productModel.getId() );
+        productModelOutEntity.setProductName( productModel.getProductName() );
+
+
+        productModelOutService.insert( productModelOutEntity );
+
+        modelShelfEntity.setIsEmpty( ModelShelfEntity.IS_NOT_EMPTY );
+        modelShelfEntity.setModelId( productModel.getId() );
+        modelShelfEntity.setUpdataTime( new Date() );
+        modelShelfService.insertOrUpdate( modelShelfEntity );
         return R.ok();
     }
 

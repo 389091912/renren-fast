@@ -40,6 +40,16 @@ public class ProductOrderDetailEntity implements Serializable {
 	 * 取消生产
 	 */
 	public static final int CANCEL_PRODUCT = 3;
+	/**
+	 * 纸箱供应方式 自供
+	 */
+	public static final int BOX_SUPPLY_SELF = 1;
+	/**
+	 * 纸箱供应方式 客供
+	 */
+	public static final int BOX_SUPPLY_CUSTOMER = 0;
+
+
 
 	/**
 	 * ID
@@ -115,10 +125,24 @@ public class ProductOrderDetailEntity implements Serializable {
 	private Integer planId;
 
 	/**
-	 * 纸箱入库数量
-	 *
+	 * 纸箱厂
 	 */
-	private Integer boxNumber;
+	private Integer boxFactoryId;
+
+	@TableField(exist = false)
+	private String factoryName;
+
+
+	/**
+	 * 需求纸箱数量
+	 */
+	private Integer needBoxNumber;
+
+	/**
+	 * 纸箱入库数量
+	 */
+	@TableField(exist = false)
+	private Integer entryBoxNumber;
 
 	/**
 	 * 订单状态

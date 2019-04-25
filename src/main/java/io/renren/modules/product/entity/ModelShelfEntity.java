@@ -20,6 +20,15 @@ public class ModelShelfEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 为空
+	 */
+	public static final String IS_EMPTY = "0";
+
+	/**
+	 * 不为空
+	 */
+	public static final String IS_NOT_EMPTY = "1";
+	/**
 	 * 
 	 */
 	@TableId
@@ -52,6 +61,8 @@ public class ModelShelfEntity implements Serializable {
 	 * 
 	 */
 	private Date updataTime;
+
+	private Integer modelId;
 
 	/**
 	 * 设置：

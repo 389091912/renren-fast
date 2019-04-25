@@ -16,5 +16,7 @@ public class ProductDetailVo implements Serializable {
     private Integer id;
     private Integer productId;
     private String zhiNumber;
+    private Integer boxFactoryId;
+    private Integer needBoxNumber;
     private String remark;
 }

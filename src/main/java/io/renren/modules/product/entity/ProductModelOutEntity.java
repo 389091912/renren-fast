@@ -165,6 +165,14 @@ public class ProductModelOutEntity implements Serializable {
 	 */
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date modelReceiptTime;
+
+	private Integer modelShelfId;
+
+	@TableField(exist = false)
+	private String modelName;
+
+	private Integer productId;
+
 	/**
 	 * 创建时间
 	 */
@@ -207,6 +215,7 @@ public class ProductModelOutEntity implements Serializable {
 	/**
 	 * 架号
 	 */
+	@TableField(exist = false)
 	private String siteNo;
 
 	/**

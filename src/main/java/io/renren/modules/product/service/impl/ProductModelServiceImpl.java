@@ -1,9 +1,10 @@
 package io.renren.modules.product.service.impl;
 
 import io.renren.common.utils.Dict;
+import io.renren.modules.product.dao.ModelShelfDao;
+import io.renren.modules.product.dao.ProductInfoDao;
 import io.renren.modules.product.dao.ProductModelOutDao;
-import io.renren.modules.product.entity.ProductModelOutEntity;
-import io.renren.modules.product.entity.ProductOrderEntity;
+import io.renren.modules.product.entity.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
 import io.renren.modules.product.dao.ProductModelDao;
-import io.renren.modules.product.entity.ProductModelEntity;
 import io.renren.modules.product.service.ProductModelService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +33,13 @@ public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, Produc
 
     @Autowired
     private ProductModelOutDao productModelOutDao;
+
+    @Autowired
+    private ProductInfoDao productInfoDao;
+
+    @Autowired
+    private ModelShelfDao modelShelfDao;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -58,6 +65,19 @@ public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, Produc
             for (ProductModelEntity productModelEntity : page.getRecords()) {
                 ProductModelOutEntity resultProductModelAdd = productModelOutDao.selectModelAddCount( productModelEntity.getId() );
                 ProductModelOutEntity resultProductModelOut = productModelOutDao.selectModelOutCount( productModelEntity.getId() );
+                if (!StringUtils.isEmpty( productModelEntity.getProductId() )) {
+                    ProductInfoEntity productInfoEntity = productInfoDao.selectById( productModelEntity.getProductId() );
+                    if (!StringUtils.isEmpty( productInfoEntity )) {
+                        productModelEntity.setProductName( productInfoEntity.getProductName() );
+                    }
+                }
+
+                if (!StringUtils.isEmpty( productModelEntity.getModelShelfId() )) {
+                    ModelShelfEntity modelShelfEntity = modelShelfDao.selectById( productModelEntity.getModelShelfId() );
+                    if (!StringUtils.isEmpty( modelShelfEntity )) {
+                        productModelEntity.setSiteNo( modelShelfEntity.getShelfNo() );
+                    }
+                }
 
                 //成模
                 Integer modelSuccessMo = productModelEntity.getModelSuccessMo();

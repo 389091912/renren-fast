@@ -1,8 +1,11 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,5 +89,23 @@ public class ModelShelfController {
 
         return R.ok();
     }
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/getIsEmptyList/{warehouseId}")
+   // @RequiresPermissions("product:modelshelf:list")
+    public R getIsEmptyList(@PathVariable( "warehouseId" ) Integer warehouseId) {
+
+        List<ModelShelfEntity> modelShelfIsEmptyList = modelShelfService.selectList( new EntityWrapper<ModelShelfEntity>()
+                .eq( "warehouse_id", warehouseId )
+                .eq( "is_empty", 0 )
+                .orderBy( "id", true )
+                .orderBy( "updata_time", true )
+        );
+        System.out.println( modelShelfIsEmptyList.size() );
+        return R.ok().put( "modelShelfIsEmptyList", modelShelfIsEmptyList );
+    }
+
 
 }

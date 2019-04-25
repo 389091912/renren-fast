@@ -1,5 +1,6 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,6 +34,7 @@ public class ProductModelEntity implements Serializable {
 	/**
 	 * 架号
 	 */
+	@TableField(exist = false)
 	private String siteNo;
 
 	/**
@@ -152,6 +154,14 @@ public class ProductModelEntity implements Serializable {
 	 * 退货原因
 	 */
 	private String reasonReturn;
+
+
+	private Integer modelShelfId;
+
+	private Integer productId;
+
+
+
 
 	/**
 	 * 设置：模具ID

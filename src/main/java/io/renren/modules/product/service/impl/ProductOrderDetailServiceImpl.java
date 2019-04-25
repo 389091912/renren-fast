@@ -2,10 +2,11 @@ package io.renren.modules.product.service.impl;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import io.renren.modules.product.dao.*;
-import io.renren.modules.product.entity.ProductOrderEntity;
+import io.renren.modules.product.entity.*;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,6 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
-import io.renren.modules.product.entity.ProductOrderDetailEntity;
 import io.renren.modules.product.service.ProductOrderDetailService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +38,15 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
 
     @Autowired
     private ProductOrderDao productOrderDao;
+
+    @Autowired
+    private BoxFactoryDao boxFactoryDao;
+
+    @Autowired
+    private BoxAddLeaveDao boxAddLeaveDao;
+
+    @Autowired
+    private ProductBoxDao productBoxDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -160,15 +169,63 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
 
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductOrderDetailEntity productOrderDetail : page.getRecords()) {
-                productOrderDetail.setProductName((!StringUtils.isEmpty( productInfoDao.selectById( productOrderDetail.getProductId() ) ))?
-                        productInfoDao.selectById( productOrderDetail.getProductId() ).getProductName():
+                ProductInfoEntity productInfoEntity = productInfoDao.selectById( productOrderDetail.getProductId() );
+                productOrderDetail.setProductName((!StringUtils.isEmpty( productInfoEntity ))?
+                        productInfoEntity.getProductName():
                         null  );
+
+                if (!StringUtils.isEmpty( productOrderDetail.getBoxFactoryId() )) {
+                    BoxFactoryEntity boxFactoryEntity = boxFactoryDao.selectById( productOrderDetail.getBoxFactoryId() );
+                    productOrderDetail.setFactoryName( !StringUtils.isEmpty( boxFactoryEntity ) ? boxFactoryEntity.getFactoryName() : null );
+                }
 
                 if (productOrderDetail.getStatus() .equals( ProductOrderDetailEntity.WAITER_PRODUCT ) ) {
                     if (!StringUtils.isEmpty( productOrderDetail.getPlanId() )) {
                         productOrderDetail.setStatus( ProductOrderDetailEntity.PROCESS_PRODUCT );
                     }
                 }
+
+                if (productOrderDetail.getBoxSupplyWay().equals( ProductOrderDetailEntity.BOX_SUPPLY_SELF )) {
+                    List<ProductBoxEntity> productBoxList = productBoxDao.selectList( new EntityWrapper<ProductBoxEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
+                    if (CollectionUtils.isNotEmpty( productBoxList )) {
+                        int enterBoxNumber = 0;
+                       // int outBoxNumber = 0;
+                        for (ProductBoxEntity productBoxEntity : productBoxList) {
+                            System.out.println(productBoxEntity.getId());
+                            BoxAddLeaveEntity boxAdd = boxAddLeaveDao.addBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId());
+                         //   BoxAddLeaveEntity boxLeave = boxAddLeaveDao.leaveBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId() );
+                            if (!StringUtils.isEmpty(boxAdd )) {
+                                enterBoxNumber+=boxAdd.getAddBoxNumberCount();
+                                System.out.println(enterBoxNumber);
+
+                            }
+//                            if(!StringUtils.isEmpty( boxLeave)){
+//                                System.out.println(outBoxNumber);
+//                                outBoxNumber+= boxLeave.getOutBoxNumberCount();
+//                            }
+////                        List<BoxAddLeaveEntity> addLeaveList = boxAddLeaveDao.selectList( new EntityWrapper<BoxAddLeaveEntity>().eq( "box_no", productBoxEntity.getBoxNo() ) );
+////                        for (BoxAddLeaveEntity boxAddLeave : addLeaveList) {
+////
+////                            if (!StringUtils.isEmpty( boxAddLeave.getAddBoxNumber() )) {
+////                                enterBoxNumber += boxAddLeave.getAddBoxNumber();
+////                            }
+////                            if(!StringUtils.isEmpty( boxAddLeave.getOutBoxNumberCount() )){
+////
+////                            }
+////                            outBoxNumber += boxAddLeave.getOutBoxNumber();
+////
+                        }
+
+                        productOrderDetail.setEntryBoxNumber( enterBoxNumber  );
+                    }else {
+                        productOrderDetail.setEntryBoxNumber(0);
+                    }
+
+                }
+
+
+
+
                 ProductOrderEntity productOrderEntity = productOrderDao.selectById( productOrderDetail.getOrderId() );
                 if(!StringUtils.isEmpty(productOrderEntity)){
                     productOrderDetail.setOrderNo( productOrderEntity.getOrderNo() );
