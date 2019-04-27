@@ -160,6 +160,8 @@ public class ProductModelEntity implements Serializable {
 
 	private Integer productId;
 
+	@TableField(exist = false)
+	private String shelfNo;
 
 
 

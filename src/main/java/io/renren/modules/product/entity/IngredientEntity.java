@@ -1,7 +1,9 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Date;
  * @email 389091912@qq.com
  * @date 2019-04-25 23:43:32
  */
+@Data
 @TableName("ingredient")
 public class IngredientEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,6 +29,25 @@ public class IngredientEntity implements Serializable {
 	 * 材料名称
 	 */
 	private String materialName;
+
+	/**
+	 * 总吨数
+	 */
+	@TableField(exist = false )
+	private double countWeight;
+
+	/**
+	 * 出库吨数
+	 */
+	@TableField(exist = false )
+	private double outWeight;
+
+	/**
+	 * 剩余吨数
+	 */
+	@TableField(exist = false )
+	private double residueWeight;
+
 	/**
 	 * 
 	 */

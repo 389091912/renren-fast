@@ -249,6 +249,29 @@ public class SysOssController {
 		return R.ok().put( "imageUrl", imageUrl );
 	}
 
+
+	@RequestMapping("/uploadSupplierImage")
+	public R uploadSupplierImage(MultipartFile file) {
+		if (file.isEmpty()) {
+			return R.error("上传文件不能为空");
+		}
+		String fileOrigName = file.getOriginalFilename();
+		if (!fileOrigName.contains( "." )) {
+			return R.error( "缺少后缀名" );
+		}
+
+		fileOrigName = fileOrigName.substring( fileOrigName.lastIndexOf( "." ) );
+
+		String uuid = UUID.randomUUID().toString().replaceAll( "-", "" );
+
+		String imagePathName = filesPath +"/images/supplier"+ FileUtil.getPath() + uuid + fileOrigName;
+
+		String imageUrl = "/images/supplier"+FileUtil.getPath() + uuid + fileOrigName;
+
+		FileUtil.saveFile( file, imagePathName );
+
+		return R.ok().put( "imageUrl", imageUrl );
+	}
 	/**
 	 * 删除
 	 */

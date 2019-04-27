@@ -65,11 +65,31 @@ public class ProductModelOutServiceImpl extends ServiceImpl<ProductModelOutDao, 
                 ProductModelEntity productModelEntity = productModelDao.selectById( productModelOutEntity.getModelNo() );
                 if (!StringUtils.isEmpty( productModelEntity )) {
                     productModelOutEntity.setModelName( productModelEntity.getModelNo() );
+                    productModelOutEntity.setCustomerModelNo( productModelEntity.getCustomerModelNo() );
+
+                    if (!StringUtils.isEmpty( productModelEntity.getProductId() )) {
+                        ProductInfoEntity productInfoEntity = productInfoDao.selectById( productModelEntity.getProductId() );
+                        if (!StringUtils.isEmpty( productInfoEntity )) {
+                            productModelOutEntity.setProductName( productInfoEntity.getProductName() );
+                        }
+                    }
+
                 }
+
             }
         }
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public ProductModelOutEntity getAllModelAddCountByModelNo(Integer modelNo) {
+        return baseMapper.selectModelAddCount( modelNo );
+    }
+
+    @Override
+    public ProductModelOutEntity getAllModelOutCountByModelNo(Integer modelNo) {
+        return baseMapper.selectModelOutCount( modelNo );
     }
 
 }

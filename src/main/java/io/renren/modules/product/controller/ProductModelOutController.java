@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.aspectj.bridge.MessageWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,6 +97,7 @@ public class ProductModelOutController extends AbstractController {
                 productModelEntity.setDepotId( productModelOut.getDepotId() );
                 productModelEntity.setModelShelfId( productModelOut.getModelShelfId() );
 
+
                 productModelService.updateAllColumnById( productModelEntity );
 
 
@@ -109,6 +111,7 @@ public class ProductModelOutController extends AbstractController {
                 productModelEntity.setModelType( productModelOut.getModelType() );
                 productModelEntity.setProductId( productModelOut.getProductId() );
                 productModelEntity.setCustomerModelNo( productModelOut.getCustomerModelNo() );
+
                 productModelService.insert( productModelEntity );
 
                 productModelOut.setModelNo( productModelEntity.getId() );
@@ -123,9 +126,52 @@ public class ProductModelOutController extends AbstractController {
         if (productModelOut.getModelType() == ProductModelOutEntity.OUT_MODEL_TYPE) {
             ProductModelEntity productModelEntity = productModelService.selectById( productModelOut.getModelNo() );
 
-            boolean modelSuccessMoNumFlag = productModelEntity.getModelSuccessMo() - productModelOut.getModelSuccessMo() <= 0;
 
-            if (modelSuccessMoNumFlag) {
+            ProductModelOutEntity addCountByModelNo = productModelOutService.getAllModelAddCountByModelNo( productModelEntity.getId() );
+
+            ProductModelOutEntity outCountByModelNo = productModelOutService.getAllModelOutCountByModelNo( productModelEntity.getId() );
+
+            if (!StringUtils.isEmpty( addCountByModelNo )) {
+                productModelEntity.setModelSuccessMo(  addCountByModelNo.getModelSuccessMoCount()  );
+                productModelEntity.setModelPrimaryMo( addCountByModelNo.getModelPrimaryMoCount() );
+                productModelEntity.setModelMouthMo( addCountByModelNo.getModelMouthMoCount() );
+                productModelEntity.setModelMenTou( addCountByModelNo.getModelMenTouCount() );
+                productModelEntity.setModelFunnel(  addCountByModelNo.getModelFunnelCount()  );
+                productModelEntity.setModelCore(  addCountByModelNo.getModelCoreCount()  );
+                productModelEntity.setModelAirTou( addCountByModelNo.getModelAirTouCount() );
+                productModelEntity.setModelCooling(  addCountByModelNo.getModelCoolingCount() );
+                productModelEntity.setModelClamp(  addCountByModelNo.getModelClampCount()  );
+            }
+            if (!StringUtils.isEmpty( outCountByModelNo )&& (!StringUtils.isEmpty( addCountByModelNo ))) {
+
+                    productModelEntity.setModelSuccessMo(  addCountByModelNo.getModelSuccessMoCount() - outCountByModelNo.getModelSuccessMoCount() );
+                    productModelEntity.setModelPrimaryMo(  addCountByModelNo.getModelPrimaryMoCount() - outCountByModelNo.getModelPrimaryMoCount() );
+                    productModelEntity.setModelMouthMo(   addCountByModelNo.getModelMouthMoCount() - outCountByModelNo.getModelMouthMoCount() );
+                    productModelEntity.setModelMenTou(  addCountByModelNo.getModelMenTouCount() - outCountByModelNo.getModelMenTouCount() );
+                    productModelEntity.setModelFunnel(   addCountByModelNo.getModelFunnelCount() - outCountByModelNo.getModelFunnelCount() );
+                    productModelEntity.setModelCore(   addCountByModelNo.getModelCoreCount() - outCountByModelNo.getModelCoreCount() );
+                    productModelEntity.setModelAirTou(   addCountByModelNo.getModelAirTouCount() - outCountByModelNo.getModelAirTouCount() );
+                    productModelEntity.setModelCooling(   addCountByModelNo.getModelCoolingCount() - outCountByModelNo.getModelCoolingCount() );
+                    productModelEntity.setModelClamp(   addCountByModelNo.getModelClampCount() - outCountByModelNo.getModelClampCount() );
+
+            }
+
+            boolean modelSuccessMoNumFlag = productModelEntity.getModelSuccessMo() - productModelOut.getModelSuccessMo() <= 0;
+            boolean modelPrimaryMoNumFlag = productModelEntity.getModelPrimaryMo() - productModelOut.getModelPrimaryMo() <= 0;
+            boolean modelMouthMoNumFlag = productModelEntity.getModelMouthMo() - productModelOut.getModelMouthMo() <= 0;
+            boolean modelMenTouNumFlag = productModelEntity.getModelMenTou() - productModelOut.getModelMenTou() <= 0;
+            boolean modelFunnelNumFlag = productModelEntity.getModelFunnel() - productModelOut.getModelFunnel() <= 0;
+            boolean modelCoreNumFlag = productModelEntity.getModelCore() - productModelOut.getModelCore() <= 0;
+            boolean modelAirTouNumFlag = productModelEntity.getModelAirTou() - productModelOut.getModelAirTou() <= 0;
+            boolean modelCoolingNumFlag = productModelEntity.getModelCooling() - productModelOut.getModelCooling() <= 0;
+            boolean modelClampNumFlag = productModelEntity.getModelClamp() - productModelOut.getModelClamp() <= 0;
+
+            boolean flag = modelSuccessMoNumFlag && modelPrimaryMoNumFlag &&
+                    modelMouthMoNumFlag && modelMenTouNumFlag &&
+                    modelFunnelNumFlag && modelCoreNumFlag &&
+                    modelAirTouNumFlag && modelCoolingNumFlag && modelClampNumFlag;
+
+            if (flag) {
                 modelShelfEntity.setIsEmpty( ModelShelfEntity.IS_EMPTY );
                 modelShelfEntity.setModelId( null );
                 modelShelfEntity.setUpdataTime( date );
@@ -134,6 +180,16 @@ public class ProductModelOutController extends AbstractController {
                 productModelEntity.setId( productModelOut.getModelNo() );
                 productModelEntity.setModelShelfId( null );
                 productModelEntity.setDepotId( null );
+                productModelEntity.setModelSuccessMo( 0 );
+                productModelEntity.setModelPrimaryMo( 0 );
+                productModelEntity.setModelMouthMo( 0 );
+                productModelEntity.setModelMenTou( 0 );
+                productModelEntity.setModelFunnel( 0 );
+                productModelEntity.setModelCore( 0 );
+                productModelEntity.setModelAirTou( 0 );
+                productModelEntity.setModelCooling( 0 );
+                productModelEntity.setModelClamp( 0 );
+
                 productModelService.updateAllColumnById( productModelEntity );
             }
         }

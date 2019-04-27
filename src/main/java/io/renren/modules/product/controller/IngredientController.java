@@ -1,10 +1,14 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import io.renren.common.utils.Dict;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,5 +90,35 @@ public class IngredientController {
 
         return R.ok();
     }
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/getAllIngredientList")
+    @RequiresPermissions("product:ingredient:list")
+    public R getAllIngredientList(){
+        List<Dict> ingredientList = ingredientService.selectAllIngredientList();
+
+        return R.ok().put("ingredientList", ingredientList);
+    }
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/residueWeightByMaterialName")
+    public R residueWeightByIngredientId(@RequestBody IngredientEntity ingredient){
+
+        IngredientEntity ingredientEntity = ingredientService.selectOne( new EntityWrapper<IngredientEntity>().eq( "material_name", ingredient.getMaterialName() ) );
+
+        if (!StringUtils.isEmpty( ingredientEntity )) {
+            Double residueWeight = ingredientService.residueWeightByIngredientId( ingredientEntity.getId() );
+            return R.ok().put("residueWeight", residueWeight);
+        }else {
+            return R.ok().put( "residueWeight", 0 );
+
+        }
+
+    }
+
 
 }

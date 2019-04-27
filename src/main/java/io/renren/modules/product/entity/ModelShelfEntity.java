@@ -1,8 +1,10 @@
 package io.renren.modules.product.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import net.bytebuddy.asm.Advice;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -63,6 +65,9 @@ public class ModelShelfEntity implements Serializable {
 	private Date updataTime;
 
 	private Integer modelId;
+
+	@TableField(exist = false )
+	private String modelName;
 
 	/**
 	 * 设置：

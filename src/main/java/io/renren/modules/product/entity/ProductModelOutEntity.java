@@ -218,6 +218,8 @@ public class ProductModelOutEntity implements Serializable {
 	@TableField(exist = false)
 	private String siteNo;
 
+	private String applyName;
+
 	/**
 	 * 设置：模具ID
 	 */

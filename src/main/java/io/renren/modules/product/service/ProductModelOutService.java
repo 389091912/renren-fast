@@ -16,5 +16,21 @@ import java.util.Map;
 public interface ProductModelOutService extends IService<ProductModelOutEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 获取模具所有的入库数量
+     * @param modelNo
+     * @return
+     */
+    ProductModelOutEntity getAllModelAddCountByModelNo(Integer modelNo);
+
+    /**
+     * 获取模具 所有的出库数量
+     * @param modelNo
+     * @return
+     */
+    ProductModelOutEntity getAllModelOutCountByModelNo(Integer modelNo);
+
+
 }
 

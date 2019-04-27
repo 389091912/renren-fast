@@ -17,6 +17,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.product.entity.ProductModelEntity;
@@ -63,9 +64,43 @@ public class ProductModelController extends AbstractController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("product:productmodel:info")
     public R info(@PathVariable("id") Integer id){
-			ProductModelEntity productModel = productModelService.selectById(id);
+        ProductModelEntity productModelEntity = productModelService.selectById(id);
+        ProductModelOutEntity addCountByModelNo = productModelOutService.getAllModelAddCountByModelNo( productModelEntity.getId() );
+        ProductModelOutEntity outCountByModelNo = productModelOutService.getAllModelOutCountByModelNo( productModelEntity.getId() );
 
-        return R.ok().put("productModel", productModel);
+        if (!StringUtils.isEmpty( addCountByModelNo )) {
+            productModelEntity.setModelSuccessMo(  addCountByModelNo.getModelSuccessMoCount()  );
+            productModelEntity.setModelPrimaryMo( addCountByModelNo.getModelPrimaryMoCount() );
+            productModelEntity.setModelMouthMo( addCountByModelNo.getModelMouthMoCount() );
+            productModelEntity.setModelMenTou( addCountByModelNo.getModelMenTouCount() );
+            productModelEntity.setModelFunnel(  addCountByModelNo.getModelFunnelCount()  );
+            productModelEntity.setModelCore(  addCountByModelNo.getModelCoreCount()  );
+            productModelEntity.setModelAirTou( addCountByModelNo.getModelAirTouCount() );
+            productModelEntity.setModelCooling(  addCountByModelNo.getModelCoolingCount() );
+            productModelEntity.setModelClamp(  addCountByModelNo.getModelClampCount()  );
+        }
+        if (!StringUtils.isEmpty( outCountByModelNo )&& (!StringUtils.isEmpty( addCountByModelNo ))) {
+
+            productModelEntity.setModelSuccessMo(  addCountByModelNo.getModelSuccessMoCount() - outCountByModelNo.getModelSuccessMoCount() );
+            productModelEntity.setModelPrimaryMo(  addCountByModelNo.getModelPrimaryMoCount() - outCountByModelNo.getModelPrimaryMoCount() );
+            productModelEntity.setModelMouthMo(   addCountByModelNo.getModelMouthMoCount() - outCountByModelNo.getModelMouthMoCount() );
+            productModelEntity.setModelMenTou(  addCountByModelNo.getModelMenTouCount() - outCountByModelNo.getModelMenTouCount() );
+            productModelEntity.setModelFunnel(   addCountByModelNo.getModelFunnelCount() - outCountByModelNo.getModelFunnelCount() );
+            productModelEntity.setModelCore(   addCountByModelNo.getModelCoreCount() - outCountByModelNo.getModelCoreCount() );
+            productModelEntity.setModelAirTou(   addCountByModelNo.getModelAirTouCount() - outCountByModelNo.getModelAirTouCount() );
+            productModelEntity.setModelCooling(   addCountByModelNo.getModelCoolingCount() - outCountByModelNo.getModelCoolingCount() );
+            productModelEntity.setModelClamp(   addCountByModelNo.getModelClampCount() - outCountByModelNo.getModelClampCount() );
+
+        }
+        if (!StringUtils.isEmpty( productModelEntity.getModelShelfId() )) {
+            ModelShelfEntity modelShelfEntity = modelShelfService.selectById( productModelEntity.getModelShelfId() );
+            productModelEntity.setShelfNo( modelShelfEntity.getShelfNo() );
+
+        }
+
+
+
+        return R.ok().put("productModel", productModelEntity);
     }
 
 
@@ -79,7 +114,15 @@ public class ProductModelController extends AbstractController {
         List<ProductModelEntity> productModelEntities = productModelService.selectList( new EntityWrapper<ProductModelEntity>().eq( "model_no", modelNo ) );
         System.out.println( productModelEntities.size() );
         if(CollectionUtils.isNotEmpty(  productModelEntities)){
-            return R.ok().put( "productModel", productModelEntities.get( 0 ) );
+
+            ProductModelEntity productModelEntity = productModelEntities.get( 0 );
+            if (!StringUtils.isEmpty( productModelEntity.getModelShelfId() )) {
+                ModelShelfEntity modelShelfEntity = modelShelfService.selectById( productModelEntity.getModelShelfId() );
+                productModelEntity.setShelfNo( modelShelfEntity.getShelfNo() );
+
+            }
+
+            return R.ok().put( "productModel", productModelEntity);
         }else {
             return R.ok().put( "productModel", new ProductModelEntity() );
         }
