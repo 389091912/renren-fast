@@ -19,5 +19,16 @@
         <result property="updataTime" column="updata_time"/>
     </resultMap>
 
+    <select id="countWeight" parameterType="integer" resultType="double">
+        SELECT sum(weight)
+        FROM ingredient_detail
+        WHERE ingredient_id=#{ingredientId} AND type=1
+    </select>
+
+    <select id="outCountWeight" parameterType="integer" resultType="double">
+        SELECT sum(weight)
+        FROM ingredient_detail
+        WHERE ingredient_id=#{ingredientId} AND type=0
+    </select>
 
 </mapper>
