@@ -110,15 +110,20 @@ public class ProductModelController extends AbstractController {
     @RequestMapping("/infoByModelNo/{modelNo}")
     @RequiresPermissions("product:productmodel:info")
     public R infoByModelNo(@PathVariable("modelNo") String modelNo) {
-        System.out.println( modelNo );
+
         List<ProductModelEntity> productModelEntities = productModelService.selectList( new EntityWrapper<ProductModelEntity>().eq( "model_no", modelNo ) );
-        System.out.println( productModelEntities.size() );
+
         if(CollectionUtils.isNotEmpty(  productModelEntities)){
 
             ProductModelEntity productModelEntity = productModelEntities.get( 0 );
             if (!StringUtils.isEmpty( productModelEntity.getModelShelfId() )) {
                 ModelShelfEntity modelShelfEntity = modelShelfService.selectById( productModelEntity.getModelShelfId() );
-                productModelEntity.setShelfNo( modelShelfEntity.getShelfNo() );
+
+                if(!StringUtils.isEmpty(modelShelfEntity  )){
+                    productModelEntity.setShelfNo( modelShelfEntity.getShelfNo() );
+                }
+
+
 
             }
 

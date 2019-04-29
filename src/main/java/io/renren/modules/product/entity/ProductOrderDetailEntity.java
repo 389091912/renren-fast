@@ -133,6 +133,7 @@ public class ProductOrderDetailEntity implements Serializable {
 	private String factoryName;
 
 
+
 	/**
 	 * 需求纸箱数量
 	 */
@@ -149,6 +150,12 @@ public class ProductOrderDetailEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Integer orderStatus;
+
+	/**
+	 * 订单是否已读
+	 */
+	@TableField(exist = false)
+	private Integer isRead;
 	/**
 	 * 设置：ID
 	 */

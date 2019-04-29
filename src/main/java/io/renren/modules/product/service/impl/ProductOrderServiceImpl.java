@@ -62,18 +62,37 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
         EntityWrapper<ProductOrderEntity> productOrderWrapper = new EntityWrapper<>();
         Page<ProductOrderEntity> page = new Page<>();
         if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
-            page= this.selectPage(
-                    new Query<ProductOrderEntity>( params ).getPage(),
-                    productOrderWrapper
-                            .eq( "employee_id", sysUserEntity.getUserId() )
-                            .or().like( "order_no",key )
-                            .or().like( "customer",key )
-                            .orderBy( "status", true )
-                            .orderBy( "update_time", false )
-            );
+            if (StringUtils.isEmpty( key )) {
+                page= this.selectPage(
+                        new Query<ProductOrderEntity>( params ).getPage(),
+                        productOrderWrapper
+                                .eq( "employee_id", sysUserEntity.getUserId() )
+                                .orderBy( "status", true )
+                                .orderBy( "update_time", false )
+                );
+            }else {
+                page= this.selectPage(
+                        new Query<ProductOrderEntity>( params ).getPage(),
+                        productOrderWrapper
+                                .eq( "employee_id", sysUserEntity.getUserId() )
+                                .or().like( "order_no",key )
+                                .or().like( "customer",key )
+                                .orderBy( "status", true )
+                                .orderBy( "update_time", false )
+                );
+            }
+
 
         }
         if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())){
+            if(StringUtils.isEmpty( key )){
+                page = this.selectPage(
+                        new Query<ProductOrderEntity>( params ).getPage(),
+                        new EntityWrapper<ProductOrderEntity>()
+                                .orderBy( "status", true )
+                                .orderBy( "update_time", false )
+                );
+            }else {
              page = this.selectPage(
                     new Query<ProductOrderEntity>( params ).getPage(),
                     new EntityWrapper<ProductOrderEntity>()
@@ -82,6 +101,7 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
                             .orderBy( "status", true )
                             .orderBy( "update_time", false )
             );
+            }
 
         }
 

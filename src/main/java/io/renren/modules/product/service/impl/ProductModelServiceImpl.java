@@ -51,8 +51,7 @@ public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, Produc
                     .or().like( "customer_name",key)
                     .or().like( "customer_model_no", key )
                     .or().like( "product_name", key )
-                    .orderBy( "create_time", false )
-            ;
+                    .orderBy( "create_time", false );
         }else {
             objectEntityWrapper.orderBy( "create_time", false );
         }

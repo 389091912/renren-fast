@@ -185,6 +185,9 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                     }
                 }
 
+                
+
+
                 if (productOrderDetail.getBoxSupplyWay().equals( ProductOrderDetailEntity.BOX_SUPPLY_SELF )) {
                     List<ProductBoxEntity> productBoxList = productBoxDao.selectList( new EntityWrapper<ProductBoxEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
                     if (CollectionUtils.isNotEmpty( productBoxList )) {

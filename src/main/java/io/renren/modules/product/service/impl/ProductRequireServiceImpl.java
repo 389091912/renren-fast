@@ -2,6 +2,7 @@ package io.renren.modules.product.service.impl;
 
 import io.renren.modules.product.dao.ProductInfoDao;
 import io.renren.modules.product.dao.ProductOrderDetailDao;
+import io.renren.modules.product.entity.ProductInfoEntity;
 import io.renren.modules.product.entity.ProductOrderDetailEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,16 @@ public class ProductRequireServiceImpl extends ServiceImpl<ProductRequireDao, Pr
         );
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductRequireEntity productRequire : page.getRecords()) {
-                    productRequire.setProductName(
-                            (!StringUtils.isEmpty(productInfoDao.selectById( productRequire.getProductId() ).getProductName() ))?
-                                    productInfoDao.selectById( productRequire.getProductId() ).getProductName():
-                                    null);
+
+                if (!StringUtils.isEmpty( productRequire.getProductId() )) {
+                    ProductInfoEntity productInfoEntity = productInfoDao.selectById( productRequire.getProductId() );
+
+                    if(!StringUtils.isEmpty(  productInfoEntity)){
+                        productRequire.setProductName( StringUtils.isEmpty(productInfoEntity.getProductName()  )?null:productInfoEntity.getProductName() );
+                    }
+
+
+                }
                 /**
                  * 统计订单份数
                  */

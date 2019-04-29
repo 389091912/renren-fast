@@ -70,9 +70,13 @@ public class ProductModelOutController extends AbstractController {
     @RequiresPermissions("product:productmodelout:info")
     public R info(@PathVariable("id") Integer id){
 		ProductModelOutEntity productModelOut = productModelOutService.selectById(id);
+        ProductModelEntity productModelEntity = productModelService.selectById( productModelOut.getModelNo() );
+        if (!StringUtils.isEmpty( productModelEntity )) {
+            productModelOut.setCustomerModelNo( productModelEntity.getCustomerModelNo() );
+            productModelOut.setModelName( productModelEntity.getModelNo() );
 
+        }
 
-        System.out.println(productModelOut.toString());
         return R.ok().put("productModelOut", productModelOut);
     }
 

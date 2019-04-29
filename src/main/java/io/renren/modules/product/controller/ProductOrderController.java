@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.renren.common.utils.IntegerUtil;
 import io.renren.modules.product.entity.*;
 import io.renren.modules.product.entity.vo.ProductDetailVo;
@@ -53,6 +54,10 @@ public class ProductOrderController extends AbstractController {
 
     @Autowired
     private ProductModelService productModelService;
+
+    @Autowired
+    private OrderMessageService orderMessageService;
+
     /**
      * 列表
      */
@@ -90,7 +95,7 @@ public class ProductOrderController extends AbstractController {
         productOrder.setUpdateId( getUserId().intValue() );
         productOrder.setUpdateTime( date);
         productOrderService.insert(productOrder);
-        System.out.println(productOrder.toString());
+
 
         if (!StringUtils.isEmpty( productOrder.getProductList() )) {
             List<ProductOrderDetailEntity> productDetailVos = JSONArray.parseArray( productOrder.getProductList(), ProductOrderDetailEntity.class );
@@ -105,6 +110,15 @@ public class ProductOrderController extends AbstractController {
                     productOrderDetail.setStatus( ProductOrderDetailEntity.WAITER_PRODUCT);
                     //  ProductOrderDetailEntity productOrderDetail = new ProductOrderDetailEntity();
                     productOrderDetailService.insertOrUpdate( productOrderDetail );
+
+                    OrderMessageEntity orderMessageEntity = new OrderMessageEntity();
+                    orderMessageEntity.setUserId( getUserId().intValue() );
+                    orderMessageEntity.setIsRead( OrderMessageEntity.IS_NOT_READ );
+                    orderMessageEntity.setOrderDetailId( productOrderDetail.getId() );
+                    orderMessageEntity.setCreateTime( date );
+                    orderMessageEntity.setCreateUser( getUserId().intValue() );
+                    orderMessageService.insert( orderMessageEntity );
+
 
                     List<ProductRequireEntity> productRequireList = productRequireService.selectList( new EntityWrapper<ProductRequireEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
                     if (CollectionUtils.isNotEmpty( productRequireList )) {
