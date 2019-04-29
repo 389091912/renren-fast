@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.product.dao.PartDetailDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.product.entity.PartDetailEntity" id="partDetailMap">
+        <result property="id" column="id"/>
+        <result property="partId" column="part_id"/>
+        <result property="partNumber" column="part_number"/>
+        <result property="type" column="type"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="purchaseName" column="purchase_name"/>
+        <result property="purchaseTime" column="purchase_time"/>
+        <result property="userName" column="user_name"/>
+        <result property="userTime" column="user_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+
+    <select id="countNumber" parameterType="integer" resultType="double">
+        SELECT sum(part_number)
+        FROM part_detail
+        WHERE part_id=#{partId} AND type=1
+    </select>
+
+    <select id="outCountNumber" parameterType="integer" resultType="double">
+        SELECT sum(part_number)
+        FROM part_detail
+        WHERE part_id=#{partId} AND type=0
+    </select>
+
+
+</mapper>
