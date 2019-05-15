@@ -204,13 +204,17 @@ public class ProductModelController extends AbstractController {
     public R getCustomerModelNo(@PathVariable(value = "modelId",required = false) Integer modelId){
 
         if (modelId == 0) {
-
             return R.ok().put( "customerModelNo","" );
         }
 
         ProductModelEntity productModel = productModelService.selectById( modelId );
 
-        return R.ok().put("customerModelNo", productModel.getCustomerModelNo());
+        if (!StringUtils.isEmpty( productModel )) {
+            return R.ok().put("customerModelNo", productModel.getCustomerModelNo());
+        }else {
+            return R.ok().put( "customerModelNo","" );
+        }
+
     }
 
 }

@@ -42,17 +42,32 @@ public class PartInfoServiceImpl extends ServiceImpl<PartInfoDao, PartInfoEntity
             if (!StringUtils.isEmpty( countNumber )) {
                 partInfoEntity.setResidueNumber(countNumber  );
             }
+
+
             if (!StringUtils.isEmpty( countNumber ) && !StringUtils.isEmpty( outCountNumber )) {
                 partInfoEntity.setResidueNumber( countNumber - outCountNumber );
             }
             baseMapper.updateById( partInfoEntity );
         }
+        String  key = (String) params.get( "key" );
+        Page<PartInfoEntity> page = new Page<>();
+        if (StringUtils.isEmpty( key )) {
+            page = this.selectPage(
+                    new Query<PartInfoEntity>( params ).getPage(),
+                    new EntityWrapper<PartInfoEntity>().orderBy( "residue_number", true )
+            );
+        }else {
+            page = this.selectPage(
+                    new Query<PartInfoEntity>( params ).getPage(),
+                    new EntityWrapper<PartInfoEntity>()
+                            .eq( "id",key )
+                            .orderBy( "residue_number", true )
+            );
+        }
 
 
-        Page<PartInfoEntity> page = this.selectPage(
-                new Query<PartInfoEntity>( params ).getPage(),
-                new EntityWrapper<PartInfoEntity>().orderBy( "residue_number", true )
-        );
+
+
 
         return new PageUtils(page);
     }

@@ -29,11 +29,23 @@ public class IngredientServiceImpl extends ServiceImpl<IngredientDao, Ingredient
     private IngredientDetailDao ingredientDetailDao;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<IngredientEntity> page = this.selectPage(
-                new Query<IngredientEntity>(params).getPage(),
-                new EntityWrapper<IngredientEntity>()
-                .orderBy( "create_time",false )
-        );
+
+        String key = (String) params.get( "key" );
+        Page<IngredientEntity> page = new Page<>();
+        if (!StringUtils.isEmpty( key )) {
+            page = this.selectPage(
+                    new Query<IngredientEntity>( params ).getPage(),
+                    new EntityWrapper<IngredientEntity>()
+                            .eq( "id", key )
+                            .orderBy( "create_time", false )
+            );
+        }else {
+            page = this.selectPage(
+                    new Query<IngredientEntity>(params).getPage(),
+                    new EntityWrapper<IngredientEntity>()
+                            .orderBy( "create_time",false )
+            );
+        }
 
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (IngredientEntity ingredient : page.getRecords()) {

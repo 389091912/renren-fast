@@ -1,6 +1,7 @@
 package io.renren.modules.product.service.impl;
 
 import cn.hutool.core.getter.OptNullBasicTypeFromObjectGetter;
+import io.renren.common.utils.DateUtils;
 import io.renren.modules.product.dao.PartInfoDao;
 import io.renren.modules.product.entity.PartInfoEntity;
 import org.apache.commons.collections.CollectionUtils;
@@ -29,12 +30,46 @@ public class PartDetailServiceImpl extends ServiceImpl<PartDetailDao, PartDetail
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String key = (String) params.get( "key" );
+        String rangeBefore = (String) params.get( "rangeBefore" );
+        String rangeAfter = (String) params.get( "rangeAfter" );
+        EntityWrapper<PartDetailEntity> partDetailEntityEntityWrapper = new EntityWrapper<>();
+        Page<PartDetailEntity> page = new Page<>();
+        if (StringUtils.isEmpty( key )) {
+            if (!StringUtils.isEmpty( rangeAfter )) {
+                page = this.selectPage(
+                        new Query<PartDetailEntity>(params).getPage(),
+                        partDetailEntityEntityWrapper
+                                .between( "create_time",rangeBefore+ DateUtils.DATE_TIME_BEFORE,rangeAfter+DateUtils.DATE_TIME_AFTER )
+                                .orderBy( "create_time",false )
+                );
+            }else {
+                page = this.selectPage(
+                        new Query<PartDetailEntity>(params).getPage(),
+                        partDetailEntityEntityWrapper
+                                .orderBy( "create_time",false )
+                );
+            }
 
-        Page<PartDetailEntity> page = this.selectPage(
-                new Query<PartDetailEntity>(params).getPage(),
-                new EntityWrapper<PartDetailEntity>()
-                .orderBy( "create_time",false )
-        );
+        }else {
+            if(!StringUtils.isEmpty( rangeAfter )){
+                page = this.selectPage(
+                        new Query<PartDetailEntity>( params ).getPage(),
+                        partDetailEntityEntityWrapper
+                                .eq( "part_id", key )
+                                .between( "create_time",rangeBefore+DateUtils.DATE_TIME_BEFORE,rangeAfter+DateUtils.DATE_TIME_AFTER )
+                                .orderBy( "create_time", false )
+                );
+            }else {
+                page = this.selectPage(
+                        new Query<PartDetailEntity>( params ).getPage(),
+                        partDetailEntityEntityWrapper
+                                .eq( "part_id", key )
+                                .orderBy( "create_time", false )
+                );
+            }
+
+        }
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (PartDetailEntity partDetail : page.getRecords()) {
                 if (!StringUtils.isEmpty( partDetail.getPartId() )) {

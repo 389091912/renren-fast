@@ -1,8 +1,10 @@
 package io.renren.modules.product.service.impl;
 
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.renren.modules.product.dao.*;
 import io.renren.modules.product.entity.*;
+import io.renren.modules.sys.dao.SysUserDao;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
@@ -48,6 +50,19 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
     @Autowired
     private ProductBoxDao productBoxDao;
 
+
+    @Autowired
+    private OrderMessageDao orderMessageDao;
+
+    @Autowired
+    private OrderUserMessageDao orderUserMessageDao;
+
+    @Autowired
+    private ProductModelDao productModelDao;
+
+    @Autowired
+    private SysUserDao sysUserDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         SysUserEntity sysUserEntity = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
@@ -56,15 +71,19 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
         String productId = (String) params.get( "productId" );
         Page<ProductOrderDetailEntity> page = new Page<>();
         List<Integer> orderIdList = new ArrayList<>();
-        if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+        if (SysUserEntity.SALESMAN .equals( sysUserEntity.getType() ) ) {
             List<ProductOrderEntity> orderEntityList = productOrderDao.selectList( new EntityWrapper<ProductOrderEntity>().eq( "employee_id", sysUserEntity.getUserId() ) );
+
             orderIdList = orderEntityList.stream().map( ProductOrderEntity::getId ).collect( Collectors.toList() );
 
+            if (CollectionUtils.isEmpty( orderIdList )) {
+                return new PageUtils(page);
+            }
         }
 
 
         if (!StringUtils.isEmpty( productWeight.trim() )) {
-            if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+            if (SysUserEntity.SALESMAN .equals( sysUserEntity.getType() ) ) {
                 if(!StringUtils.isEmpty( productId )){
                     page = this.selectPage(
                             new Query<ProductOrderDetailEntity>( params ).getPage(),
@@ -74,6 +93,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                     .between( "product_weight", (Integer.parseInt( productWeight ) - 5), (Integer.parseInt( productWeight ) + 5) )
                                     .orderBy( "status", true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
 
                     );
@@ -85,13 +105,14 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                     .between( "product_weight",(Integer.parseInt(productWeight )-5),(Integer.parseInt(productWeight  )+5) )
                                     .orderBy( "status",true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
 
                     );
                 }
 
             }
-            if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())){
+            if((SysUserEntity.SYSTEM_USER.equals( sysUserEntity.getType()))||(SysUserEntity.MANAGER.equals( sysUserEntity.getType()) )){
               if(!StringUtils.isEmpty( productId )){
                   page = this.selectPage(
                           new Query<ProductOrderDetailEntity>( params ).getPage(),
@@ -100,6 +121,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                   .between( "product_weight", (Integer.parseInt( productWeight ) - 5), (Integer.parseInt( productWeight ) + 5) )
                                   .orderBy( "status", true )
                                   .orderBy( "create_time", false )
+                                  .orderBy( "product_weight", false )
 
 
                   );
@@ -110,6 +132,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                   .between( "product_weight", (Integer.parseInt( productWeight ) - 5), (Integer.parseInt( productWeight ) + 5) )
                                   .orderBy( "status", true )
                                   .orderBy( "create_time", false )
+                                  .orderBy( "product_weight", false )
 
 
                   );
@@ -117,7 +140,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
             }
 
         }else {
-            if (SysUserEntity.SALESMAN == sysUserEntity.getType()) {
+            if (SysUserEntity.SALESMAN .equals( sysUserEntity.getType() )) {
                 if (!StringUtils.isEmpty( productId )) {
 
                     page = this.selectPage(
@@ -127,6 +150,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                     .in( "order_id", orderIdList )
                                     .orderBy( "status", true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
 
                     );
@@ -137,13 +161,14 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                     .in( "order_id", orderIdList )
                                     .orderBy( "status", true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
 
                     );
                 }
             }
 
-            if((SysUserEntity.SYSTEM_USER==sysUserEntity.getType())||(SysUserEntity.MANAGER==sysUserEntity.getType())) {
+            if((SysUserEntity.SYSTEM_USER.equals( sysUserEntity.getType() ))||(SysUserEntity.MANAGER.equals(sysUserEntity.getType()  ))) {
                 if (!StringUtils.isEmpty( productId )) {
                     page = this.selectPage(
                             new Query<ProductOrderDetailEntity>( params ).getPage(),
@@ -151,6 +176,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                                     .eq(  "product_id",productId)
                                     .orderBy( "status", true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
                     );
                 }else {
@@ -159,6 +185,7 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                             new EntityWrapper<ProductOrderDetailEntity>()
                                     .orderBy( "status", true )
                                     .orderBy( "create_time", false )
+                                    .orderBy( "product_weight", false )
 
                     );
                 }
@@ -185,23 +212,59 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                     }
                 }
 
-                
+                if (!StringUtils.isEmpty( productOrderDetail.getModelId() )) {
+                    ProductModelEntity productModelEntity = productModelDao.selectById( productOrderDetail.getModelId() );
+                    if (!StringUtils.isEmpty( productModelEntity )) {
+                        productOrderDetail.setModelNo( productModelEntity.getModelNo() );
 
+                    }
+                }
 
-                if (productOrderDetail.getBoxSupplyWay().equals( ProductOrderDetailEntity.BOX_SUPPLY_SELF )) {
-                    List<ProductBoxEntity> productBoxList = productBoxDao.selectList( new EntityWrapper<ProductBoxEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
-                    if (CollectionUtils.isNotEmpty( productBoxList )) {
-                        int enterBoxNumber = 0;
-                       // int outBoxNumber = 0;
-                        for (ProductBoxEntity productBoxEntity : productBoxList) {
-                            System.out.println(productBoxEntity.getId());
-                            BoxAddLeaveEntity boxAdd = boxAddLeaveDao.addBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId());
-                         //   BoxAddLeaveEntity boxLeave = boxAddLeaveDao.leaveBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId() );
-                            if (!StringUtils.isEmpty(boxAdd )) {
-                                enterBoxNumber+=boxAdd.getAddBoxNumberCount();
-                                System.out.println(enterBoxNumber);
+                if(!StringUtils.isEmpty( productOrderDetail.getCreateUser() )){
+                    SysUserEntity userEntity = sysUserDao.selectById( productOrderDetail.getCreateUser() );
+                    if (!StringUtils.isEmpty( userEntity )) {
+                        productOrderDetail.setEmployeeName( userEntity.getRealName() );
+
+                    }
+                }
+
+                if((SysUserEntity.SYSTEM_USER.equals( sysUserEntity.getType()) )||(SysUserEntity.MANAGER.equals(sysUserEntity.getType())  )) {
+
+                    List<OrderMessageEntity> orderMessageEntityList = orderMessageDao.selectList( new EntityWrapper<OrderMessageEntity>().eq( "order_detail_id", productOrderDetail.getId() ) );
+                    if (CollectionUtils.isNotEmpty( orderMessageEntityList )) {
+                        OrderMessageEntity orderMessageEntity = orderMessageEntityList.get( 0 );
+                        if (!StringUtils.isEmpty( orderMessageEntity )) {
+                            List<OrderUserMessageEntity> orderUserMessageEntities = orderUserMessageDao.selectList(
+                                    new EntityWrapper<OrderUserMessageEntity>()
+                                            .eq( "user_id", sysUserEntity.getUserId() )
+                                            .eq( "order_msg_id", orderMessageEntity.getOrderDetailId() )
+                            );
+                            if (CollectionUtils.isEmpty( orderUserMessageEntities )) {
+                                productOrderDetail.setIsRead( OrderUserMessageEntity.IS_NOT_READ );
 
                             }
+                        }
+                    }
+
+
+                }
+
+                    if(!StringUtils.isEmpty( productOrderDetail.getBoxSupplyWay() )){
+
+                        if (productOrderDetail.getBoxSupplyWay().equals( ProductOrderDetailEntity.BOX_SUPPLY_SELF )) {
+                            List<ProductBoxEntity> productBoxList = productBoxDao.selectList( new EntityWrapper<ProductBoxEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
+                            if (CollectionUtils.isNotEmpty( productBoxList )) {
+                                int enterBoxNumber = 0;
+                                // int outBoxNumber = 0;
+                                for (ProductBoxEntity productBoxEntity : productBoxList) {
+                                    System.out.println(productBoxEntity.getId());
+                                    BoxAddLeaveEntity boxAdd = boxAddLeaveDao.addBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId());
+                                    //   BoxAddLeaveEntity boxLeave = boxAddLeaveDao.leaveBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId() );
+                                    if (!StringUtils.isEmpty(boxAdd )) {
+                                        enterBoxNumber+=boxAdd.getAddBoxNumberCount();
+                                        System.out.println(enterBoxNumber);
+
+                                    }
 //                            if(!StringUtils.isEmpty( boxLeave)){
 //                                System.out.println(outBoxNumber);
 //                                outBoxNumber+= boxLeave.getOutBoxNumberCount();
@@ -217,14 +280,18 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
 ////                            }
 ////                            outBoxNumber += boxAddLeave.getOutBoxNumber();
 ////
+                                }
+
+                                productOrderDetail.setEntryBoxNumber( enterBoxNumber  );
+                            }else {
+                                productOrderDetail.setEntryBoxNumber(0);
+                            }
+
                         }
 
-                        productOrderDetail.setEntryBoxNumber( enterBoxNumber  );
-                    }else {
-                        productOrderDetail.setEntryBoxNumber(0);
+
                     }
 
-                }
 
 
 

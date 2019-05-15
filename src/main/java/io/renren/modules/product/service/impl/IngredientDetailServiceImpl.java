@@ -1,5 +1,6 @@
 package io.renren.modules.product.service.impl;
 
+import io.renren.common.utils.DateUtils;
 import io.renren.modules.product.dao.IngredientDao;
 import io.renren.modules.product.dao.SupplierInfoDao;
 import io.renren.modules.product.entity.IngredientEntity;
@@ -30,10 +31,47 @@ public class IngredientDetailServiceImpl extends ServiceImpl<IngredientDetailDao
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<IngredientDetailEntity> page = this.selectPage(
-                new Query<IngredientDetailEntity>( params ).getPage(),
-                new EntityWrapper<IngredientDetailEntity>().orderBy( "create_time", false )
-        );
+        String  key = (String) params.get( "key" );
+        String rangeBefore = (String) params.get( "rangeBefore" );
+        String rangeAfter = (String) params.get( "rangeAfter" );
+        Page<IngredientDetailEntity> page = new Page<>();
+        EntityWrapper<IngredientDetailEntity> ingredientDetailEntityEntityWrapper = new EntityWrapper<>();
+        if (StringUtils.isEmpty( key )) {
+            if (!StringUtils.isEmpty( rangeAfter )) {
+                page= this.selectPage(
+                        new Query<IngredientDetailEntity>( params ).getPage(),
+                        ingredientDetailEntityEntityWrapper
+                                .between( "detail_time",rangeBefore+ DateUtils.DATE_TIME_BEFORE,rangeAfter+DateUtils.DATE_TIME_AFTER )
+                                .orderBy( "create_time", false )
+                );
+            }else {
+                page= this.selectPage(
+                        new Query<IngredientDetailEntity>( params ).getPage(),
+                        ingredientDetailEntityEntityWrapper
+                                .orderBy( "create_time", false )
+                );
+            }
+
+        }else {
+            if(!StringUtils.isEmpty( rangeAfter )){
+                page= this.selectPage(
+                        new Query<IngredientDetailEntity>( params ).getPage(),
+                        ingredientDetailEntityEntityWrapper
+                                .eq( "ingredient_id",key )
+                                .between( "detail_time",rangeBefore+DateUtils.DATE_TIME_BEFORE,rangeAfter+DateUtils.DATE_TIME_AFTER )
+                                .orderBy( "create_time", false )
+                );
+            }else {
+                page= this.selectPage(
+                        new Query<IngredientDetailEntity>( params ).getPage(),
+                        ingredientDetailEntityEntityWrapper
+                                .eq( "ingredient_id",key )
+                                .orderBy( "create_time", false )
+                );
+            }
+
+        }
+
 
         for (IngredientDetailEntity ingredientDetail : page.getRecords()) {
             if (!StringUtils.isEmpty( ingredientDetail.getIngredientId() )) {

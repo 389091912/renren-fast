@@ -118,6 +118,11 @@ public class ProductOrderDetailEntity implements Serializable {
 	private Integer status;
 
 
+
+	private Integer modelId;
+
+	@TableField(exist = false)
+	private String modelNo;
 	/**
 	 * 生产计划
 	 *
@@ -156,6 +161,12 @@ public class ProductOrderDetailEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Integer isRead;
+
+    /**
+     * 员工姓名
+     */
+	@TableField(exist = false)
+    private String employeeName;
 	/**
 	 * 设置：ID
 	 */

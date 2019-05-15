@@ -151,6 +151,9 @@ public class ProductInfoEntity implements Serializable {
 	 */
 	private Integer status;
 
+	@TableField(exist = false)
+	private String modelName;
+
 	/**
 	 * 设置：ID
 	 */

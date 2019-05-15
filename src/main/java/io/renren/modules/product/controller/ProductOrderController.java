@@ -1,6 +1,7 @@
 package io.renren.modules.product.controller;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -218,7 +219,22 @@ public class ProductOrderController extends AbstractController {
     public R delete(@RequestBody Integer[] ids){
 
         for (Integer orderId : ids) {
+            List<ProductOrderDetailEntity> productOrderDetailEntityList = productOrderDetailService.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id", orderId ) );
+
+            if (CollectionUtils.isNotEmpty( productOrderDetailEntityList )) {
+                List<Integer> orderDetailIdList = productOrderDetailEntityList.stream().map( ProductOrderDetailEntity::getId ).collect( Collectors.toList() );
+                List<OrderMessageEntity> orderMessageEntityList = orderMessageService.selectList( new EntityWrapper<OrderMessageEntity>().in( "order_detail_id", orderDetailIdList ) );
+
+                if (CollectionUtils.isNotEmpty( orderMessageEntityList )) {
+                    List<Integer> orderIdList = orderMessageEntityList.stream().map( OrderMessageEntity::getId ).collect( Collectors.toList() );
+                    orderMessageService.deleteBatchIds( orderIdList );
+                }
+            }
+
+
             productOrderDetailService.delete( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id", orderId ) );
+
+
         }
         productOrderService.deleteBatchIds(Arrays.asList(ids));
 

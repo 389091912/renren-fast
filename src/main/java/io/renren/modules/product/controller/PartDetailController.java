@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,7 +89,16 @@ public class PartDetailController extends AbstractController {
         }else {
             partDetail.setPartId( partInfoEntityList.get( 0 ).getId() );
         }
-        partDetail.setCreateTime( date );
+        if (!StringUtils.isEmpty( partDetail.getPurchaseTime() )) {
+            partDetail.setCreateTime( partDetail.getPurchaseTime() );
+        }
+        if(!StringUtils.isEmpty( partDetail.getUserTime())){
+            partDetail.setCreateTime( partDetail.getUserTime() );
+        }
+
+        if(StringUtils.isEmpty( partDetail.getPurchaseTime())&&StringUtils.isEmpty( partDetail.getUserTime())){
+            partDetail.setCreateTime( date );
+        }
         partDetail.setCreateUser( getUserId().intValue() );
         partDetailService.insert(partDetail);
 

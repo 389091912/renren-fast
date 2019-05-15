@@ -1,9 +1,7 @@
 package io.renren.modules.product.service.impl;
 
-import io.renren.modules.product.dao.ProductDeviceDao;
-import io.renren.modules.product.dao.ProductInfoDao;
-import io.renren.modules.product.entity.ProductDeviceEntity;
-import io.renren.modules.product.entity.ProductInfoEntity;
+import io.renren.modules.product.dao.*;
+import io.renren.modules.product.entity.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +12,10 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 
-import io.renren.modules.product.dao.ProductPlanNoticeDao;
-import io.renren.modules.product.entity.ProductPlanNoticeEntity;
 import io.renren.modules.product.service.ProductPlanNoticeService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wsy
@@ -33,14 +30,20 @@ public class ProductPlanNoticeServiceImpl extends ServiceImpl<ProductPlanNoticeD
     @Autowired
     private ProductInfoDao productInfoDao;
 
+    @Autowired
+    private ProductModelDao productModelDao;
+
+    @Autowired
+    private ProductOrderDao productOrderDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<ProductPlanNoticeEntity> page = this.selectPage(
                 new Query<ProductPlanNoticeEntity>( params ).getPage(),
                 new EntityWrapper<ProductPlanNoticeEntity>()
-                        .orderBy( "is_priority", true )
                         .orderBy( "create_time", false )
+                        .orderBy( "is_priority", false )
+
         );
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductPlanNoticeEntity planNoticeEntity : page.getRecords()) {
@@ -48,7 +51,32 @@ public class ProductPlanNoticeServiceImpl extends ServiceImpl<ProductPlanNoticeD
                 planNoticeEntity.setDeviceName( productDeviceEntity.getDeciveName() );
 
                 ProductInfoEntity productInfoEntity = productInfoDao.selectById( planNoticeEntity.getProductId() );
-                planNoticeEntity.setProductName( productInfoEntity.getProductName() );
+                if (!StringUtils.isEmpty( productInfoEntity )) {
+                    planNoticeEntity.setProductName( productInfoEntity.getProductName() );
+                    if (!StringUtils.isEmpty( productInfoEntity.getModelNo() )) {
+                        ProductModelEntity productModelEntity = productModelDao.selectById( productInfoEntity.getModelNo() );
+                        if (!StringUtils.isEmpty( productModelEntity )) {
+                            planNoticeEntity.setModelNo( productModelEntity.getModelNo() );
+                        }
+                    }
+
+                }
+
+                if (!StringUtils.isEmpty( planNoticeEntity.getModelId() )) {
+                    ProductModelEntity productModelEntity = productModelDao.selectById( planNoticeEntity.getModelId() );
+                    if (!StringUtils.isEmpty( productModelEntity )) {
+                        planNoticeEntity.setModelNo( productModelEntity.getModelNo() );
+
+                    }
+                }
+
+                if (!StringUtils.isEmpty( planNoticeEntity.getOrderId() )) {
+                    ProductOrderEntity productOrderEntity = productOrderDao.selectById( planNoticeEntity.getOrderId() );
+                    if (!StringUtils.isEmpty(productOrderEntity)) {
+                        planNoticeEntity.setOrderNo( productOrderEntity.getOrderNo() );
+                    }
+                }
+
 
             }
         }

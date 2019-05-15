@@ -1,17 +1,20 @@
 package io.renren.modules.product.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import io.renren.common.utils.Dict;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import io.renren.common.utils.*;
+import io.renren.modules.product.entity.BoxFactoryEntity;
 import io.renren.modules.product.entity.ProductBoxEntity;
+import io.renren.modules.product.entity.vo.ExcelInfo;
+import io.renren.modules.product.service.BoxFactoryService;
 import io.renren.modules.product.service.ProductBoxService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.InstanceFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
 import io.renren.modules.product.service.BoxAddLeaveService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -41,6 +44,9 @@ public class BoxAddLeaveController  extends AbstractController {
 
     @Autowired
     private ProductBoxService productBoxService;
+
+    @Autowired
+    private BoxFactoryService boxFactoryService;
 
 
     /**
@@ -155,4 +161,73 @@ public class BoxAddLeaveController  extends AbstractController {
 
         return R.ok().put("boxAddLeaveList", allBoxAddLeave);
     }
+
+    /**
+     *
+     */
+    @RequestMapping("/getExcel")
+    public void getExcel(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+
+        List<BoxAddLeaveEntity> boxAddLeaveEntities = boxAddLeaveService.selectList( new EntityWrapper<BoxAddLeaveEntity>().orderBy( "create_time",false ) );
+        ExcelInfo excelInfo = new ExcelInfo();
+        List<ExcelInfo> excelInfoList = new ArrayList<>();
+        List<String > titleStrList = new ArrayList<>();
+        Date date = new Date();
+        String yyyyMMhh = DateUtils.format( date, "yyyyMMhh" );
+        excelInfo.setSheetName( "纸箱出入库详情" + yyyyMMhh );
+
+        titleStrList.add( "纸箱编号" );
+        titleStrList.add( "箱体数量" );
+        titleStrList.add( "格挡数量" );
+        titleStrList.add( "垫片数量" );
+        titleStrList.add( "入库时间" );
+        titleStrList.add( "价格" );
+        titleStrList.add( "供货商" );
+
+        excelInfo.setTitles( titleStrList );
+        List<List<Object>> objects = new ArrayList<>();
+
+
+        for (BoxAddLeaveEntity boxAddLeaveEntity : boxAddLeaveEntities) {
+            List object = new ArrayList();
+            if (!StringUtils.isEmpty(boxAddLeaveEntity.getBoxNo()  )) {
+                ProductBoxEntity productBoxEntity = productBoxService.selectById( Integer.parseInt( boxAddLeaveEntity.getBoxNo() ) );
+                if (!StringUtils.isEmpty(productBoxEntity)) {
+                    object.add( productBoxEntity.getBoxNo() );
+                }else {
+                    object.add( boxAddLeaveEntity.getBoxNo()  +" 系统未匹配纸箱编号,请看回执单");
+                }
+            }
+
+
+
+            object.add( boxAddLeaveEntity.getBodyNumber() );
+            object.add( boxAddLeaveEntity.getParryNumber() );
+            object.add( boxAddLeaveEntity.getSpacerNumber() );
+
+            String addBoxTimeStr = DateUtils.format( boxAddLeaveEntity.getAddBoxTime(), "yyyy-MM-dd" );
+            object.add( addBoxTimeStr );
+            object.add( boxAddLeaveEntity.getBoxPrice() );
+
+            if (!StringUtils.isEmpty( boxAddLeaveEntity.getFactoryId() )) {
+                BoxFactoryEntity boxFactoryEntity = boxFactoryService.selectById( boxAddLeaveEntity.getFactoryId() );
+                object.add( boxFactoryEntity.getFactoryName() );
+            }
+
+            objects.add( object );
+        }
+
+        excelInfo.setLists( objects );
+        excelInfoList.add( excelInfo );
+        try {
+            ExcelUtil.exportExcel( "纸箱出入库详情" + yyyyMMhh, excelInfoList, request, response );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
 }

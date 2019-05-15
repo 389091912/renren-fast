@@ -35,7 +35,6 @@ public class ProductLeaveStorageEntity implements Serializable {
 	/**
 	 * 产品重量
 	 */
-	@TableField(exist = false)
 	private Integer productWeight;
 
 	/**
@@ -54,7 +53,6 @@ public class ProductLeaveStorageEntity implements Serializable {
 	/**
 	 *  产品名称
 	 */
-	@TableField(exist = false)
 	private String productName;
 
 	/**
@@ -79,6 +77,15 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 */
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private Date signTime;
+
+	private Integer tray;
+
+	private String ticketNo;
+
+	private String customer;
+
+	private Integer zhiNumber;
+
 	/**
 	 * 
 	 */

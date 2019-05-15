@@ -7,10 +7,10 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.renren.common.utils.Dict;
-import io.renren.modules.product.entity.ModelShelfEntity;
-import io.renren.modules.product.entity.ProductModelEntity;
-import io.renren.modules.product.service.ModelShelfService;
-import io.renren.modules.product.service.ProductModelService;
+import io.renren.modules.product.dao.ModelUserMessageDao;
+import io.renren.modules.product.dao.OrderMessageDao;
+import io.renren.modules.product.entity.*;
+import io.renren.modules.product.service.*;
 import io.renren.modules.sys.controller.AbstractController;
 import javassist.expr.NewExpr;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.renren.modules.product.entity.ProductModelOutEntity;
-import io.renren.modules.product.service.ProductModelOutService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
@@ -50,6 +48,12 @@ public class ProductModelOutController extends AbstractController {
     @Autowired
     private ModelShelfService modelShelfService;
 
+    @Autowired
+    private ModelMessageService modelMessageService;
+
+
+    @Autowired
+    private ModelUserMessageService modelUserMessageService;
     /**
      * 列表
      */
@@ -115,6 +119,8 @@ public class ProductModelOutController extends AbstractController {
                 productModelEntity.setModelType( productModelOut.getModelType() );
                 productModelEntity.setProductId( productModelOut.getProductId() );
                 productModelEntity.setCustomerModelNo( productModelOut.getCustomerModelNo() );
+                productModelEntity.setFactory( productModelOut.getFactory() );
+                productModelEntity.setCustomerName( productModelOut.getCustomerName() );
 
                 productModelService.insert( productModelEntity );
 
@@ -202,6 +208,18 @@ public class ProductModelOutController extends AbstractController {
         productModelOut.setCreateUser( getUserId().intValue() );
         productModelOutService.insert(productModelOut);
 
+        ModelMessageEntity modelMessageEntity = new ModelMessageEntity();
+        modelMessageEntity.setModelDetailId( productModelOut.getId() );
+        modelMessageEntity.setUserId( getUserId().intValue() );
+        modelMessageEntity.setCreateTime( date );
+        modelMessageEntity.setCreateUser( getUserId().intValue() );
+        modelMessageService.insert( modelMessageEntity );
+
+        ModelUserMessageEntity modelUserMessageEntity = new ModelUserMessageEntity();
+        modelUserMessageEntity.setModelMsgId( productModelOut.getId() );
+        modelUserMessageEntity.setIsRead( ModelUserMessageEntity.IS_READ );
+        modelUserMessageEntity.setUserId( getUserId().intValue() );
+        modelUserMessageService.insert( modelUserMessageEntity );
         return R.ok();
     }
 

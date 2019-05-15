@@ -1,5 +1,6 @@
 package io.renren.modules.product.service.impl;
 
+import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.Dict;
 import io.renren.modules.product.dao.ProductBoxDao;
 import io.renren.modules.product.entity.ProductBoxEntity;
@@ -48,16 +49,16 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
         }
         if (!StringUtils.isEmpty( type )) {
             if (BoxAddLeaveEntity.ADD.equals( type )&&!StringUtils.isEmpty( rangeBefore )) {
-                boxAddLeaveEntityWrapper.between( "add_box_time", rangeBefore, rangeAfter );
+                boxAddLeaveEntityWrapper.between( "add_box_time", rangeBefore+ DateUtils.DATE_TIME_BEFORE ,rangeAfter+DateUtils.DATE_TIME_AFTER );
 
             }
             if (BoxAddLeaveEntity.LEAVE.equals( type )&&!StringUtils.isEmpty( rangeBefore )) {
-                boxAddLeaveEntityWrapper.between( "out_box_time", rangeBefore, rangeAfter );
+                boxAddLeaveEntityWrapper.between( "out_box_time", rangeBefore+DateUtils.DATE_TIME_BEFORE ,rangeAfter+DateUtils.DATE_TIME_AFTER);
             }
             boxAddLeaveEntityWrapper.eq( "type", type );
         }else {
             if(!StringUtils.isEmpty( rangeBefore )){
-                boxAddLeaveEntityWrapper.between( "create_time", rangeBefore, rangeAfter );
+                boxAddLeaveEntityWrapper.between( "create_time", rangeBefore+DateUtils.DATE_TIME_BEFORE,rangeAfter+DateUtils.DATE_TIME_AFTER);
             }
         }
 

@@ -64,10 +64,16 @@ public class ProductPlanNoticeEntity implements Serializable {
 	 * 订单id
 	 */
 	private Integer orderId;
+
+	/**
+	 * 订单编号
+	 */
+	@TableField(exist = false)
+	private String orderNo;
 	/**
 	 * 订单数量
 	 */
-	private Integer orderNumber;
+	private Double orderNumber;
 	/**
 	 * 库存数量
 	 */
@@ -247,13 +253,13 @@ public class ProductPlanNoticeEntity implements Serializable {
 	/**
 	 * 设置：订单数量
 	 */
-	public void setOrderNumber(Integer orderNumber) {
+	public void setOrderNumber(Double orderNumber) {
 		this.orderNumber = orderNumber;
 	}
 	/**
 	 * 获取：订单数量
 	 */
-	public Integer getOrderNumber() {
+	public Double getOrderNumber() {
 		return orderNumber;
 	}
 	/**

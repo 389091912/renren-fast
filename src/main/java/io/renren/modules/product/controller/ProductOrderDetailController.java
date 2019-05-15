@@ -1,14 +1,20 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.renren.modules.product.dao.ProductInfoDao;
+import io.renren.modules.product.entity.OrderMessageEntity;
 import io.renren.modules.product.entity.ProductInfoEntity;
 import io.renren.modules.product.entity.ProductOrderEntity;
+import io.renren.modules.product.service.OrderMessageService;
 import io.renren.modules.product.service.ProductInfoService;
 import io.renren.modules.product.service.ProductOrderService;
 import io.renren.modules.sys.controller.AbstractController;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -43,6 +49,9 @@ public class ProductOrderDetailController extends AbstractController {
 
     @Autowired
     private ProductInfoService productInfoService;
+
+    @Autowired
+    private OrderMessageService orderMessageService;
 
     /**
      * 列表
@@ -108,7 +117,15 @@ public class ProductOrderDetailController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("product:productorderdetail:delete")
     public R delete(@RequestBody Integer[] ids){
-			productOrderDetailService.deleteBatchIds(Arrays.asList(ids));
+        List<OrderMessageEntity> orderMessageEntityList = orderMessageService.selectList( new EntityWrapper<OrderMessageEntity>().in( "order_detail_id", ids ) );
+
+        if (CollectionUtils.isNotEmpty( orderMessageEntityList )) {
+            List<Integer> orderIdList = orderMessageEntityList.stream().map( OrderMessageEntity::getId ).collect( Collectors.toList() );
+            orderMessageService.deleteBatchIds( orderIdList );
+        }
+
+
+        productOrderDetailService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
     }

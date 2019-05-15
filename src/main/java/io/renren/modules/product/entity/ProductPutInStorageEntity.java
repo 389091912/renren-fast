@@ -81,6 +81,8 @@ public class ProductPutInStorageEntity implements Serializable {
 	 */
 	private Integer status;
 
+	private Integer tray;
+
 	/**
 	 * 设置：ID
 	 */

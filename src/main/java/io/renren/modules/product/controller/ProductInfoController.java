@@ -162,6 +162,20 @@ public class ProductInfoController extends AbstractController {
         return R.ok().put("productName", StringUtils.isEmpty( productInfoEntity )?null:productInfoEntity.getProductName());
     }
 
+    /**
+     * 根据Model ID 查询产品名称
+     */
+    @RequestMapping("/getModelByProductId/{productId}")
+    //  @RequiresPermissions("product:productinfo:info")
+    public R getModelByProductId(@PathVariable("productId") Integer productId){
+        if (StringUtils.isEmpty( productId )) {
+            return R.error( "请选择产品" );
+        }
+        ProductInfoEntity productInfoEntity = productInfoService.selectById( productId );
+
+        return R.ok().put("productInfo", productInfoEntity);
+    }
+
 
     /**
      *  获取所有产品id 和 name

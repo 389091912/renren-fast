@@ -1,6 +1,7 @@
 package io.renren.modules.product.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import io.renren.modules.product.entity.ProductOrderDetailEntity;
@@ -8,6 +9,7 @@ import io.renren.modules.product.service.ProductOrderDetailService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +70,17 @@ public class ProductPlanNoticeController extends AbstractController {
     public R save(@RequestBody ProductPlanNoticeEntity productPlanNotice){
 
         Integer orderDetailId = productPlanNotice.getOrderId();
+        Date date = new Date();
+
         ProductOrderDetailEntity productOrderDetailEntity = productOrderDetailService.selectById( orderDetailId );
+        if(!StringUtils.isEmpty( productOrderDetailEntity )){
+            productPlanNotice.setOrderId( productOrderDetailEntity.getOrderId() );
+        }else {
+            productPlanNotice.setOrderId( null );
+        }
+        productPlanNotice.setCreateTime( date );
+        productPlanNotice.setCreateUser( getUserId().intValue() );
+
         productPlanNoticeService.insert(productPlanNotice);
         productOrderDetailEntity.setStatus(ProductOrderDetailEntity.PROCESS_PRODUCT  );
         productOrderDetailEntity.setPlanId( productPlanNotice.getId() );

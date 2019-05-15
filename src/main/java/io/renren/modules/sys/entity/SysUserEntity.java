@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.swagger.models.auth.In;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,10 +24,10 @@ import java.util.List;
 public class SysUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static final int SYSTEM_USER = 0;
-	public static final int MANAGER = 1;
-	public static final int SALESMAN = 2;
-	public static final int OTHER_MAN = 3;
+	public static final Integer SYSTEM_USER = 0;
+	public static final Integer MANAGER = 1;
+	public static final Integer SALESMAN = 2;
+	public static final Integer OTHER_MAN = 3;
 
 
 	

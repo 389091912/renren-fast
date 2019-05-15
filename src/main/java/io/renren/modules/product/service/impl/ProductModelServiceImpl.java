@@ -62,6 +62,17 @@ public class ProductModelServiceImpl extends ServiceImpl<ProductModelDao, Produc
 
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductModelEntity productModelEntity : page.getRecords()) {
+
+
+                List<ProductModelOutEntity> productModelOutEntityList = productModelOutDao.selectList( new EntityWrapper<ProductModelOutEntity>()
+                        .eq( "model_no", productModelEntity.getId() )
+                        .orderBy( "create_time", true )
+                );
+                if (CollectionUtils.isNotEmpty( productModelOutEntityList )) {
+                    ProductModelOutEntity productModelOutEntity = productModelOutEntityList.get( 0 );
+                    productModelEntity.setFactory( productModelOutEntity.getFactory() );
+                    productModelEntity.setCustomerName( productModelOutEntity.getCustomerName() );
+                }
                 ProductModelOutEntity resultProductModelAdd = productModelOutDao.selectModelAddCount( productModelEntity.getId() );
                 ProductModelOutEntity resultProductModelOut = productModelOutDao.selectModelOutCount( productModelEntity.getId() );
                 if (!StringUtils.isEmpty( productModelEntity.getProductId() )) {

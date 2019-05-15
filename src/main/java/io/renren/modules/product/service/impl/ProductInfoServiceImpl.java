@@ -3,7 +3,9 @@ package io.renren.modules.product.service.impl;
 import io.renren.common.utils.Dict;
 import io.renren.modules.oss.dao.SysOssDao;
 import io.renren.modules.product.dao.ProductLeaveStorageDao;
+import io.renren.modules.product.dao.ProductModelDao;
 import io.renren.modules.product.dao.ProductPutInStorageDao;
+import io.renren.modules.product.entity.ProductModelEntity;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
     @Autowired
     private ProductLeaveStorageDao productLeaveStorageDao;
 
+    @Autowired
+    private ProductModelDao productModelDao;
 
 
     @Override
@@ -92,6 +96,14 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
                              null );
 
 
+               if(!StringUtils.isEmpty( productInfo.getModelNo() )){
+                   ProductModelEntity productModelEntity = productModelDao.selectById( Integer.parseInt( productInfo.getModelNo() ) );
+                   if (!StringUtils.isEmpty( productModelEntity )) {
+                       productInfo.setModelName( productModelEntity.getModelNo() );
+                   }
+               }
+
+
                 params.replace( "key", productInfo.getId() );
                 Integer productNumberCount = productPutInStorageDao.productNumberCount( params );
                 if (!StringUtils.isEmpty( productNumberCount )) {
@@ -114,7 +126,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoDao, ProductI
     @Override
     public List<Dict> getAllProductVoList() {
         List<Dict> allProductList = new ArrayList<>();
-        List<ProductInfoEntity> productInfoList = baseMapper.selectList( new EntityWrapper<>() );
+        List<ProductInfoEntity> productInfoList = baseMapper.selectList( new EntityWrapper<ProductInfoEntity>().orderBy( "create_time",false ) );
         if (CollectionUtils.isNotEmpty( productInfoList )) {
             for (ProductInfoEntity productInfo : productInfoList) {
                 Dict dict = new Dict();

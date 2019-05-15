@@ -173,6 +173,9 @@ public class ProductModelOutEntity implements Serializable {
 
 	private Integer productId;
 
+	@TableField(exist = false)
+	private Integer isRead;
+
 	/**
 	 * 创建时间
 	 */
