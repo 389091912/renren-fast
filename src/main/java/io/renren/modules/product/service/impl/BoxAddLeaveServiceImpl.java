@@ -108,4 +108,11 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
         return boxAddList;
     }
 
+    @Override
+    public Integer countAddBoxNumberByOrderIdAndProductId(Integer orderId, Integer productId) {
+
+        return  baseMapper.countAddBoxNumberByOrderIdAndProductId( orderId, productId );
+
+    }
+
 }

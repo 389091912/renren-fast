@@ -38,6 +38,11 @@ public class DateUtils {
 	/** 时间格式(yyyy-MM-dd HH:mm:ss) */
 	public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
+    public final static String DATE_TIME_BEFORE = "000000";
+
+    public final static String DATE_TIME_AFTER = "235959";
+
+
     /**
      * 日期格式化 日期格式为：yyyy-MM-dd
      * @param date  日期

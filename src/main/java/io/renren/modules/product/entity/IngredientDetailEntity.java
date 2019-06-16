@@ -1,5 +1,6 @@
 package io.renren.modules.product.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -24,6 +25,7 @@ public class IngredientDetailEntity implements Serializable {
 	 * id
 	 */
 	@TableId
+	@Excel( name = "序号" )
 	private Integer id;
 	/**
 	 * 供货商名称
@@ -37,23 +39,32 @@ public class IngredientDetailEntity implements Serializable {
 	/**
 	 * 吨数
 	 */
+	@TableField(exist = false)
+	@Excel( name = "辅料名称",width = 22)
+	private String materialName;
+
+	@TableField(exist = false)
+	@Excel( name = "供应商名称" ,width = 25)
+	private String supplierName;
+
+	@Excel(name="吨数")
 	private Double weight;
 	/**
 	 * 价格
 	 */
+	@Excel(name="价格")
 	private Double price;
 	/**
 	 * 票号
 	 */
+	@Excel(name="票号",width = 20)
 	private String tickerNumber;
 	/**
 	 * 类型0为入库，1为出库
 	 */
+	@Excel(name="类型",replace = {"入库_1", "出库_0"})
 	private Integer type;
-	/**
-	 * 图片
-	 */
-	private String imageUrl;
+
 	/**
 	 * 
 	 */
@@ -71,16 +82,25 @@ public class IngredientDetailEntity implements Serializable {
 	 */
 	private Date updataTime;
 
-	private Date detailTime;
 
+
+	@Excel( name = "货款支付状态",width = 22,replace = {"未付款_0", "已付款_1"," _null"})
 	private Integer isPay;
 
-	@TableField(exist = false)
-	private String materialName;
 
-	@TableField(exist = false)
-	private String supplierName;
 
+	@Excel( name = "运费单价")
+	private Double freightCost;
+
+	@Excel( name = "运费支付状态" ,width = 22,replace = {"未付款_0", "已付款_1"," _null"})
+	private Integer freightCostPay;
+	@Excel(name="日期",width = 23,databaseFormat = "yyyy-MM-dd",format = "yyyy-MM-dd")
+	private Date detailTime;
+	/**
+	 * 图片
+	 */
+//	@Excel( name = "订单留存",type = 2)
+	private String imageUrl;
 	/**
 	 * 设置：id
 	 */

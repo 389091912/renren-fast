@@ -163,7 +163,8 @@ public class ProductOrderServiceImpl extends ServiceImpl<ProductOrderDao, Produc
 
     @Override
     public List<Dict> getProductOrderList() {
-        List<ProductOrderEntity> productOrderEntities = productOrderDao.selectList( new EntityWrapper<ProductOrderEntity>() );
+        List<ProductOrderEntity> productOrderEntities =
+                productOrderDao.selectList( new EntityWrapper<ProductOrderEntity>().orderBy( "create_time",false ) );
         List<Dict> dictList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty( productOrderEntities )) {
             for (ProductOrderEntity productOrderEntity : productOrderEntities) {

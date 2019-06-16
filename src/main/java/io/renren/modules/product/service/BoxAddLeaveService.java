@@ -20,5 +20,7 @@ public interface BoxAddLeaveService extends IService<BoxAddLeaveEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<Dict> getAllBoxAddLeave();
+
+    Integer countAddBoxNumberByOrderIdAndProductId(Integer orderId, Integer productId);
 }
 

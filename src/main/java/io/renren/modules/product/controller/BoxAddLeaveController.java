@@ -8,11 +8,12 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import io.renren.common.utils.*;
 import io.renren.modules.product.entity.BoxFactoryEntity;
 import io.renren.modules.product.entity.ProductBoxEntity;
+import io.renren.modules.product.entity.ProductOrderDetailEntity;
 import io.renren.modules.product.entity.vo.ExcelInfo;
-import io.renren.modules.product.service.BoxFactoryService;
-import io.renren.modules.product.service.ProductBoxService;
+import io.renren.modules.product.service.*;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.aspectj.bridge.MessageWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.InstanceFilter;
 import org.springframework.util.StringUtils;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
-import io.renren.modules.product.service.BoxAddLeaveService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +48,11 @@ public class BoxAddLeaveController  extends AbstractController {
     @Autowired
     private BoxFactoryService boxFactoryService;
 
+    @Autowired
+    private ProductOrderService productOrderService;
+
+    @Autowired
+    private ProductOrderDetailService productOrderDetailService;
 
     /**
      * 列表
@@ -226,6 +231,34 @@ public class BoxAddLeaveController  extends AbstractController {
         }
 
 
+    }
+
+    @RequestMapping("/getBoxNeedNumberListByOrderIdAndProductId")
+    public R getBoxNeedNumberListByOrderIdAndProductId(@RequestParam Map<String, Object> params){
+        System.out.println(params.get( "orderId" ));
+        System.out.println(params.get( "productId" ));
+
+        String orderId = (String) params.get( "orderId" );
+        String productId = (String) params.get( "productId" );
+
+        if (StringUtils.isEmpty( orderId )) {
+            return R.error( "订单编号不能为空" );
+        }
+
+        if (StringUtils.isEmpty( productId )) {
+            return R.error( "产品编号不能为空" );
+        }
+
+        ProductOrderDetailEntity productOrderDetailEntity = productOrderDetailService.selectOne( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id", orderId ).eq( "product_id", productId) );
+
+        Integer entryBoxNumber = boxAddLeaveService.countAddBoxNumberByOrderIdAndProductId( Integer.parseInt( orderId ), Integer.parseInt( productId ) );
+        if(StringUtils.isEmpty( entryBoxNumber )){
+            productOrderDetailEntity.setEntryBoxNumber( 0 );
+        }else {
+            productOrderDetailEntity.setEntryBoxNumber( entryBoxNumber);
+        }
+
+        return R.ok().put( "productOrderDetailEntity", productOrderDetailEntity );
     }
 
 

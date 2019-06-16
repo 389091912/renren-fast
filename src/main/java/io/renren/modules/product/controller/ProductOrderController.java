@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import io.renren.common.utils.Dict;
 import io.renren.common.utils.IntegerUtil;
 import io.renren.modules.product.entity.*;
 import io.renren.modules.product.entity.vo.ProductDetailVo;
@@ -264,11 +265,41 @@ public class ProductOrderController extends AbstractController {
 
         return R.ok().put( "productOrderList", productOrderVoList );
     }
+    @RequestMapping("/getAllOrderList")
+    public R getAllOrderList() {
+        List<Dict> productOrderList = productOrderService.getProductOrderList();
 
-    public R getProductOrderList() {
-        //new ArrayList<>();
-        return R.ok();
+        return R.ok().put( "productOrderList", productOrderList );
     }
+
+    @RequestMapping("/getProductIdListByOrderId/{orderId}")
+    public R getProductIdListByOrderId(@PathVariable Integer orderId) {
+        System.out.println( orderId );
+        List<ProductOrderDetailEntity> productOrderDetailList = productOrderDetailService.selectList( new EntityWrapper<ProductOrderDetailEntity>().eq( "order_id",orderId ) );
+        List<Dict> productList = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty( productOrderDetailList )) {
+            for (ProductOrderDetailEntity productOrderDetailEntity : productOrderDetailList) {
+                Integer productId = productOrderDetailEntity.getProductId();
+                if (!StringUtils.isEmpty( productId )) {
+                    ProductInfoEntity productInfoEntity = productInfoService.selectById( productId );
+                    if (!StringUtils.isEmpty( productInfoEntity )) {
+                        Dict dict = new Dict();
+                        dict.setId( productInfoEntity.getId() );
+                        dict.setName( productInfoEntity.getProductName() );
+
+                        productList.add( dict );
+                    }
+                }
+
+            }
+
+        }
+        return R.ok().put( "productList", productList );
+    }
+
+
+
 
 
 }

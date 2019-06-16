@@ -106,6 +106,10 @@ public class BoxAddLeaveEntity implements Serializable {
 
 	private String boxOrderImage;
 
+	private Integer orderId;
+
+	private Integer productId;
+
 	/**
 	 * 创建者
 

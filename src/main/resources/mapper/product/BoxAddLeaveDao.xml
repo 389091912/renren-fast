@@ -109,4 +109,13 @@
         </where>
     </select>
 
+
+    <select id="countAddBoxNumberByOrderIdAndProductId"  resultType="integer">
+        SELECT
+        SUM(body_number) bodyNumberCount
+        FROM box_add_leave
+        WHERE order_id=#{orderId} AND product_id=#{productId} AND type=1
+    </select>
+
+
 </mapper>

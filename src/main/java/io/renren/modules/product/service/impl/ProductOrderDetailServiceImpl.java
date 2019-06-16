@@ -228,6 +228,9 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                     }
                 }
 
+
+
+
                 if((SysUserEntity.SYSTEM_USER.equals( sysUserEntity.getType()) )||(SysUserEntity.MANAGER.equals(sysUserEntity.getType())  )) {
 
                     List<OrderMessageEntity> orderMessageEntityList = orderMessageDao.selectList( new EntityWrapper<OrderMessageEntity>().eq( "order_detail_id", productOrderDetail.getId() ) );
@@ -252,40 +255,20 @@ public class ProductOrderDetailServiceImpl extends ServiceImpl<ProductOrderDetai
                     if(!StringUtils.isEmpty( productOrderDetail.getBoxSupplyWay() )){
 
                         if (productOrderDetail.getBoxSupplyWay().equals( ProductOrderDetailEntity.BOX_SUPPLY_SELF )) {
-                            List<ProductBoxEntity> productBoxList = productBoxDao.selectList( new EntityWrapper<ProductBoxEntity>().eq( "product_id", productOrderDetail.getProductId() ) );
-                            if (CollectionUtils.isNotEmpty( productBoxList )) {
-                                int enterBoxNumber = 0;
-                                // int outBoxNumber = 0;
-                                for (ProductBoxEntity productBoxEntity : productBoxList) {
-                                    System.out.println(productBoxEntity.getId());
-                                    BoxAddLeaveEntity boxAdd = boxAddLeaveDao.addBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId());
-                                    //   BoxAddLeaveEntity boxLeave = boxAddLeaveDao.leaveBoxNumberCount2( String.valueOf( productBoxEntity.getId()  ),productOrderDetail.getBoxFactoryId() );
-                                    if (!StringUtils.isEmpty(boxAdd )) {
-                                        enterBoxNumber+=boxAdd.getAddBoxNumberCount();
-                                        System.out.println(enterBoxNumber);
 
-                                    }
-//                            if(!StringUtils.isEmpty( boxLeave)){
-//                                System.out.println(outBoxNumber);
-//                                outBoxNumber+= boxLeave.getOutBoxNumberCount();
-//                            }
-////                        List<BoxAddLeaveEntity> addLeaveList = boxAddLeaveDao.selectList( new EntityWrapper<BoxAddLeaveEntity>().eq( "box_no", productBoxEntity.getBoxNo() ) );
-////                        for (BoxAddLeaveEntity boxAddLeave : addLeaveList) {
-////
-////                            if (!StringUtils.isEmpty( boxAddLeave.getAddBoxNumber() )) {
-////                                enterBoxNumber += boxAddLeave.getAddBoxNumber();
-////                            }
-////                            if(!StringUtils.isEmpty( boxAddLeave.getOutBoxNumberCount() )){
-////
-////                            }
-////                            outBoxNumber += boxAddLeave.getOutBoxNumber();
-////
+                            if (!StringUtils.isEmpty( productOrderDetail.getOrderId() ) && !StringUtils.isEmpty( productOrderDetail.getProductId() )) {
+                                System.out.println( productOrderDetail.getOrderId() );
+                                System.out.println( productOrderDetail.getProductId() );
+                                Integer enterBoxNumber = boxAddLeaveDao.countAddBoxNumberByOrderIdAndProductId( productOrderDetail.getOrderId(), productOrderDetail.getProductId() );
+                                System.out.println( enterBoxNumber );
+                                if (!StringUtils.isEmpty( enterBoxNumber )) {
+                                    productOrderDetail.setEntryBoxNumber(enterBoxNumber);
+                                }else {
+                                    productOrderDetail.setEntryBoxNumber(0);
                                 }
 
-                                productOrderDetail.setEntryBoxNumber( enterBoxNumber  );
-                            }else {
-                                productOrderDetail.setEntryBoxNumber(0);
                             }
+
 
                         }
 

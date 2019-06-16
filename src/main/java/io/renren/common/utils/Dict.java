@@ -22,4 +22,5 @@ public class Dict implements Serializable {
      */
     private String name;
 
+
 }

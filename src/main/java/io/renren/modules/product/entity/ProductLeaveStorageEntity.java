@@ -1,5 +1,6 @@
 package io.renren.modules.product.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.naming.Name;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,28 +34,15 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 */
 	private Integer productId;
 
-	/**
-	 * 产品重量
-	 */
-	private Integer productWeight;
 
-	/**
-	 * 出库数量
-	 */
-	private Integer productOutNumber;
+
+
 	/**
 	 * 纸箱id
 	 */
 	private Integer boxId;
-	/**
-	 * 箱子数
-	 */
-	private Integer boxNumber;
 
-	/**
-	 *  产品名称
-	 */
-	private String productName;
+
 
 	/**
 	 * 订单编号
@@ -71,6 +60,7 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 * 出库时间
 	 */
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	@Excel(name="日期",width = 23,databaseFormat = "yyyy-MM-dd",format = "yyyy.MM.dd")
 	private Date outTime;
 	/**
 	 * 签收时间
@@ -79,12 +69,35 @@ public class ProductLeaveStorageEntity implements Serializable {
 	private Date signTime;
 
 	private Integer tray;
-
+	@Excel(name="票号",width = 22)
 	private String ticketNo;
-
+	@Excel(name="客户")
 	private String customer;
+	/**
+	 *  产品名称
+	 */
+	@Excel(name="型号",width = 22)
+	private String productName;
+	/**
+	 * 箱子数
+	 */
+	@Excel(name="件数")
+	private Double boxNumber;
 
-	private Integer zhiNumber;
+	@Excel(name="只数")
+	private Double zhiNumber;
+	/**
+	 * 出库数量
+	 */
+	@Excel(name="数量")
+	private Double productOutNumber;
+
+	/**
+	 * 产品重量
+	 */
+	@Excel(name="克数")
+	private Integer productWeight;
+
 
 	/**
 	 * 
@@ -98,10 +111,7 @@ public class ProductLeaveStorageEntity implements Serializable {
 	 * 
 	 */
 	private Integer updateUser;
-	/**
-	 * 备注
-	 */
-	private String remark;
+
 	/**
 	 * 
 	 */
@@ -114,10 +124,17 @@ public class ProductLeaveStorageEntity implements Serializable {
 	/**
 	 * 产品总克数
 	 */
-	private Integer weightCount;
+	@Excel(name="总克数",width = 25)
+	private Long weightCount;
 
 	private String orderImage;
-
+	@Excel(name="销售员")
+	private String salesman;
+	/**
+	 * 备注
+	 */
+	@Excel(name="备注")
+	private String remark;
 	/**
 	 * 设置：
 	 */
@@ -145,15 +162,7 @@ public class ProductLeaveStorageEntity implements Serializable {
 	/**
 	 * 设置：出库数量
 	 */
-	public void setProductOutNumber(Integer productOutNumber) {
-		this.productOutNumber = productOutNumber;
-	}
-	/**
-	 * 获取：出库数量
-	 */
-	public Integer getProductOutNumber() {
-		return productOutNumber;
-	}
+
 	/**
 	 * 设置：纸箱id
 	 */
@@ -169,15 +178,7 @@ public class ProductLeaveStorageEntity implements Serializable {
 	/**
 	 * 设置：箱子数
 	 */
-	public void setBoxNumber(Integer boxNumber) {
-		this.boxNumber = boxNumber;
-	}
-	/**
-	 * 获取：箱子数
-	 */
-	public Integer getBoxNumber() {
-		return boxNumber;
-	}
+
 	/**
 	 * 设置：订单编号
 	 */

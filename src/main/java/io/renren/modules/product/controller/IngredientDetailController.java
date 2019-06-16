@@ -1,15 +1,27 @@
 package io.renren.modules.product.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import io.renren.common.utils.DateUtils;
+import io.renren.common.utils.EasyPoiUtil;
 import io.renren.modules.product.entity.IngredientEntity;
+import io.renren.modules.product.entity.SupplierInfoEntity;
+import io.renren.modules.product.entity.vo.IngredientDetailVo;
 import io.renren.modules.product.service.IngredientService;
+import io.renren.modules.product.service.SupplierInfoService;
 import io.renren.modules.sys.controller.AbstractController;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +34,8 @@ import io.renren.modules.product.service.IngredientDetailService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -39,6 +53,12 @@ public class IngredientDetailController extends AbstractController {
 
     @Autowired
     private IngredientService ingredientService;
+
+    @Autowired
+    private SupplierInfoService supplierInfoService;
+
+    @Value("${files.path}")
+    private String filesPath;
 
     /**
      * 列表
@@ -118,4 +138,52 @@ public class IngredientDetailController extends AbstractController {
         return R.ok();
     }
 
+    @RequestMapping("/getExcel")
+    public void getExcel(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        List<IngredientDetailEntity> ingredientDetailEntityList = ingredientDetailService.selectList( new EntityWrapper<IngredientDetailEntity>()
+                .orderBy( "ingredient_id", true )
+                .orderBy( "detail_time", false )
+        );
+        System.out.println( ingredientDetailEntityList.size() );
+        int id = 1;
+        for (IngredientDetailEntity ingredientDetailEntity : ingredientDetailEntityList) {
+            if (!StringUtils.isEmpty( ingredientDetailEntity.getSupplierId() )) {
+                SupplierInfoEntity supplierInfoEntity = supplierInfoService.selectById( ingredientDetailEntity.getSupplierId() );
+                ingredientDetailEntity.setSupplierName( supplierInfoEntity.getSupplierName() );
+            }
+            if (!StringUtils.isEmpty( ingredientDetailEntity.getIngredientId() )) {
+                IngredientEntity ingredientEntity = ingredientService.selectById( ingredientDetailEntity.getIngredientId() );
+               ingredientDetailEntity.setMaterialName( ingredientEntity.getMaterialName() );
+            }
+            if (!StringUtils.isEmpty( ingredientDetailEntity.getImageUrl() )) {
+                String imageUrl = ingredientDetailEntity.getImageUrl();
+                ingredientDetailEntity.setImageUrl( filesPath + imageUrl );
+
+            }
+            ingredientDetailEntity.setId( id );
+            id++;
+        }
+       // Workbook workbook = ExcelExportUtil.exportExcel(  params1, IngredientDetailVo.class, ingredientDetailVoList);
+        Date date = new Date();
+        String format = DateUtils.format( date,"YY-MM-dd-hhmmss" );
+
+        EasyPoiUtil.exportExcel(ingredientDetailEntityList,"辅料订单统计","辅料订单统计",IngredientDetailEntity.class,"辅料订单明细统计"+format+".xls",response);
+//        // 告诉浏览器用什么软件可以打开此文件
+//        response.setHeader("content-Type", "application/vnd.ms-excel");
+//        // 下载文件的默认名称
+//        try {
+//            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("用户数据表","UTF-8") + ".xls");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        //编码
+//        response.setCharacterEncoding("UTF-8");
+//        try {
+//            workbook.write(response.getOutputStream());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+    }
 }

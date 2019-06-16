@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.swagger.models.auth.In;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ import java.util.List;
  * @date 2016年9月18日 上午9:28:55
  */
 @TableName("sys_user")
+@Data
 public class SysUserEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -81,6 +83,8 @@ public class SysUserEntity implements Serializable {
 	 */
 	@TableField(exist=false)
 	private List<Long> roleIdList;
+
+	private String simpleName;
 	
 	/**
 	 * 创建者ID

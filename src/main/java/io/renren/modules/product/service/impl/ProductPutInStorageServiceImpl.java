@@ -35,9 +35,20 @@ public class ProductPutInStorageServiceImpl extends ServiceImpl<ProductPutInStor
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+        String  key = (String) params.get( "key" );
+        EntityWrapper<ProductPutInStorageEntity> productPutInStorageEntity = new EntityWrapper<>();
+        if (!StringUtils.isEmpty( key )) {
+            productPutInStorageEntity
+                    .eq( "product_id", key )
+                    .orderBy( "create_time", false );
+        }else {
+            productPutInStorageEntity.orderBy( "create_time", false );
+        }
+
         Page<ProductPutInStorageEntity> page = this.selectPage(
-                new Query<ProductPutInStorageEntity>(params).getPage(),
-                new EntityWrapper<ProductPutInStorageEntity>().orderBy( "create_time", false )
+                new Query<ProductPutInStorageEntity>( params ).getPage(),
+                productPutInStorageEntity
         );
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
             for (ProductPutInStorageEntity productPutInStorage : page.getRecords()) {

@@ -1,14 +1,19 @@
 package io.renren.modules.product.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import io.renren.common.utils.Dict;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import io.renren.common.utils.*;
+import io.renren.modules.product.entity.IngredientDetailEntity;
+import io.renren.modules.product.entity.IngredientEntity;
+import io.renren.modules.product.entity.SupplierInfoEntity;
+import io.renren.modules.product.entity.vo.IngredientDetailVo;
 import io.renren.modules.product.service.ProductOrderService;
 import io.renren.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.modules.product.entity.ProductLeaveStorageEntity;
 import io.renren.modules.product.service.ProductLeaveStorageService;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.R;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -105,6 +110,24 @@ public class ProductLeaveStorageController extends AbstractController {
             List<Dict> dictList = productOrderService.selectOrderIdByProductId( productId );
             return R.ok().put( "orderList",dictList );
         }
+
+    }
+
+
+    @RequestMapping("/getExcel")
+    public void getExcel(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+
+        List<ProductLeaveStorageEntity> productLeaveStorageEntityList = productLeaveStorageService.selectList(
+                new EntityWrapper<ProductLeaveStorageEntity>()
+                        .orderBy( "salesman", false )
+                        .orderBy( "out_time", false )
+
+        );
+
+        Date date = new Date();
+        String format = DateUtils.format( date,"YY-MM-dd-hhmmss" );
+        EasyPoiUtil.exportExcel(productLeaveStorageEntityList,"产品出库统计","产品出库统计",ProductLeaveStorageEntity.class,"产品出库统计"+format+".xls",response);
+
 
     }
 }

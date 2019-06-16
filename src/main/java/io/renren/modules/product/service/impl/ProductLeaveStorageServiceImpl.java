@@ -41,25 +41,28 @@ public class ProductLeaveStorageServiceImpl extends ServiceImpl<ProductLeaveStor
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        
+
+        String  key = (String) params.get( "key" );
+        EntityWrapper<ProductLeaveStorageEntity> entityWrapper = new EntityWrapper<>();
+
+        if (StringUtils.isEmpty(key)) {
+            entityWrapper.orderBy( "salesman", false )
+                         .orderBy( "out_time", false );
+        }else {
+            entityWrapper.like( "product_name", key )
+                    .or().like( "salesman", key )
+                    .or().like( "customer", key )
+                    .orderBy( "salesman", false )
+                    .orderBy( "out_time", false );
+        }
+
+
         Page<ProductLeaveStorageEntity> page = this.selectPage(
-                new Query<ProductLeaveStorageEntity>(params).getPage(),
-                new EntityWrapper<ProductLeaveStorageEntity>().orderBy( "create_time", false )
+                new Query<ProductLeaveStorageEntity>( params ).getPage(),
+                entityWrapper
         );
 
-        if (CollectionUtils.isNotEmpty( page.getRecords() )) {
-//            for (ProductLeaveStorageEntity productLeaveStorage : page.getRecords()) {
-//                ProductInfoEntity productInfo = productInfoDao.selectById( productLeaveStorage.getProductId() );
-//                productLeaveStorage.setProductName( StringUtils.isEmpty( productInfo )?null: productInfo.getProductName()); ;
-//                ProductOrderEntity productOrder = productOrderDao.selectById( productLeaveStorage.getOrderId() );
-//                productLeaveStorage.setOrderNo( StringUtils.isEmpty( productOrder ) ? null : productOrder.getOrderNo() );
-//                ProductBoxEntity productBoxEntity = productBoxDao.selectById( productLeaveStorage.getBoxId() );
-//
-//                productLeaveStorage.setBoxNo( StringUtils.isEmpty( productBoxEntity ) ? null : productBoxEntity.getBoxNo() );
-//
-//
-//            }
-        }
+
 
 
         return new PageUtils(page);

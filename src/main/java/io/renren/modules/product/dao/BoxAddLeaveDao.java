@@ -28,4 +28,7 @@ public interface BoxAddLeaveDao extends BaseMapper<BoxAddLeaveEntity> {
     BoxAddLeaveEntity leaveBoxNumberCount1(@Param("params")Map<String,Object> params);
 
     BoxAddLeaveEntity leaveBoxNumberCount2(@Param( "boxNo" )  String boxNo, @Param("factoryId") Integer factoryId);
+
+    Integer countAddBoxNumberByOrderIdAndProductId(@Param("orderId") Integer orderId, @Param("productId") Integer productId);
+
 }
