@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import io.renren.common.utils.Dict;
 import io.renren.common.utils.PageUtils;
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +23,7 @@ public interface BoxAddLeaveService extends IService<BoxAddLeaveEntity> {
     List<Dict> getAllBoxAddLeave();
 
     Integer countAddBoxNumberByOrderIdAndProductId(Integer orderId, Integer productId);
+
+    List<String> upload(MultipartFile file, Long userId);
 }
 

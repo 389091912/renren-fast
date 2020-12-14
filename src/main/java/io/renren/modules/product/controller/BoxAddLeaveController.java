@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -259,6 +260,23 @@ public class BoxAddLeaveController  extends AbstractController {
         }
 
         return R.ok().put( "productOrderDetailEntity", productOrderDetailEntity );
+    }
+
+
+    /**
+     * 导入文件
+     */
+    @RequestMapping("/uploadBoxAdd")
+    public R uploadEasy(MultipartFile file) throws Exception{
+        System.out.println(file.getOriginalFilename());
+
+        if(file == null || file.isEmpty()){
+            return R.ok().put("errMsg","请刷新浏览器重新尝试该操作!");
+        }
+
+        List<String> errorMsgList = boxAddLeaveService.upload(file,getUserId());
+
+        return R.ok().put("errMsg",errorMsgList);
     }
 
 

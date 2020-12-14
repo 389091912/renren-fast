@@ -22,5 +22,9 @@
         <result property="leaveNumber" column="leave_number"/>
     </resultMap>
 
+    <select id="selectBoxDictVoList" resultType="io.renren.modules.product.entity.vo.DictVo">
+        select id 'id',box_no 'name'
+        from box_add_leave;
+    </select>
 
 </mapper>

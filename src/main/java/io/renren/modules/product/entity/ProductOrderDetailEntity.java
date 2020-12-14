@@ -40,6 +40,7 @@ public class ProductOrderDetailEntity implements Serializable {
 	 * 取消生产
 	 */
 	public static final int CANCEL_PRODUCT = 3;
+
 	/**
 	 * 纸箱供应方式 自供
 	 */

@@ -122,7 +122,20 @@ public class IngredientDetailController extends AbstractController {
     @RequestMapping("/update")
     @RequiresPermissions("product:ingredientdetail:update")
     public R update(@RequestBody IngredientDetailEntity ingredientDetail){
-			ingredientDetailService.updateById(ingredientDetail);
+        IngredientEntity ingredient = ingredientService.selectOne( new EntityWrapper<IngredientEntity>().eq( "material_name", ingredientDetail.getMaterialName() ) );
+        Date date = new Date();
+        if (StringUtils.isEmpty(ingredient)) {
+            IngredientEntity ingredientEntity = new IngredientEntity();
+            ingredientEntity.setMaterialName( ingredientDetail.getMaterialName() );
+            ingredientEntity.setCreateTime( date );
+            ingredientEntity.setCreateUser( getUserId().intValue() );
+            ingredientService.insertOrUpdate( ingredientEntity );
+            ingredientDetail.setIngredientId( ingredientEntity.getId() );
+        }else {
+            ingredientDetail.setIngredientId( ingredient.getId() );
+        }
+
+        ingredientDetailService.updateById(ingredientDetail);
 
         return R.ok();
     }

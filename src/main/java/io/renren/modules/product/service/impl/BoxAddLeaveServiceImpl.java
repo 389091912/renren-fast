@@ -1,21 +1,25 @@
 package io.renren.modules.product.service.impl;
 
-import io.renren.common.utils.DateUtils;
-import io.renren.common.utils.Dict;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
+import io.renren.common.utils.*;
+import io.renren.modules.job.utils.ScheduleRunnable;
 import io.renren.modules.product.dao.ProductBoxDao;
 import io.renren.modules.product.entity.ProductBoxEntity;
+import io.renren.modules.product.entity.vo.DictVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
 
 import io.renren.modules.product.dao.BoxAddLeaveDao;
 import io.renren.modules.product.entity.BoxAddLeaveEntity;
@@ -23,16 +27,21 @@ import io.renren.modules.product.service.BoxAddLeaveService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author wsy
  */
+@Slf4j
 @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 @Service("boxAddLeaveService")
 public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLeaveEntity> implements BoxAddLeaveService {
 
     @Autowired
     private ProductBoxDao productBoxDao;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -67,7 +76,6 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
                 new Query<BoxAddLeaveEntity>( params ).getPage(),
                 boxAddLeaveEntityWrapper
                         .orderBy( "box_no",true )
-                        .orderBy( "create_time", false )
         );
 
         if (CollectionUtils.isNotEmpty( page.getRecords() )) {
@@ -113,6 +121,38 @@ public class BoxAddLeaveServiceImpl extends ServiceImpl<BoxAddLeaveDao, BoxAddLe
 
         return  baseMapper.countAddBoxNumberByOrderIdAndProductId( orderId, productId );
 
+    }
+
+    @Override
+    public List<String> upload(MultipartFile file, Long userId) {
+        ImportParams params = new ImportParams();
+        params.setTitleRows(1);
+        params.setHeadRows(1);
+        params.setNeedVerfiy(true);
+
+        try {
+
+            ExcelImportResult<BoxAddLeaveEntity> result = ExcelImportUtil.importExcelMore(file.getInputStream(), BoxAddLeaveEntity.class, params);
+
+            List<BoxAddLeaveEntity> boxAddLeaveEntityList = result.getList();
+
+            List<DictVo> dictVoList = productBoxDao.selectBoxDictVoList();
+            Map<Integer, String > hashMap = new HashMap<>();
+            if (CollectionUtils.isNotEmpty(dictVoList)) {
+                dictVoList.forEach(item->{
+                    hashMap.put(item.getId(), item.getName());
+                });
+            }
+            StringBuilder sb = new StringBuilder();
+
+            log.info(boxAddLeaveEntityList.size() + "  数量");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 
 }

@@ -2,7 +2,10 @@ package io.renren.modules.product.dao;
 
 import io.renren.modules.product.entity.ProductBoxEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.renren.modules.product.entity.vo.DictVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProductBoxDao extends BaseMapper<ProductBoxEntity> {
-	
+
+    List<DictVo> selectBoxDictVoList();
+
 }

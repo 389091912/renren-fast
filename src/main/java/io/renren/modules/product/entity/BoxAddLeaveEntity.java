@@ -1,11 +1,13 @@
 package io.renren.modules.product.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -40,6 +42,8 @@ public class BoxAddLeaveEntity implements Serializable {
 	/**
 	 * 纸箱编号
 	 */
+	@Excel( name = "纸箱编号")
+	@NotNull(message = "纸箱编号不能为空")
 	private String boxNo;
 
 	@TableField(exist = false)
@@ -48,6 +52,8 @@ public class BoxAddLeaveEntity implements Serializable {
 	/**
 	 * 箱体数量
 	 */
+	@Excel( name = "箱体数量")
+	@NotNull(message = "箱体数量不能为空")
 	private Integer bodyNumber;
 	/**
 	 * 箱体数量总数
@@ -57,6 +63,9 @@ public class BoxAddLeaveEntity implements Serializable {
 	/**
 	 * 格挡数量
 	 */
+
+	@Excel( name = "格挡数量")
+	@NotNull(message = "格挡数量不能为空")
 	private Integer parryNumber;
 	/**
 	 * 格挡数量总数
@@ -66,6 +75,9 @@ public class BoxAddLeaveEntity implements Serializable {
 	/**
 	 * 垫片数量
 	 */
+
+	@Excel( name = "垫片数量")
+	@NotNull(message = "垫片数量不能为空")
 	private Integer spacerNumber;
 
 	/**
@@ -76,6 +88,7 @@ public class BoxAddLeaveEntity implements Serializable {
 	/**
 	 * 成品入库数量
 	 */
+	@Excel( name = "成品入库数量")
 	private Integer addBoxNumber;
 	/**
 	 * 成品入库数量总数
@@ -94,14 +107,18 @@ public class BoxAddLeaveEntity implements Serializable {
 	@TableField(exist = false)
 	private Integer outBoxNumberCount;
 
+	@Excel( name = "类型",replace = {"入库_1","出库_0"})
 	private Integer type;
 
+	@Excel(name ="入库时间(2020-12-12)", format = "yyyy-MM-dd" )
 	private Date addBoxTime;
 
 	private Date outBoxTime;
 
+	@Excel(name = "价格")
 	private BigDecimal boxPrice;
 
+	@Excel( name = "纸箱厂",replace = {"曹路_1","李丰硕_2","马友明_3","苏鹏_4","内华_5","瑾尚包装-张宝玉_6"})
 	private Integer factoryId;
 
 	private String boxOrderImage;
