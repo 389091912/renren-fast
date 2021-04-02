@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8888
+  port: 8080
   connection-timeout: 5000ms
   servlet:
     context-path: /hxbl-pro
@@ -12,7 +12,7 @@ server:
 spring:
   # 环境 dev|test|prod
   profiles:
-    active: dev
+    active: prod
   # jackson时间格式化
   jackson:
     time-zone: GMT+8
@@ -25,7 +25,7 @@ spring:
   redis:
     open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
-    host: 47.96.1.162
+    host: 47.114.129.185
     port: 6379
     password: hxBl@5779    # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）
@@ -55,7 +55,7 @@ mybatis-plus:
     db-column-underline: true
     #刷新mapper 调试神器
     refresh-mapper: true
-    #数据库大写下划线转换
+      #数据库大写下划线转换
     #capital-mode: true
     #序列接口实现类配置
     #key-generator: com.baomidou.springboot.xxx
@@ -84,5 +84,5 @@ renren:
     expire: 604800
     header: token
 files:
-   path: ${file-path:i:/hxbl}
-   #path: ${file-path:/my/hxbl}
+  #path: ${file-path:i:/hxbl}
+  path: ${file-path:/my/hxbl}

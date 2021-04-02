@@ -1,21 +1,25 @@
 package io.renren.modules.finance.controller;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import io.renren.common.utils.ExcelUtiles;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.renren.modules.finance.entity.FinanceOughtReceiveEntity;
 import io.renren.modules.finance.service.FinanceOughtReceiveService;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -85,6 +89,25 @@ public class FinanceOughtReceiveController {
 			financeOughtReceiveService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+
+
+    /**
+     * 导入文件
+     */
+    @RequestMapping("/importFinancePay")
+    public R importFinancePay(MultipartFile file) throws Exception{
+        System.out.println(file.getOriginalFilename());
+
+        if(file == null || file.isEmpty()){
+            return R.ok().put("msg","请刷新浏览器重新尝试该操作!");
+        }
+
+        List<String> errorMsgList =null;
+
+        return CollectionUtils.isNotEmpty(errorMsgList) ? R.error().put("msg", errorMsgList) : R.ok();
+
     }
 
 }
